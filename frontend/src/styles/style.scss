@@ -1,0 +1,15 @@
+@use './components';
+@use './base';
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+//  outline: red 2px solid;
+}
+
+.loading {
+  * {
+    visibility: hidden;
+  }
+}
