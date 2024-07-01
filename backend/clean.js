@@ -14,20 +14,40 @@ const clean = async () => {
 }
 clean()
 
-const dir = 'uploads'
+const dir1 = './public/avatars'
+const dir2 = './public/pins'
 
-fs.readdir(dir, (err, files) => {
+fs.readdir(dir1, (err, files) => {
   if(err) {
-    console.log("Error")
+    console.log("Error1" + err)
     return
   } 
 
   files.forEach(file => {
-    const filePath = path.join(dir, file)
+    const filePath = path.join(dir1, file)
 
     fs.unlink(filePath, err => {
       if(err) {
-        console.log('Error')
+        console.log('Error11')
+      } else {
+        console.log('Deleted')
+      }
+    })
+  })
+})
+
+fs.readdir(dir2, (err, files) => {
+  if(err) {
+    console.log("Error2")
+    return
+  } 
+
+  files.forEach(file => {
+    const filePath = path.join(dir2, file)
+
+    fs.unlink(filePath, err => {
+      if(err) {
+        console.log('Error22')
       } else {
         console.log('Deleted')
       }

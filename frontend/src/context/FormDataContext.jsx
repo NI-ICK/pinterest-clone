@@ -10,7 +10,7 @@ export function useFormDataContext() {
 }
 
 export function FormDataContextProvider({ children }) {
-  const { currUser, setCurrUser } = useUserContext()
+  const { currUser, setCurrUser, fetchUsers, fetchCurrUser } = useUserContext()
   const [formData, setFormData] = useState({
     createPin: {
       title: '',
@@ -31,8 +31,8 @@ export function FormDataContextProvider({ children }) {
       username: '',
       password: '',
       email: '',
-      image: null,
-      user: currUser
+      avatar: null,
+      user: {}
     }
   })
   const { fetchPins } = usePinContext()
@@ -49,9 +49,7 @@ export function FormDataContextProvider({ children }) {
   }
 
   const handleCreatePinSubmit = async () => {
-    const updatedFormData = {
-      ...formData, createPin: { ...formData.createPin, user: currUser.username } 
-    }
+    const updatedFormData = { ...formData, createPin: { ...formData.createPin, user: currUser.username }}
     try {
       await axios.post('https://localhost:5000/createPin', updatedFormData.createPin, {
         withCredentials: true,
@@ -104,22 +102,25 @@ export function FormDataContextProvider({ children }) {
 
   const handleEditUserChange = (e) => {
     const { name, value, files } = e.target
-    if(name === 'image') {
-      setFormData({ ...formData, edit: { ...formData.edit, image: files[0] }})
+    if(name === 'avatar') {
+      setFormData({ ...formData, edit: { ...formData.edit, avatar: files[0] }})
     } else {
       setFormData({ ...formData, edit: { ...formData.edit, [name]: value }})
     }
   }
 
   const handleEditUserSubmit = async () => {
+    const updatedFormData = { ...formData, edit: { ...formData.edit, user: currUser }}
     try {
-      await axios.put('https://localhost:5000/editUser', formData.edit, {
+      await axios.put('https://localhost:5000/editUser', updatedFormData.edit, {
         withCredentials: true,
         headers: { 'Content-Type': 'multipart/form-data' }
       })
     } catch (error) {
       console.error('Error editing user:', error);
     }
+    fetchUsers()
+    fetchCurrUser()
   }
 
   return (

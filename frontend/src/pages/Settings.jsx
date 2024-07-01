@@ -1,7 +1,7 @@
-import { useUserContext } from "../context/UserContext"
+import { useFormDataContext } from "../context/FormDataContext"
 
 export function Settings() {
-  const { formdata, handleEditUserChange, handleEditUserSubmit } = useUserContext()
+  const { formData, handleEditUserChange, handleEditUserSubmit } = useFormDataContext()
 
   const formSubmit = (e) => {
     e.preventDefault()
@@ -10,12 +10,12 @@ export function Settings() {
 
   return (
     <>
-      <form onClick={formSubmit}>
-        <input type="file" name="image" onChange={handleEditUserChange} accept="image/webp, image/png, image/jpg, image/jpeg, image/avif" />
-        <input type="text" name="username" value={formdata.username} onChange={handleEditUserChange} />
-        <input type="password" name="password" value={formdata.password} onChange={handleEditUserChange} />
-        <input type="email" name="email" value={formdata.email} onChange={handleEditUserChange} />
-        <input type="submit" />
+      <form onSubmit={formSubmit}>
+        <input type="file" name="avatar" onChange={handleEditUserChange} accept="image/webp, image/png, image/jpg, image/jpeg, image/avif" />
+        <input type="text" name="username" value={formData.username} onChange={handleEditUserChange} />
+        <input type="password" name="password" value={formData.password} onChange={handleEditUserChange} />
+        <input type="email" name="email" value={formData.email} onChange={handleEditUserChange} />
+        <button type="submit">Send</button>
       </form>
     </>
   )

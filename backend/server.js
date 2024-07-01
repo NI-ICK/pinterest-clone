@@ -8,7 +8,7 @@ const path = require('path')
 const cors = require('cors')
 const passport = require('passport')
 const otherRoutes = require('./routes/other')
-const createPinRoutes = require('./routes/createPin')
+const imagesRoutes = require('./routes/images')
 const authRoutes = require('./routes/auth')
 const initializePassport = require('./passport-config')
 const session = require('express-session')
@@ -28,7 +28,7 @@ app.use(cors({
 }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+app.use('/public', express.static(path.join(__dirname, 'public')))
 app.use(session({
   // ENV
   secret: "qwe",
@@ -46,7 +46,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use(otherRoutes)
-app.use('/createPin', createPinRoutes)
+app.use(imagesRoutes)
 app.use(authRoutes)
 
 const options = {
