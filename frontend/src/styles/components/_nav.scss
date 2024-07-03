@@ -9,7 +9,6 @@ nav {
   height: 8dvh;
   display: flex;
   align-items: center;
-  gap: 6px;
   padding: 0 20px;
   margin-bottom: 20px;
   background-color: white;
@@ -17,12 +16,18 @@ nav {
   
   a {
     padding: 0px 18px;
-    height: $nav-elements-height;
+    margin: 0px 5px;
+    height: $nav-elements-size-l;
     border-radius: 24px;
     text-decoration: none;
     display: flex;
     align-items: center;
     color: black;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $hover-color;
+    }
 
     &.active {
       background-color: black;
@@ -31,15 +36,16 @@ nav {
   }
 
   .search-bar {
-    height: $nav-elements-height;
-    width: 100%;
+    height: $nav-elements-size-l;
+    flex: 1;
     border-radius: 24px;
+    margin: 0px 5px;
     background-color: #F1F1F1;
     display: flex;
     align-items: center;
     
     &:hover{
-      background-color: mix(#F1F1F1, black, 95);
+      background-color: mix(#F1F1F1, black, 95%);
     }
     
     svg {
@@ -60,5 +66,45 @@ nav {
       outline: none;
       background: transparent;
     }
+  }
+}
+
+.profile {
+  height: $nav-elements-size-s;
+  width: $nav-elements-size-s;
+  border-radius: 50%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-background {
+  height: $nav-elements-size-l;
+  width: $nav-elements-size-l;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: $hover-color;
+  }
+}
+
+.settingsIcon {
+  height: $nav-elements-size-s;
+  width: $nav-elements-size-s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $hover-color;
   }
 }

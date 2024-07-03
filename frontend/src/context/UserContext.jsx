@@ -8,7 +8,7 @@ export function useUserContext() {
 }
 
 export function UserContextProvider({ children }) {
-  const [currUser, setCurrUser] = useState(null)
+  const [currUser, setCurrUser] = useState({})
   const [users, setUsers] = useState([])
   const [userLoading, setUserLoading] = useState(true)
 

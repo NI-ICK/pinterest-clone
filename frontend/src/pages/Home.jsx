@@ -11,7 +11,7 @@ export function Home() {
         <div className="pins" >
         {pins.map((pin, index) => (
           <div key={index} className="pin" onClick={() => navigate(`/pin/${pin._id}`)}>
-            <img src={`https://localhost:5000/uploads/${pin.image}`} alt={pin.title} loading="lazy"/>
+            <img src={`https://localhost:5000/public/pins/${pin.image}`} alt={pin.title} loading="lazy"/>
             <p className="pinTitle">{pin.title}</p>
           </div>
         ))}

@@ -5,6 +5,7 @@ import { Register } from './Register'
 import { useUserContext } from '../context/UserContext'
 import { SettingsWindow } from './SettingsWindow'
 import { SearchBar } from './SearchBar'
+import { SettingsIcon } from '../assets/SettingsIcon'
 
 export function Navbar() {
   const [showLoginModal, setShowLoginModal] = useState(false)
@@ -55,8 +56,14 @@ export function Navbar() {
           className={createActive ? 'active' : ''}
           >Create</Link>
           <SearchBar />
-        <div onClick={() => navigate(`${currUser.username}`)}>QWE</div>
-        <div onClick={() => setShowSettings(!showSettings)}>...</div>
+        <div className='profile-background'>
+          <div 
+            className='profile' 
+            onClick={() => navigate(`${currUser.username}`)}
+            style={{ backgroundImage: currUser.avatar ? `url(https://localhost:5000/public/avatars/${currUser.avatar})` : `url(https://localhost:5000/public/avatars/noAvatar.jpg)` }}>
+          </div>
+        </div>
+        <div className='settingsIcon' onClick={() => setShowSettings(!showSettings)}><SettingsIcon /></div>
         <SettingsWindow show={showSettings} modalRef={modalRef}/>
       </>
       ) : (
