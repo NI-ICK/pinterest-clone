@@ -9,9 +9,11 @@ export function Pin() {
   const { users } = useUserContext()
   const navigate = useNavigate()
   const [show, setShow] = useState(false)
-  
+
   const pin = pins.find(pin => pin._id === id)
-  const user = pin ? users.find(user => user.username === pin.user) : null
+  let user = users.find(user => user.username === pin.user)
+
+  if(!user) user = { username: 'User deleted' }
 
   useEffect(() => {
     if(!pinLoading && !pin) navigate('/404')
@@ -20,12 +22,11 @@ export function Pin() {
   if(!pin) return null
 
   return (
-    <>
-    <div className="container">
-      <img src={`https://localhost:5000/uploads/${pin.image}`} alt={pin.title} />
-      <div className="details">
-        <div className="pin-options" onClick={() => setShow(true)}>...
-          {show && <div></div>}
+    <div className="pinContainer">
+      <img src={`https://localhost:5000/public/pins/${pin.image}`} alt={pin.title} />
+      <div className="pinDetails">
+        <div className="pinOptions" onClick={() => setShow(true)}>...
+          {show && <div>...</div>}
         </div>
         <h2>{pin.title}</h2>
         <p>{pin.decription}</p>
@@ -35,6 +36,5 @@ export function Pin() {
         <div className="comments"></div>
       </div>
     </div>
-    </>
   )
 }

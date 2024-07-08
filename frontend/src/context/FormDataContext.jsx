@@ -1,10 +1,10 @@
-import { useContext, createContext, useState } from "react"
+import { useContext, createContext, useState, useEffect } from "react"
 import axios from "axios"
 import { useUserContext } from "./UserContext"
 import { usePinContext } from "./PinContext"
 
 const FormDataContext = createContext()
-
+  
 export function useFormDataContext() {
   return useContext(FormDataContext)
 }
@@ -31,12 +31,15 @@ export function FormDataContextProvider({ children }) {
       username: '',
       password: '',
       email: '',
-      avatar: null,
+      photo: null,
+      firstName: '',
+      lastName: '',
+      about: '',
       user: {}
     }
   })
   const { fetchPins } = usePinContext()
-
+  
   // Create Pin Form
 
   const handleCreatePinChange = (e) => {
@@ -51,6 +54,7 @@ export function FormDataContextProvider({ children }) {
   const handleCreatePinSubmit = async () => {
     const updatedFormData = { ...formData, createPin: { ...formData.createPin, user: currUser.username }}
     try {
+      console.log(formData.createPin)
       await axios.post('https://localhost:5000/createPin', updatedFormData.createPin, {
         withCredentials: true,
         headers: { 'Content-Type': 'multipart/form-data' }
@@ -102,8 +106,8 @@ export function FormDataContextProvider({ children }) {
 
   const handleEditUserChange = (e) => {
     const { name, value, files } = e.target
-    if(name === 'avatar') {
-      setFormData({ ...formData, edit: { ...formData.edit, avatar: files[0] }})
+    if(name === 'photo') {
+      setFormData({ ...formData, edit: { ...formData.edit, photo: files[0] }})
     } else {
       setFormData({ ...formData, edit: { ...formData.edit, [name]: value }})
     }

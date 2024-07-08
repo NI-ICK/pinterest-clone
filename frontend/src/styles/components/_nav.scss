@@ -1,4 +1,4 @@
-@use '../abstracts/index' as *;
+@use '../abstracts/' as *;
 
 nav {
   position: sticky;
@@ -10,7 +10,7 @@ nav {
   display: flex;
   align-items: center;
   padding: 0 20px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   background-color: white;
   box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
   
@@ -26,7 +26,7 @@ nav {
     cursor: pointer;
 
     &:hover {
-      background-color: $hover-color;
+      background-color: $light-grey;
     }
 
     &.active {
@@ -35,17 +35,18 @@ nav {
     }
   }
 
-  .search-bar {
+  .searchBar {
     height: $nav-elements-size-l;
+    min-width: 200px;
     flex: 1;
     border-radius: 24px;
-    margin: 0px 5px;
     background-color: #F1F1F1;
     display: flex;
     align-items: center;
+    margin: 0px 5px;
     
     &:hover{
-      background-color: mix(#F1F1F1, black, 95%);
+      background-color: $dark-grey;
     }
     
     svg {
@@ -55,7 +56,7 @@ nav {
     }
 
     &:focus-within {
-      border: 3px solid #7FC1FF;
+      border: 3px solid $light-blue;
     } 
     
     input {
@@ -72,16 +73,16 @@ nav {
 .profile {
   height: $nav-elements-size-s;
   width: $nav-elements-size-s;
-  border-radius: 50%;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+  img {
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+  }
 }
 
-.profile-background {
+.profileBackground {
   height: $nav-elements-size-l;
   width: $nav-elements-size-l;
   display: flex;
@@ -91,7 +92,7 @@ nav {
   cursor: pointer;
   
   &:hover {
-    background-color: $hover-color;
+    background-color: $light-grey;
   }
 }
 
@@ -105,6 +106,6 @@ nav {
   cursor: pointer;
 
   &:hover {
-    background-color: $hover-color;
+    background-color: $light-grey;
   }
 }

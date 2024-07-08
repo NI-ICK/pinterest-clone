@@ -9,9 +9,9 @@ export function useUserContext() {
 
 export function UserContextProvider({ children }) {
   const [currUser, setCurrUser] = useState({})
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState([{}])
   const [userLoading, setUserLoading] = useState(true)
-
+  
   const fetchCurrUser = async () => {
     try {
       const response = await axios.get('https://localhost:5000/user', { withCredentials: true })

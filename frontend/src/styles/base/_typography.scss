@@ -3,10 +3,42 @@
 * {
   font-family: 'Nunito', sans-serif;
   font-weight: bold;
+  font-size: 1em;
 }
 
-.search-bar {
-  input {
-    font-size: 1em;
+form {
+  label {
+    font-size: .8em;
+    font-weight: normal;
   }
+
+  input {
+    font-size: 0.9em;
+    font-weight: normal;
+  }
+
+  textarea {
+    font-size: 0.9em;
+    font-weight: normal;
+  }
+}
+
+.formHeader {
+  font-size: 1.1em;
+}
+
+p {
+  font-weight: normal;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+.greyBtn {
+  font-weight: 600;
 }

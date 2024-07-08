@@ -3,7 +3,7 @@ import { SearchIcon } from '../assets/SearchIcon'
 export function SearchBar() {
 
   return (
-    <div className="search-bar">      
+    <div className="searchBar">      
       <SearchIcon />
       <input type="text" placeholder='Search'/>
     </div>

@@ -7,7 +7,9 @@ import { CreatePin } from './pages/CreatePin'
 import { UserProfile } from './pages/UserProfile'
 import { Pin } from './pages/Pin'
 import { NotFound } from './pages/NotFound'
-import { Settings} from './pages/Settings'
+import { Settings } from './components/Settings'
+import { EditProfile } from './pages/EditProfile'
+import { AccountSettings } from './pages/AccountSettings'
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -24,10 +26,13 @@ function App() {
         <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/createPin' element={<CreatePin />} />
+          <Route path='/pin-creation-tool' element={<CreatePin />} />
           <Route path='/:user' element={<UserProfile />}/>
           <Route path='/pin/:id' element={<Pin />}/>
-          <Route path='/settings' element={<Settings />}/>
+          <Route path='/settings' element={<Settings />}>
+            <Route path='edit-profile' element={<EditProfile />}/>
+            <Route path='account-settings' element={<AccountSettings />}/>
+          </Route>
           <Route path='/404' element={<NotFound />}/>
         </Routes>
       </div>

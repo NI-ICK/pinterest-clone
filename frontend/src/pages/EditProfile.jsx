@@ -1,0 +1,58 @@
+import { useFormDataContext } from "../context/FormDataContext"
+import { useRef } from "react"
+import { useUserContext } from "../context/UserContext"
+
+export function EditProfile() {
+  const { formData, handleEditUserChange, handleEditUserSubmit } = useFormDataContext()
+  const { currUser } = useUserContext()
+  const fileInput = useRef()
+
+  const handleInputClick = () => {
+    fileInput.current.click()
+  }
+
+  const formSubmit = (e) => {
+    e.preventDefault()
+    handleEditUserSubmit()
+  }
+
+  return (
+    <>
+      <form onSubmit={formSubmit} id="editForm" className="fInput textInputs">
+        <h1>Edit profile</h1>
+        <div className="photoUpload">
+          <input 
+            type="file" 
+            name="photo" 
+            onChange={handleEditUserChange} 
+            ref={fileInput} 
+            accept="image/*" 
+            style={{ display: 'none' }}/>
+          <div>
+            <label>Photo</label>
+            <img src={currUser.photo ? `https://localhost:5000/public/photos/${currUser.photo}` : `https://localhost:5000/public/photos/noPhoto.jpg`} />
+          </div>
+          <button onClick={handleInputClick} type="button" className="greyBtn">Change</button>
+        </div>
+        <div className="name">
+          <div>
+            <label htmlFor="firstName">First Name</label>
+            <input type="text" name="firstName" id="firstName" placeholder="First Name" value={formData.firstName} onChange={handleEditUserChange}/>
+          </div>
+          <div>
+            <label htmlFor="lastName">Last Name</label>
+            <input type="text" name="lastName" id="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleEditUserChange}/>
+          </div>
+        </div>
+        <div>
+          <label htmlFor="about">About</label>
+          <input type="text" name="about" id="about" placeholder="Say something about yourself" value={formData.about} onChange={handleEditUserChange}/>
+        </div>
+        <div>
+          <label htmlFor="username">Username</label>
+          <input type="text" name="username" id="username" placeholder="Username" value={formData.username} onChange={handleEditUserChange} />
+        </div>
+      </form>
+    </>
+  )
+}
