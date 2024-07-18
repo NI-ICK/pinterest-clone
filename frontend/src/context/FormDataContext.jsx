@@ -1,7 +1,8 @@
 import { useContext, createContext, useState, useEffect } from "react"
-import axios from "axios"
 import { useUserContext } from "./UserContext"
 import { usePinContext } from "./PinContext"
+import axios from "axios"
+import { useLocation } from 'react-router-dom'
 
 const FormDataContext = createContext()
   
@@ -11,51 +12,75 @@ export function useFormDataContext() {
 
 export function FormDataContextProvider({ children }) {
   const { currUser, setCurrUser, fetchUsers, fetchCurrUser } = useUserContext()
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     createPin: {
-      title: '',
-      description: '',
+      title:  null,
+      description:  null,
       image: null,
-      user: ''
+      user:  null
     },
     register: {
-      username: '',
-      password: '',
-      email: ''
+      username:  null,
+      password:  null,
+      email:  null
     },
     login: {
-      email: '',
-      password: '',
+      email:  null,
+      password:  null,
     },
     edit: {
-      username: '',
-      password: '',
-      email: '',
+      username:  null,
+      password:  null,
+      email:  null,
       photo: null,
-      firstName: '',
-      lastName: '',
-      about: '',
-      user: {}
-    }
-  })
+      firstName:  null,
+      lastName:  null,
+      about:  null,
+      user:  null
+    },
+    comment: {
+      content:  null,
+      user:  null,
+      parentId:  null,
+    },
+  }
+  const [formData, setFormData] = useState(initialFormData)
   const { fetchPins } = usePinContext()
+  const [formFilled, setFormFilled] = useState(false)
+  const location = useLocation()
+
+  useEffect(() => {
+    const editFormFilled = Object.values(formData.edit).some(value => !!value)
+    const commentFormFilled = !!formData.comment.content
+
+    setFormFilled(editFormFilled || commentFormFilled)
+  }, [formData.comment, formData.edit])
+
+  useEffect(() => {
+    resetFormData()
+    setFormFilled(false)
+  }, [location])
   
+  const resetFormData = () => {
+    setFormData(initialFormData)
+  }
+
   // Create Pin Form
 
   const handleCreatePinChange = (e) => {
     const { name, value, files } = e.target
     if(name === 'image') {
-      setFormData({ ...formData, createPin: { ...formData.createPin, image: files[0] }})
+      setFormData(prevFormData => ({ ...prevFormData, createPin: { ...prevFormData.createPin, image: files[0] }}))
     } else {
-      setFormData({ ...formData, createPin: { ...formData.createPin, [name]: value }})
+      setFormData(prevFormData => ({ ...prevFormData, createPin: { ...prevFormData.createPin, [name]: value }}))
     }  
   }
 
   const handleCreatePinSubmit = async () => {
-    const updatedFormData = { ...formData, createPin: { ...formData.createPin, user: currUser.username }}
+    const updatedFormData = { ...formData.createPin, user: currUser }
     try {
       console.log(formData.createPin)
-      await axios.post('https://localhost:5000/createPin', updatedFormData.createPin, {
+      await axios.post('https://localhost:5000/api/createPin', updatedFormData, {
         withCredentials: true,
         headers: { 'Content-Type': 'multipart/form-data' }
       })
@@ -63,6 +88,7 @@ export function FormDataContextProvider({ children }) {
       console.error('Error creating pin:', error);
     }
     fetchPins()
+    resetFormData()
   }
 
   // Register Form
@@ -74,13 +100,14 @@ export function FormDataContextProvider({ children }) {
 
   const handleRegisterSubmit = async () => {
     try {
-      await axios.post('https://localhost:5000/register', formData.register, {
+      await axios.post('https://localhost:5000/api/register', formData.register, {
         withCredentials: true,
         headers: { 'Content-Type': 'application/json' }
       })
     } catch (error) {
       console.error('Error registering:', error);
     }
+    resetFormData()
   }
 
   // Login Form
@@ -92,7 +119,7 @@ export function FormDataContextProvider({ children }) {
 
   const handleLoginSubmit = async () => {
     try {
-      const response = await axios.post('https://localhost:5000/login', formData.login, { 
+      const response = await axios.post('https://localhost:5000/api/login', formData.login, { 
         withCredentials: true,
         headers: { 'Content-Type': 'application/json' }
       })
@@ -100,6 +127,7 @@ export function FormDataContextProvider({ children }) {
     } catch (error) {
       console.error('Error Loging in:', error);
     }
+    resetFormData()
   }
 
   // Edit User Form
@@ -107,16 +135,16 @@ export function FormDataContextProvider({ children }) {
   const handleEditUserChange = (e) => {
     const { name, value, files } = e.target
     if(name === 'photo') {
-      setFormData({ ...formData, edit: { ...formData.edit, photo: files[0] }})
+      setFormData(prevFormData => ({ ...prevFormData, edit: { ...prevFormData.edit, photo: files[0] }}))
     } else {
-      setFormData({ ...formData, edit: { ...formData.edit, [name]: value }})
+      setFormData(prevFormData => ({ ...prevFormData, edit: { ...prevFormData.edit, [name]: value }}))
     }
   }
 
   const handleEditUserSubmit = async () => {
-    const updatedFormData = { ...formData, edit: { ...formData.edit, user: currUser }}
+    const updatedFormData = { ...formData.edit, user: currUser._id }
     try {
-      await axios.put('https://localhost:5000/editUser', updatedFormData.edit, {
+      await axios.put('https://localhost:5000/api/editUser', updatedFormData, {
         withCredentials: true,
         headers: { 'Content-Type': 'multipart/form-data' }
       })
@@ -125,11 +153,34 @@ export function FormDataContextProvider({ children }) {
     }
     fetchUsers()
     fetchCurrUser()
+    resetFormData()
+  }
+
+  // Comment Form
+
+  const handleCommentChange = (e, id) => {
+    const { name, value } = e.target
+    setFormData(prevFormData => ({ ...prevFormData, comment: { ...prevFormData.comment, [name]: value }}))
+    setFormData(prevFormData => ({ ...prevFormData, comment: { ...prevFormData.comment, parentId: id }}))
+  }
+
+  const handleCommentSubmit = async () => {
+    const updatedFormData = { ...formData.comment, user: currUser }
+    try {
+      await axios.post('https://localhost:5000/api/comment', updatedFormData, {
+        withCredentials: true,
+        headers: { 'Content-Type': 'application/json' }
+      })
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
+    resetFormData()
   }
 
   return (
     <FormDataContext.Provider value={{ 
       formData, 
+      setFormData,
       handleCreatePinChange, 
       handleCreatePinSubmit, 
       handleRegisterChange, 
@@ -137,7 +188,10 @@ export function FormDataContextProvider({ children }) {
       handleLoginChange, 
       handleLoginSubmit,
       handleEditUserChange,
-      handleEditUserSubmit 
+      handleEditUserSubmit,
+      handleCommentChange,
+      handleCommentSubmit,
+      formFilled,
       }} >
       {children}
     </FormDataContext.Provider>

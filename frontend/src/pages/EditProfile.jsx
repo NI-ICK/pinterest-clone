@@ -1,11 +1,21 @@
 import { useFormDataContext } from "../context/FormDataContext"
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react"
 import { useUserContext } from "../context/UserContext"
 
 export function EditProfile() {
   const { formData, handleEditUserChange, handleEditUserSubmit } = useFormDataContext()
-  const { currUser } = useUserContext()
+  const { currUser, fetchCurrUser } = useUserContext()
+  const [loading, setLoading] = useState(true)
   const fileInput = useRef()
+
+  const fetchData = async () => {
+    await fetchCurrUser()
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   const handleInputClick = () => {
     fileInput.current.click()
@@ -14,10 +24,13 @@ export function EditProfile() {
   const formSubmit = (e) => {
     e.preventDefault()
     handleEditUserSubmit()
+    const form = e.target
+    form.reset()
   }
 
   return (
     <>
+    {!loading &&
       <form onSubmit={formSubmit} id="editForm" className="fInput textInputs">
         <h1>Edit profile</h1>
         <div className="photoUpload">
@@ -53,6 +66,7 @@ export function EditProfile() {
           <input type="text" name="username" id="username" placeholder="Username" value={formData.username} onChange={handleEditUserChange} />
         </div>
       </form>
+    }
     </>
   )
 }

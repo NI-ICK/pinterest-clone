@@ -21,9 +21,9 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', (req, res, next) => {
   try {
-    passport.authenticate('local', (error, user) => {
+    passport.authenticate('local', (error, user, info) => {
       if (error) throw error
-      if (!user) res.json({ message: error })
+      if (!user) return res.status(401).json({ message: info.message })
   
       req.logIn(user, (error) => {
         if (error) return next(error)
@@ -52,7 +52,7 @@ router.get('/logout', (req, res) => {
 
 router.get('/user', (req, res) => {
   try {
-    res.json(req.user) 
+    res.status(200).json(req.user) 
   } catch(error) {
     res.status(500).json({ message: error.message })
   }
@@ -61,7 +61,17 @@ router.get('/user', (req, res) => {
 router.get('/users', async (req, res) => {
   try {
     const users = await User.find()
-    res.json(users)
+    res.status(200).json(users)
+  } catch(error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
+router.delete('/delete/user/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+    await user.deleteOne()
+    res.status(200).json({ message: 'User deleted' })
   } catch(error) {
     res.status(500).json({ message: error.message })
   }

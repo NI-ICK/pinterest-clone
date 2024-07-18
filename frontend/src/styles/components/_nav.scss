@@ -12,7 +12,7 @@ nav {
   padding: 0 20px;
   margin-bottom: 25px;
   background-color: white;
-  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: $box-shadow;
   
   a {
     padding: 0px 18px;
@@ -24,6 +24,11 @@ nav {
     align-items: center;
     color: black;
     cursor: pointer;
+    outline: none;
+
+    &:focus {
+      outline: 3px solid $light-blue;
+    }
 
     &:hover {
       background-color: $light-grey;

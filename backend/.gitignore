@@ -1,6 +1,9 @@
 node_modules
 .env
-public
+
+public/pins/*
+public/photos/*
+!public/photos/noPhoto.jpg
 
 key.pem
 cert.pem

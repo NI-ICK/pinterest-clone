@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Pin = require('../model/Pin')
+const { Pin } = require('../model/Pin')
 const multer = require('multer')
 const User = require('../model/User')
 const bcrypt = require('bcrypt')
@@ -72,12 +72,12 @@ router.put('/editUser', photoUpload.single('photo'), async (req, res) => {
     const updateFields = {}
 
     if(req.file) updateFields.photo = req.file.filename
-    if(req.body.username.length > 0) updateFields.username = req.body.username 
-    if(req.body.password.length > 0) updateFields.password = await bcrypt.hash(req.body.password, 10)
-    if(req.body.email.length > 0) updateFields.email = req.body.email
-    if(req.body.firstName.length > 0) updateFields.firstName = req.body.firstName
-    if(req.body.lastName.length > 0) updateFields.lastName = req.body.lastName
-    if(req.body.about.length > 0) updateFields.about = req.body.about
+    if(req.body.username) updateFields.username = req.body.username 
+    if(req.body.password) updateFields.password = await bcrypt.hash(req.body.password, 10)
+    if(req.body.email) updateFields.email = req.body.email
+    if(req.body.firstName) updateFields.firstName = req.body.firstName
+    if(req.body.lastName) updateFields.lastName = req.body.lastName
+    if(req.body.about) updateFields.about = req.body.about
 
     const user = await User.updateOne({ _id: req.body.user._id }, { $set: updateFields })
     res.status(200).json(user)

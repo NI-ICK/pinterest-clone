@@ -14,6 +14,8 @@ export function Register({ showModal, modalRef, setShowRegisterModal }) {
     e.preventDefault()
     handleRegisterSubmit()
     setShowRegisterModal(false)
+    const form = e.target
+    form.reset()
   }
 
   const togglePassword = () => {
@@ -40,7 +42,7 @@ export function Register({ showModal, modalRef, setShowRegisterModal }) {
               {showPassword ? <HidePasswordIcon /> : <ShowPasswordIcon /> }
             </div>
           </div>
-          <button className='registerBtn' type="submit">Register</button>
+          <button className='redBtn' type="submit">Register</button>
         </form>
       </div>
     </div>

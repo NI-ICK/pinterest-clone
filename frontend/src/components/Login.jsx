@@ -14,6 +14,8 @@ export function Login({ showModal, modalRef, setShowLoginModal }) {
     e.preventDefault()
     handleLoginSubmit()
     setShowLoginModal(false)
+    const form = e.target
+    form.reset()
   }
 
   const togglePassword = () => {

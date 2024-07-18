@@ -1,12 +1,17 @@
 import { useFormDataContext } from "../context/FormDataContext"
 import { Dropzone } from "../components/Dropzone"
+import { useNavigate } from "react-router-dom"
 
 export function CreatePin() {
   const { formData, handleCreatePinChange, handleCreatePinSubmit } = useFormDataContext()
+  const navigate = useNavigate()
 
   const formSubmit = (e) => {
     e.preventDefault()
     handleCreatePinSubmit()
+    navigate('/')
+    const form = e.target
+    form.reset()
   }
 
   return (  

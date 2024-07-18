@@ -1,9 +1,11 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { useFormDataContext } from '../context/FormDataContext'
 
 export function Settings() {
   const [editActive, setEditActive] = useState(false)
   const [accActive, setAccActive] = useState(false)
+  const { formFilled } = useFormDataContext()
   const location = useLocation()
   
   const checkLocation = () => {
@@ -23,7 +25,7 @@ export function Settings() {
       </ul>
       <Outlet />
       <div className="settingsFooter">
-        <button className="redBtn" type="submit" form="editForm">Save</button>
+        <button className={formFilled ? 'redBtn' : 'btnOff'} type="submit" form="editForm">Save</button>
       </div>
     </div>
   )

@@ -9,7 +9,7 @@ const cors = require('cors')
 const passport = require('passport')
 const otherRoutes = require('./routes/other')
 const imagesRoutes = require('./routes/images')
-const authRoutes = require('./routes/auth')
+const usersRoutes = require('./routes/users')
 const initializePassport = require('./passport-config')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
@@ -38,16 +38,21 @@ app.use(session({
   store: MongoStore.create({ mongoUrl: db }),
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 1 day
-    sameSite: 'none',
     secure: true
   }
 }))
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use(otherRoutes)
-app.use(imagesRoutes)
-app.use(authRoutes)
+app.use('/api', otherRoutes)
+app.use('/api', imagesRoutes)
+app.use('/api', usersRoutes)
+
+app.use(express.static(path.join(__dirname, '../frontend/build')))
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'))
+})
 
 const options = {
   key: fs.readFileSync(process.env.SSL_KEY_FILE),

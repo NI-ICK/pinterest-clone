@@ -1,12 +1,15 @@
 import { useFormDataContext } from "../context/FormDataContext"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { HidePasswordIcon, ShowPasswordIcon } from "../assets/PasswordIcons"
+import { DeleteUser } from "../components/DeleteUser"
 
 export function AccountSettings() {
   const { formData, handleEditUserChange, handleEditUserSubmit } = useFormDataContext()
   const [showPassword, setShowPassword] = useState(false)
   const [inputType, setInputType] = useState('password')
+  const [showModal, setShowModal] = useState(false)
   const password = useRef()
+  const modal = useRef()
 
   const togglePassword = () => {
     setShowPassword(!showPassword)
@@ -16,10 +19,29 @@ export function AccountSettings() {
   const formSubmit = (e) => {
     e.preventDefault()
     handleEditUserSubmit()
+    const form = e.target
+    form.reset()
+  }
+
+  useEffect(() => {
+    if(showModal) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showModal])
+
+  const handleClickOutside = (e) => {
+    if (modal.current && !modal.current.contains(e.target)) {
+      setShowModal(false)
+    }
   }
 
   return (
     <>
+    <div className="userSettings">
       <form onSubmit={formSubmit} id="editForm" className="fInput editForm formInputs textInputs">
         <h1>Account Menagement</h1>
         <p>Make changes to your personal information</p>
@@ -35,6 +57,9 @@ export function AccountSettings() {
           <input type="email" name="email" id="email" placeholder="E-mail" value={formData.email} onChange={handleEditUserChange} />
         </div>
       </form>
+      <button className="showModal redBtn" type="button" onClick={() => setShowModal(true)}>Delete User</button>
+      <DeleteUser showModal={showModal} modal={modal} setShowModal={setShowModal}/>
+    </div>
     </>
   )
 }
