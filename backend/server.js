@@ -7,9 +7,9 @@ const mongoose = require('mongoose')
 const path = require('path')
 const cors = require('cors')
 const passport = require('passport')
-const otherRoutes = require('./routes/other')
-const imagesRoutes = require('./routes/images')
+const pinRoutes = require('./routes/pin')
 const usersRoutes = require('./routes/users')
+const collectionRoutes = require('./routes/collection')
 const initializePassport = require('./passport-config')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
@@ -44,9 +44,9 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use('/api', otherRoutes)
-app.use('/api', imagesRoutes)
+app.use('/api', pinRoutes)
 app.use('/api', usersRoutes)
+app.use('/api', collectionRoutes)
 
 app.use(express.static(path.join(__dirname, '../frontend/build')))
 

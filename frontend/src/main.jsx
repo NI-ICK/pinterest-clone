@@ -5,15 +5,18 @@ import { BrowserRouter } from 'react-router-dom'
 import { UserContextProvider } from './context/UserContext.jsx'
 import { PinContextProvider } from './context/PinContext.jsx'
 import { FormDataContextProvider } from './context/FormDataContext.jsx'
+import { CollectionContextProvider } from './context/CollectionContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <UserContextProvider>
         <PinContextProvider>
-          <FormDataContextProvider>
-            <App />
-          </FormDataContextProvider>
+          <CollectionContextProvider>
+            <FormDataContextProvider>
+              <App />
+            </FormDataContextProvider>
+          </CollectionContextProvider>
         </PinContextProvider>
       </UserContextProvider>
     </BrowserRouter>

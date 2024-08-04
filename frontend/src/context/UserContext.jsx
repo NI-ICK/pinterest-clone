@@ -8,15 +8,14 @@ export function useUserContext() {
 }
 
 export function UserContextProvider({ children }) {
-  const [currUser, setCurrUser] = useState({
-    username: null,
-  })
-  const [users, setUsers] = useState(null)
+  const [currUser, setCurrUser] = useState({ username: null })
+  const [users, setUsers] = useState([])
   const [userLoading, setUserLoading] = useState(true)
+  const [user, setUser] = useState(null)
   
   const fetchCurrUser = async () => {
     try {
-      const response = await axios.get('https://localhost:5000/api/user', { withCredentials: true })
+      const response = await axios.get('https://localhost:5000/api/currUser', { withCredentials: true })
       setCurrUser(response.data)
     } catch (error) {
       console.log(error)
@@ -33,14 +32,14 @@ export function UserContextProvider({ children }) {
     }
   }
 
-  useEffect(() => {
-    document.querySelector('.loadingScreen').classList.toggle('loading', userLoading)
-  }, [userLoading])
-
-  useEffect(() => {
-    fetchCurrUser()
-    fetchUsers()
-  }, [])
+  const fetchUser = async (username) => {
+    try {
+      const response = await axios.get('https://localhost:5000/api/user', { params: { username }})
+      setUser(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const logoutUser = async () => {
     try {
@@ -71,7 +70,9 @@ export function UserContextProvider({ children }) {
       setUserLoading, 
       fetchCurrUser, 
       fetchUsers,
-      handleDeleteUser
+      handleDeleteUser,
+      fetchUser,
+      user
       }}>
       {children}
     </UserContext.Provider>

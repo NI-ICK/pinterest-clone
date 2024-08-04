@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 require('dotenv').config()
 const { Pin } = require('./model/Pin')
-const User = require('./model/User')
+const { User } = require('./model/User')
 const fs = require('fs')
 const path = require('path')
 

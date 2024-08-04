@@ -8,7 +8,8 @@
   box-sizing: border-box;
 
   &::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
+    
   }
 
   &::-webkit-scrollbar-track {
@@ -22,12 +23,6 @@
 
   &::-webkit-scrollbar-thumb:hover {
     background: mix($dark-grey, black, 90%);
-  }
-}
-
-.loadingScreen.loading {
-  * {
-    visibility: hidden;
   }
 }
 
@@ -61,12 +56,6 @@
 
 ul {
   list-style: none;
-}
-
-.saveBtn {
-  position: absolute;
-  top: 15px;
-  right: 10px;
 }
 
 .redBtn {
@@ -118,6 +107,17 @@ ul {
 
 .blackBtn {
   background-color: black;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 24px;
+  margin: 0px 5px;
+  cursor: pointer;
+  outline: none;
+
+  &:focus {
+    outline: 3px solid $light-blue;
+  }
 }
 
 .fInput {
@@ -130,5 +130,24 @@ ul {
     &:focus {
       outline: 3px solid $light-blue;
     }
+  }
+}
+
+.hoverOptions {
+  position: absolute;
+  padding: 0px 10px;
+  width: 100%;
+  top: 15px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  button {
+    margin-right: 15px;
+  }
+
+  div {
+    color: white;
   }
 }

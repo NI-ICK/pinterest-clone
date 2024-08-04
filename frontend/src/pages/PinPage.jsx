@@ -7,29 +7,55 @@ import { LikeIcon } from '../assets/LikeIcon'
 import { DeletePin } from '../components/DeletePin'
 import { debounce } from 'lodash'
 import { FormatDate } from '../components/FormatDate'
+import { useCollectionContext } from '../context/CollectionContext'
+import { CollectionsModal } from '../components/CollectionsModal'
+import { CreateCollection } from '../components/CreateCollection'
+import { ArrowDownIcon } from '../assets/ArrowDownIcon'
 
-export function Pin() {
+export function PinPage() {
   const { id } = useParams()
   const { pins, fetchPin, pin, handleLikes, fetchPinComments } = usePinContext()
-  const { users, currUser, fetchUsers } = useUserContext()
+  const { users, currUser, fetchUsers, fetchCurrUser } = useUserContext()
   const { formData, handleCommentChange, handleCommentSubmit, formFilled, setFormData } = useFormDataContext()
+  const { selectedCollection, setShowColModal, handleSaved, handleCollectionAdd, handleCollectionRemove, fetchUserCollections, setSelectedCollection, collections } = useCollectionContext()
   const navigate = useNavigate()
   const modal = useRef()
   const replyInput = useRef()
   const [pinUser, setPinUser] = useState({})
   const [loading, setLoading] = useState(true)
-  const [saved, setSaved] = useState(false)
   const [showReply, setShowReply] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const [comments, setComments] = useState([])
-  
+  const [saved, setSaved] = useState(false)
+  const [areCollectionsFetched, setAreCollectionsFetched] = useState(false)
+  const [isCurrUserFetched, setIsCurrUserFetched] = useState(false)
+  const [colLoading, setColLoading] = useState(false)
+
   const loadData = async () => {
     await fetchUsers()
+    await fetchCurrUser()
     await fetchPin(id)
-    const fetchedComments = await fetchPinComments(id)
-    setComments(fetchedComments)
-    setLoading(false)
+    setComments(await fetchPinComments(id))
+    setIsCurrUserFetched(true)
   }
+
+  const loadCollectionData = async () => {
+    if(isCurrUserFetched) {
+      await fetchUserCollections(currUser._id)
+      setAreCollectionsFetched(true)
+    }
+  }
+
+  useEffect(() => {
+    loadCollectionData()
+  }, [isCurrUserFetched])
+
+  useEffect(() => {
+    if(areCollectionsFetched) {
+      setSelectedCollection(collections[0])
+      setLoading(false)
+    }
+  }, [areCollectionsFetched])
 
   useEffect(() => {
     loadData()
@@ -94,21 +120,50 @@ export function Pin() {
     }
   }, [showReply])
 
+  useEffect(() => {
+    if(selectedCollection && !colLoading) setSaved(selectedCollection.pins.some(p => p._id === id))
+    }, [selectedCollection])
+
+  const handleBtnClick = async () => {
+    setColLoading(true)
+    if(saved) {
+      setSaved(false)
+      await handleCollectionRemove(selectedCollection._id, id)
+    }
+    if(!saved) {
+      setSaved(true)
+      await handleCollectionAdd(selectedCollection._id, id)
+    }
+    await fetchUserCollections(currUser._id)
+    setColLoading(false)
+  }
+
   if(!pin) return null
 
   return (
     <>
+    <CreateCollection />
     <DeletePin showModal={showModal} modal={modal} id={id} setShowModal={setShowModal}/>
-    {!loading ? (
+    {!loading &&
       <div className="pinBackground">
         <div className="pinContainer">
-          <img src={`https://localhost:5000/public/pins/${pin.image}`} alt={pin.title} className='pinImg'/>
+          <img src={`https://localhost:5000/public/pins/${pin.image}`} className='pinImg'/>
           <div className="pinDetails">
+            <CollectionsModal />
             <div className="detailsTop">
-              <div className="showBoard">Board</div>
+              {currUser &&
+              <div className="collectionsBtn" onClick={() => setShowColModal(true)}>
+                <p>{selectedCollection.name}</p>
+                <ArrowDownIcon color='black' />
+              </div>}
               {pinUser.username === currUser.username ? 
               <button className='greyBtn' onClick={() => setShowModal(!showModal)}>Delete</button> : null}
-              <button className={saved ? 'blackBtn' : 'redBtn'}>{saved ? "Saved" : "Save"}</button>
+              {currUser &&
+              <button 
+                className={saved ? 'blackBtn' : 'redBtn'} 
+                onClick={() => handleBtnClick()}>
+                {saved ? "Saved" : "Save"}
+              </button>}
             </div>
             <h2>{pin.title}</h2>
             <p>{pin.description}</p>
@@ -174,7 +229,7 @@ export function Pin() {
                   ))}
                 </div>
               ))) : (
-                <p>No comments</p>
+                <p className='info'>No comments</p>
               )}
             </div>
             {currUser ? (
@@ -190,7 +245,7 @@ export function Pin() {
           </div>
         </div>
       </div>
-  ) : ( null )}
-  </>
+    }
+    </>
   )
 }

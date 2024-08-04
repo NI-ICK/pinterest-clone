@@ -1,11 +1,64 @@
 const express = require('express')
 const router = express.Router()
 const { Pin, Comment, Reply } = require('../model/Pin')
+const multer = require('multer')
+const bcrypt = require('bcrypt')
+
+const fileFilter = (req, file, cb) => {
+  if(file.mimetype.startsWith('image/')) {
+    cb(null, true)
+  } else {
+    cb(new Error('Wrong file format'), false)
+  }
+}
+
+const pinStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, './public/pins')
+  },
+  filename: (req, file, cb) => {
+      cb(null, Date.now() + file.originalname)
+  }
+})
+
+const pinUpload = multer({ 
+  storage: pinStorage, 
+  limits: {
+    fileSize: 1024 * 1024 * 10
+  },
+  fileFilter: fileFilter
+})
+
+router.post('/createPin', pinUpload.single('image'), async (req, res) => {
+  try {
+    const pin = new Pin({
+      title: req.body.title,
+      image: req.file.filename,
+      description: req.body.description,
+      user: req.body.user
+    })
+    await pin.save()
+    res.status(201).json(pin)
+  } catch(error) {
+    res.status(500).json({ message: error.message })
+  }
+  
+})
 
 router.get('/pins', async (req, res) => {
   try {
     const pins = await Pin.find()
-      .populate('user', '-password')
+      .populate('user', '-password -email')
+    res.status(200).json(pins)
+  } catch(error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
+router.get('/pins/created', async (req, res) => {
+  try {
+    const pins = await Pin.find({ user: req.query.id })
+      .populate('user', '-password -email')
     res.status(200).json(pins)
   } catch(error) {
     res.status(500).json({ message: error.message })
@@ -16,7 +69,7 @@ router.get('/pin/:id', async (req, res) => {
   try {
     const pin = await Pin.findById(req.params.id)
       .select('-comments -likes')
-      .populate('user', '-password')
+      .populate('user', '-password -email')
     res.status(200).json(pin)
   } catch(error) {
     res.status(500).json({ message: error.message })
@@ -30,10 +83,10 @@ router.get('/pin/:id/comments', async (req, res) => {
       .populate({
         path: 'comments',
         populate: [
-          { path: 'user', select: '-password' },
+          { path: 'user', select: '-password -email' },
           {
             path: 'replies',
-            populate: { path: 'user', select: '-password' }
+            populate: { path: 'user', select: '-password -email' }
           }
         ]
       })

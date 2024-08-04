@@ -10,9 +10,9 @@ export function Login({ showModal, modalRef, setShowLoginModal }) {
 
   if(!showModal) return null
 
-  const formSubmit = (e) => {
+  const formSubmit = async (e) => {
     e.preventDefault()
-    handleLoginSubmit()
+    await handleLoginSubmit()
     setShowLoginModal(false)
     const form = e.target
     form.reset()

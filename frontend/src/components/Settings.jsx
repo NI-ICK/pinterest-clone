@@ -1,22 +1,29 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useFormDataContext } from '../context/FormDataContext'
+import { useUserContext } from '../context/UserContext'
 
 export function Settings() {
   const [editActive, setEditActive] = useState(false)
   const [accActive, setAccActive] = useState(false)
   const { formFilled } = useFormDataContext()
+  const { fetchCurrUser } = useUserContext()
   const location = useLocation()
-  
-  const checkLocation = () => {
-    setEditActive(location.pathname === '/settings/edit-profile')
-    setAccActive(location.pathname === '/settings/account-settings')
+  const path = location.pathname
+
+  const loadData = async () => {
+    await fetchCurrUser()
   }
 
   useEffect(() => {
-    checkLocation()
+    setEditActive(path === '/settings/edit-profile' || path === '/settings')
+    setAccActive(path === '/settings/account-settings')
   }, [location])
 
+  useEffect(() => {
+    loadData()
+  }, [])
+ 
   return (
     <div className="settings">
       <ul>

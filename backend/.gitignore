@@ -4,6 +4,7 @@ node_modules
 public/pins/*
 public/photos/*
 !public/photos/noPhoto.jpg
+!public/noCollectionImg.webp
 
 key.pem
 cert.pem

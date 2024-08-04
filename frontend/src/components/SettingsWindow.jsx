@@ -1,17 +1,19 @@
+import { useNavigate } from "react-router-dom"
 import { useUserContext } from "../context/UserContext"
 
-export function SettingsWindow({ show, setShow, handleNavigation }) {
+export function SettingsWindow({ show, setShow }) {
   const { logoutUser } = useUserContext()
+  const navigate = useNavigate()
 
   if(!show) return null
   
   return (
     <div className="settingsBackground" onClick={() => setShow(false)} >
       <div className="settingsModal">
-        <div onClick={() => handleNavigation('/settings/edit-profile')}>Settings</div>
+        <div onClick={() => navigate('/settings')}>Settings</div>
         <div onClick={() => {
           logoutUser()
-          handleNavigation('/')
+          navigate('/')
         }}>Log out</div>
       </div>
     </div>

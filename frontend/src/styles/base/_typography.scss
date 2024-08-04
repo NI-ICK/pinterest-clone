@@ -59,3 +59,22 @@ h2 {
   font-weight: normal;
   font-size: .9em;
 }
+
+.collectionsBtn {
+  * {
+    font-weight: bold;
+  }
+}
+
+.userCollection {
+  p {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+}
+
+.userProfile {
+  .username {
+    font-weight: bold;
+  }
+}

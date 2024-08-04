@@ -1,5 +1,4 @@
 import { useContext, createContext, useState, useEffect } from "react"
-import { useLocation } from "react-router-dom"
 import axios from "axios"
 import { useUserContext } from "./UserContext"
 
@@ -10,11 +9,11 @@ export function usePinContext() {
 }
 
 export function PinContextProvider({ children }) {
-  const [pins, setPins] = useState(null)
-  const location = useLocation()
+  const [pins, setPins] = useState([])
   const [pinLoading, setPinLoading] = useState(true)
-  const [pin, setPin] = useState(null)
+  const [pin, setPin] = useState({})
   const { currUser } = useUserContext()
+  const [createdPins, setCreatedPins] = useState([])
 
   const fetchPins = async () => {
     try {
@@ -44,29 +43,33 @@ export function PinContextProvider({ children }) {
     }
   }
 
+  const fetchCreatedPins = async (id) => {
+    try {
+      const response = await axios.get('https://localhost:5000/api/pins/created', { params: { id }})
+      setCreatedPins(response.data)
+    } catch(error) {
+      console.log('Error fetching created pins', error)
+    }
+  }
+
   const adjustGridRows = () => {
     const allPins = document.querySelectorAll('.pin')
 
     allPins.forEach(pin => {
       const img = pin.querySelector('img')
       const title = pin.querySelector('.pinTitle')
-      img.addEventListener('load', function() {
+      img.addEventListener('load', () => {
         const pinHeight = img.clientHeight + title.clientHeight + 10
         const rowHeight = 10
         const rowSpan = Math.ceil(pinHeight / rowHeight)
         pin.style.gridRowEnd = `span ${rowSpan}`
       })
+      if (img.complete) {
+        img.dispatchEvent(new Event('load'));
+      }
     })
   }  
-
-  useEffect(() => {
-    if(location.pathname === '/') fetchPins()
-  }, [location])
-
-  useEffect(() => { 
-    if(location.pathname === '/') adjustGridRows()
-  }, [pins, location])
-
+  
   const handleDeletePin = async (id) => {
     try {
       await axios.delete(`https://localhost:5000/api/delete/pin/${id}`)
@@ -75,7 +78,7 @@ export function PinContextProvider({ children }) {
       console.log('Error deleting pin:', error)
     } 
   }
-
+  
   const handleLikes = async (id, action) => {
     try {
       await axios.put('https://localhost:5000/api/likes', { id, action, currUser })
@@ -83,8 +86,8 @@ export function PinContextProvider({ children }) {
       console.log("Error: ", error)
     }
   }
-
-  return(
+  
+  return (
     <PinContext.Provider value={{ 
       fetchPins, 
       pins, 
@@ -96,6 +99,9 @@ export function PinContextProvider({ children }) {
       handleDeletePin, 
       handleLikes,
       fetchPinComments,
+      fetchCreatedPins,
+      createdPins,
+      adjustGridRows
       }}>
       {children}
     </PinContext.Provider>

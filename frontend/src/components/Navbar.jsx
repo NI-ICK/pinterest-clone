@@ -5,7 +5,7 @@ import { Register } from './Register'
 import { useUserContext } from '../context/UserContext'
 import { SettingsWindow } from './SettingsWindow'
 import { SearchBar } from './SearchBar'
-import { SettingsIcon } from '../assets/SettingsIcon'
+import { ArrowDownIcon } from '../assets/ArrowDownIcon'
 
 export function Navbar() {
   const [showLoginModal, setShowLoginModal] = useState(false)
@@ -17,6 +17,7 @@ export function Navbar() {
   const { currUser } = useUserContext()
   const navigate = useNavigate()
   const location = useLocation()
+  const path = location.pathname
 
   useEffect(() => {
     if(showLoginModal || showRegisterModal) {
@@ -35,13 +36,10 @@ export function Navbar() {
     }
   }
 
-  const handleNavigation = (url) => {
-    navigate(url)
-    if(url !== '/' || url !== 'pin-creation-tool') {
-      setCreateActive(false)
-      setHomeActive(false)
-    }
-  }
+  useEffect(() => {
+    if(path === '/pin-creation-tool') setCreateActive(true)
+    if(path === '/') setHomeActive(true)
+  }, [location])
 
   const checkLocation = () => {
     setHomeActive(location.pathname === '/')
@@ -59,13 +57,15 @@ export function Navbar() {
       <>
         <Link to="/pin-creation-tool" className={createActive ? 'active' : ''}>Create</Link>
         <SearchBar />
-        <div className='profileBackground' onClick={() => handleNavigation(`${currUser.username}`)}>
+        <div className='profileBackground' onClick={() => navigate(`/${currUser.username}`)}>
           <div className='profile'>
             <img src={currUser.photo ? `https://localhost:5000/public/photos/${currUser.photo}` : `https://localhost:5000/public/photos/noPhoto.jpg`}/>
           </div>
         </div>
-        <div className='settingsIcon' onClick={() => setShowSettings(!showSettings)}><SettingsIcon /></div>
-        <SettingsWindow show={showSettings} setShow={setShowSettings} handleNavigation={handleNavigation}/>
+        <div className='settingsIcon' onClick={() => setShowSettings(!showSettings)}>
+          <ArrowDownIcon color='black' />
+        </div>
+        <SettingsWindow show={showSettings} setShow={setShowSettings}/>
       </>
       ) : (
       <> 

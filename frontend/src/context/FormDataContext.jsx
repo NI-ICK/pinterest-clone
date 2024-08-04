@@ -43,6 +43,11 @@ export function FormDataContextProvider({ children }) {
       user:  null,
       parentId:  null,
     },
+    collection: {
+      name: null,
+      user: null,
+      pin: null
+    }
   }
   const [formData, setFormData] = useState(initialFormData)
   const { fetchPins } = usePinContext()
@@ -79,7 +84,6 @@ export function FormDataContextProvider({ children }) {
   const handleCreatePinSubmit = async () => {
     const updatedFormData = { ...formData.createPin, user: currUser }
     try {
-      console.log(formData.createPin)
       await axios.post('https://localhost:5000/api/createPin', updatedFormData, {
         withCredentials: true,
         headers: { 'Content-Type': 'multipart/form-data' }
@@ -177,6 +181,22 @@ export function FormDataContextProvider({ children }) {
     resetFormData()
   }
 
+  // Collection Form 
+
+  const handleCreateCollectionChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prevFormData => ({ ...prevFormData, collection: { ...prevFormData.collection, [name]: value }}))
+  }
+
+  const handleCreateCollectionSubmit = async (id) => {
+    const updatedFormData = { ...formData.collection, user: currUser._id, pin: id }
+    try {
+      await axios.post('https://localhost:5000/api/collections/create', updatedFormData)
+    } catch(error) {
+      console.log("Error creating collection: ", error)
+    }
+  }
+
   return (
     <FormDataContext.Provider value={{ 
       formData, 
@@ -191,6 +211,8 @@ export function FormDataContextProvider({ children }) {
       handleEditUserSubmit,
       handleCommentChange,
       handleCommentSubmit,
+      handleCreateCollectionChange,
+      handleCreateCollectionSubmit,
       formFilled,
       }} >
       {children}

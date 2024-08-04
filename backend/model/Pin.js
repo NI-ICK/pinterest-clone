@@ -6,7 +6,7 @@ const pinSchema = new Schema({
   image: { type: String },
   description: { type: String },
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
-  user: { type: Schema.Types.ObjectId, ref: 'User' }
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
 })
 
 const commentSchema = new Schema({

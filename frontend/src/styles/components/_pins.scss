@@ -4,7 +4,7 @@
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  width: 95dvw;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, 236px);
   grid-auto-rows: 10px;
@@ -19,7 +19,19 @@
   align-items: center;
   justify-content: center;
 
-  img {
+  // Darken for .png
+  &:hover::before {
+    position: absolute;
+    content: '';
+    z-index: -1;
+    width: 100%;
+    height: 95%;
+    inset: 0;
+    border-radius: 24px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .pinImg {
     border-radius: 24px;
     max-width: 100%;
     object-fit: cover;
@@ -210,7 +222,7 @@
 
 .commentText,
 .replyText {
-  width: 100%;
+  width: 85%;
 }
 
 .addReplyContent {
@@ -244,10 +256,9 @@
   border-top: 2px solid $light-grey;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  
+  justify-content: flex-start;  
   form {
-    width: 100%;
+    width: 85%;
   }
 
   input {
@@ -287,4 +298,109 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.collectionsBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    margin-left: auto;
+  }
+
+  svg {
+    margin-left: 5px;
+  }
+}
+
+.collectionsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+
+}
+
+.colTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 15px;
+  left: 0;
+  right: 0;
+}
+
+.collections {
+  margin-top: 30px;
+  margin-bottom: 70px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  overflow: auto;
+  width: 100%;
+  padding-right: 10px;
+
+  .collection {
+    height: 64px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    img {
+      margin: 10px;
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    &:hover {
+      background-color: $light-grey;
+    }
+  }
+}
+
+.createCollectionBtn {
+  position: absolute;
+  background-color: white;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+
+  svg {
+    margin-right: 20px;
+  }
+
+  &:hover {
+    background-color: $light-grey;
+  }
+}
+
+.currCollection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  h1 {
+    margin-bottom: 25px;
+  }
+}
+
+.hoverOptions {
+  padding-bottom: 20px;
 }
