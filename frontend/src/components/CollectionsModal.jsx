@@ -54,7 +54,7 @@ export function CollectionsModal({ hoverIndex }) {
               onClick={() => {
                 setSelectedCollection(collection)}}
               className="collection">
-                <img src={collection.pins.length > 0 ? `https://localhost:5000/public/pins/${collection.pins[collection.pins.length - 1].image}` : `https://localhost:5000/public/noCollectionImg.webp`}/>
+                <img src={collection.pins.length > 0 ? `https://pinterest-j71p.onrender.com/public/pins/${collection.pins[collection.pins.length - 1].image}` : `https://pinterest-j71p.onrender.com/public/noCollectionImg.webp`}/>
               <p>{collection.name}</p>
             </div>
           )})}

@@ -147,7 +147,7 @@ export function PinPage() {
     {!loading &&
       <div className="pinPageBackground">
         <div className="pinContainer">
-          <img src={`https://localhost:5000/public/pins/${pin.image}`} className='pinImg'/>
+          <img src={`https://pinterest-j71p.onrender.com/public/pins/${pin.image}`} className='pinImg'/>
           <div className="pinDetails">
             <CollectionsModal />
             <div className="detailsTop">
@@ -169,7 +169,7 @@ export function PinPage() {
             <p>{pin.description}</p>
             <div className="pinUser"> 
               <img 
-                src={pinUser.photo ? `https://localhost:5000/public/photos/${pinUser.photo}` : `https://localhost:5000/public/photos/noPhoto.jpg`}
+                src={pinUser.photo ? `https://pinterest-j71p.onrender.com/public/photos/${pinUser.photo}` : `https://pinterest-j71p.onrender.com/public/photos/noPhoto.jpg`}
                 onClick={() => pinUser.username !== 'User Deleted' ? navigate(`/${pinUser.username}`) : null}/>
               <Link to={pinUser.username !== 'User Deleted' ? `/${pinUser.username}` : null} >{pinUser.username}</Link>
             </div>
@@ -179,7 +179,7 @@ export function PinPage() {
                 <div className="comment" key={index} >
                   <div className="commentContent">
                     <img
-                      src={comment.user && comment.user.photo ? `https://localhost:5000/public/photos/${comment.user.photo}` : `https://localhost:5000/public/photos/noPhoto.jpg`}
+                      src={comment.user && comment.user.photo ? `https://pinterest-j71p.onrender.com/public/photos/${comment.user.photo}` : `https://pinterest-j71p.onrender.com/public/photos/noPhoto.jpg`}
                       onClick={() => navigate(comment.user ? `/${comment.user.username}` : null)}/>
                     <div className="commentText">
                       <p><Link to={comment.user ? `/${comment.user.username}` : null}>{comment.user ? comment.user.username : 'User Deleted'}</Link>{comment.content}</p>
@@ -211,7 +211,7 @@ export function PinPage() {
                   {comment.replies.map((reply, index) => (
                     <div className="reply" key={index}>
                       <img
-                        src={reply.user.photo ? `https://localhost:5000/public/photos/${reply.user.photo}` : `https://localhost:5000/public/photos/noPhoto.jpg`}
+                        src={reply.user.photo ? `https://pinterest-j71p.onrender.com/public/photos/${reply.user.photo}` : `https://pinterest-j71p.onrender.com/public/photos/noPhoto.jpg`}
                         onClick={() => navigate(`/${reply.user.username}`)}/>
                       <div className="replyText">
                         <p><Link to={`/${reply.user.username}`}>{reply.user.username}</Link>{reply.content}</p>
@@ -234,7 +234,7 @@ export function PinPage() {
             </div>
             {currUser ? (
             <div className="addComment">
-              <img src={currUser.photo ? `https://localhost:5000/public/photos/${currUser.photo}` : `https://localhost:5000/public/photos/noPhoto.jpg`}/>
+              <img src={currUser.photo ? `https://pinterest-j71p.onrender.com/public/photos/${currUser.photo}` : `https://pinterest-j71p.onrender.com/public/photos/noPhoto.jpg`}/>
               <form className='fInput' onSubmit={formSubmit}>
                 <input type="text" name="content" placeholder='Add a comment' value={formData.content} onChange={(e) => handleCommentChange(e, id)} required/>
               </form>

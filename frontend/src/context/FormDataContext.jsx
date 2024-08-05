@@ -93,7 +93,7 @@ export function FormDataContextProvider({ children }) {
   const handleCreatePinSubmit = async () => {
     const updatedFormData = { ...formData.createPin, user: currUser }
     try {
-      await axios.post('https://localhost:5000/api/createPin', updatedFormData, {
+      await axios.post('https://pinterest-j71p.onrender.com/api/createPin', updatedFormData, {
         withCredentials: true,
         headers: { 'Content-Type': 'multipart/form-data' }
       })
@@ -113,7 +113,7 @@ export function FormDataContextProvider({ children }) {
 
   const handleRegisterSubmit = async () => {
     try {
-      const response = await axios.post('https://localhost:5000/api/register', formData.register, {
+      const response = await axios.post('https://pinterest-j71p.onrender.com/api/register', formData.register, {
         withCredentials: true,
         headers: { 'Content-Type': 'application/json' }
       })
@@ -142,7 +142,7 @@ export function FormDataContextProvider({ children }) {
 
   const handleLoginSubmit = async () => {
     try {
-      const response = await axios.post('https://localhost:5000/api/login', formData.login, { 
+      const response = await axios.post('https://pinterest-j71p.onrender.com/api/login', formData.login, { 
         withCredentials: true,
         headers: { 'Content-Type': 'application/json' }
       })
@@ -188,7 +188,7 @@ export function FormDataContextProvider({ children }) {
   const handleEditUserSubmit = async () => {
     const updatedFormData = { ...formData.edit, user: currUser._id }
     try {
-      await axios.put('https://localhost:5000/api/editUser', updatedFormData, {
+      await axios.put('https://pinterest-j71p.onrender.com/api/editUser', updatedFormData, {
         withCredentials: true,
         headers: { 'Content-Type': 'multipart/form-data' }
       })
@@ -211,7 +211,7 @@ export function FormDataContextProvider({ children }) {
   const handleCommentSubmit = async () => {
     const updatedFormData = { ...formData.comment, user: currUser }
     try {
-      await axios.post('https://localhost:5000/api/comment', updatedFormData, {
+      await axios.post('https://pinterest-j71p.onrender.com/api/comment', updatedFormData, {
         withCredentials: true,
         headers: { 'Content-Type': 'application/json' }
       })
@@ -231,7 +231,7 @@ export function FormDataContextProvider({ children }) {
   const handleCreateCollectionSubmit = async (id) => {
     const updatedFormData = { ...formData.collection, user: currUser._id, pin: id }
     try {
-      await axios.post('https://localhost:5000/api/collections/create', updatedFormData)
+      await axios.post('https://pinterest-j71p.onrender.com/api/collections/create', updatedFormData)
     } catch(error) {
       console.log("Error creating collection: ", error)
     }

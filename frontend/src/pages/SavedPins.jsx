@@ -29,9 +29,9 @@ export function SavedPins() {
     <div className="userCollections">
       {collections.slice(1).map((collection, index) => (
         <div key={index} className="userCollection" onClick={() => navigate(`/collection/${collection._id}`)}>
-          <img className='colImg1' src={collection.pins.length > 0 ? `https://localhost:5000/public/pins/${collection.pins[collection.pins.length - 1].image}` : `https://localhost:5000/public/noCollectionImg.webp`}/>
-          <img className='colImg2' src={collection.pins.length > 1 ? `https://localhost:5000/public/pins/${collection.pins[collection.pins.length - 2].image}` : `https://localhost:5000/public/noCollectionImg.webp`}/>
-          <img className='colImg3' src={collection.pins.length > 2 ?`https://localhost:5000/public/pins/${collection.pins[collection.pins.length - 3].image}` : `https://localhost:5000/public/noCollectionImg.webp`}/>
+          <img className='colImg1' src={collection.pins.length > 0 ? `https://pinterest-j71p.onrender.com/public/pins/${collection.pins[collection.pins.length - 1].image}` : `https://pinterest-j71p.onrender.com/public/noCollectionImg.webp`}/>
+          <img className='colImg2' src={collection.pins.length > 1 ? `https://pinterest-j71p.onrender.com/public/pins/${collection.pins[collection.pins.length - 2].image}` : `https://pinterest-j71p.onrender.com/public/noCollectionImg.webp`}/>
+          <img className='colImg3' src={collection.pins.length > 2 ?`https://pinterest-j71p.onrender.com/public/pins/${collection.pins[collection.pins.length - 3].image}` : `https://pinterest-j71p.onrender.com/public/noCollectionImg.webp`}/>
           <p>{collection.name}</p>
         </div>
       ))}

@@ -56,7 +56,7 @@ export function Pin({ pin, index, onLoad }) {
         <div className={`pinBackground ${hoverIndex === index ? 'hover' : ''}`}>
           <img 
             className={`pinImg ${hoverIndex === index ? 'hover' : ''}`}
-            src={`https://localhost:5000/public/pins/${pin.image}`} 
+            src={`https://pinterest-j71p.onrender.com/public/pins/${pin.image}`} 
             alt={pin.title} 
             onLoad={onLoad}
             />

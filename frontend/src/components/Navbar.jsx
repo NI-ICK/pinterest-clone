@@ -62,7 +62,7 @@ export function Navbar() {
         <SearchBar />
         <div className='profileBackground' onClick={() => navigate(`/${currUser.username}`)}>
           <div className='profile'>
-            <img src={currUser.photo ? `https://localhost:5000/public/photos/${currUser.photo}` : `https://localhost:5000/public/photos/noPhoto.jpg`}/>
+            <img src={currUser.photo ? `https://pinterest-j71p.onrender.com/public/photos/${currUser.photo}` : `https://pinterest-j71p.onrender.com/public/photos/noPhoto.jpg`}/>
           </div>
         </div>
         <div className='settingsIcon' onClick={() => setShowSettings(!showSettings)}>

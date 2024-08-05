@@ -62,7 +62,7 @@ export function UserProfile() {
     {!loading && 
       <div className="userProfile">
         <div className="userDetails">
-          <img className='photo' src={user.photo ? `https://localhost:5000/public/photos/${user.photo}` : `https://localhost:5000/public/photos/noPhoto.jpg`} />
+          <img className='photo' src={user.photo ? `https://pinterest-j71p.onrender.com/public/photos/${user.photo}` : `https://pinterest-j71p.onrender.com/public/photos/noPhoto.jpg`} />
           <p className="username">{user.username}</p>
           <p>{user.about}</p>
           {currUser._id === user._id ? <button className="greyBtn" onClick={() => navigate('/settings')}>Edit Profile</button> : null}
