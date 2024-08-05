@@ -55,4 +55,4 @@ const options = {
   cert: fs.readFileSync(process.env.SSL_CRT_FILE)
 }
 
-https.createServer(options, app).listen(5000, '0.0.0.0', () => console.log("Server running on port 5000"))
+https.createServer(options, app).listen(process.env.PORT, '0.0.0.0', () => console.log("Server running on port 5000"))
