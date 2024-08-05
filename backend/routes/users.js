@@ -52,6 +52,10 @@ router.put('/editUser', photoUpload.single('photo'), async (req, res) => {
 
 router.post('/register', async (req, res) => {
   try {
+    const checkEmail = await User.findOne({ email: req.body.email })
+    if(checkEmail) return res.status(401).json({ message: 'Account with that email already exists' })
+    const checkUsername = await User.findOne({ username: req.body.username })
+    if(checkUsername) return res.status(401).json({ message: 'Account with that username already exists' })
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     const user = new User({
       username: req.body.username,

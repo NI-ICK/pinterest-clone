@@ -24,6 +24,7 @@ export function Register({ showModal, modalRef, setShowRegisterModal }) {
   }
 
   return (
+    <>
     <div className="modal">
       <div className="modalContent" ref={modalRef}>
         <form onSubmit={formSubmit} className="fInput">
@@ -46,5 +47,6 @@ export function Register({ showModal, modalRef, setShowRegisterModal }) {
         </form>
       </div>
     </div>
+    </>
   )
 }

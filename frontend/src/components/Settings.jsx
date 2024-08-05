@@ -32,7 +32,7 @@ export function Settings() {
       </ul>
       <Outlet />
       <div className="settingsFooter">
-        <button className={formFilled ? 'redBtn' : 'btnOff'} type="submit" form="editForm">Save</button>
+        <button className={formFilled ? 'redBtn' : 'btnOff'} type={formFilled ? 'submit' : 'button'} form="editForm">Save</button>
       </div>
     </div>
   )

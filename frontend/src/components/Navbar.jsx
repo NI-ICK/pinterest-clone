@@ -6,6 +6,7 @@ import { useUserContext } from '../context/UserContext'
 import { SettingsWindow } from './SettingsWindow'
 import { SearchBar } from './SearchBar'
 import { ArrowDownIcon } from '../assets/ArrowDownIcon'
+import { Popup } from "./Popup"
 
 export function Navbar() {
   const [showLoginModal, setShowLoginModal] = useState(false)
@@ -51,6 +52,8 @@ export function Navbar() {
   }, [location])
 
   return (
+    <>
+    <Popup />
     <nav>
       <Link to="/" className={homeActive ? 'active' : ''}>Home</Link>
       {currUser ? (
@@ -77,5 +80,6 @@ export function Navbar() {
       </>
       )}
     </nav>
+    </>
   )
 }

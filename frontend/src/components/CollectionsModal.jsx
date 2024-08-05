@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom"
 import { useCollectionContext } from "../context/CollectionContext"
 import { useEffect, useState } from "react"
-import { CreateIcon } from "../assets/CreateIcon"
+import { XIcon } from "../assets/XIcon"
 
 export function CollectionsModal({ hoverIndex }) {
   const { collections, setSelectedCollection, showColModal, setShowCreateCol, modalRef } = useCollectionContext()
@@ -59,7 +59,7 @@ export function CollectionsModal({ hoverIndex }) {
             </div>
           )})}
           </div>
-        <div className="createCollectionBtn" onClick={() => setShowCreateCol(true)}><CreateIcon color='black'/>Create Collection</div>
+        <div className="createCollectionBtn" onClick={() => setShowCreateCol(true)}><XIcon color='black'/>Create Collection</div>
       </div>
     }
   </>

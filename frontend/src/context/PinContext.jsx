@@ -14,6 +14,7 @@ export function PinContextProvider({ children }) {
   const [pin, setPin] = useState({})
   const { currUser } = useUserContext()
   const [createdPins, setCreatedPins] = useState([])
+  const [searchedPins, setSearchedPins] = useState([])
 
   const fetchPins = async () => {
     try {
@@ -49,6 +50,15 @@ export function PinContextProvider({ children }) {
       setCreatedPins(response.data)
     } catch(error) {
       console.log('Error fetching created pins', error)
+    }
+  }
+
+  const fetchSearchedPins = async (query) => {
+    try {
+      const response = await axios.get('https://localhost:5000/api/pins/search/', { params: { query }})
+      setSearchedPins(response.data)
+    } catch(error) {
+      console.log('Error fetching searched pins', error)
     }
   }
 
@@ -101,7 +111,10 @@ export function PinContextProvider({ children }) {
       fetchPinComments,
       fetchCreatedPins,
       createdPins,
-      adjustGridRows
+      adjustGridRows,
+      searchedPins,
+      fetchSearchedPins,
+      setSearchedPins
       }}>
       {children}
     </PinContext.Provider>

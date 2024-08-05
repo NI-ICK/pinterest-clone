@@ -16,7 +16,7 @@ const MongoStore = require('connect-mongo')
 const https = require('https')
 const fs = require('fs')
 
-const db = `mongodb+srv://Admin:${process.env.DB_PASS}@pins.m5wwv9v.mongodb.net/?retryWrites=true&w=majority&appName=Pins`
+const db = `mongodb+srv://Admin:${process.env.DB_PASS}@main.5ak1f4t.mongodb.net/`
 mongoose.connect(db)
 const app = express()
 
@@ -30,9 +30,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use('/public', express.static(path.join(__dirname, 'public')))
 app.use(session({
-  // ENV
-  secret: "qwe",
-  // ENV
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: db }),

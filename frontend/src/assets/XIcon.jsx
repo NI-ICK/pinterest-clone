@@ -1,12 +1,12 @@
 import * as React from "react"
 
-export function CreateIcon({ color, ...props }) {
+export function XIcon({ color, rotate, size, ...props }) {
   return (
     <svg
       viewBox="0 0 16 16"
-      height="1.3em"
-      width="1.3em"
-      style={{ transform: "rotate(45deg)" }} 
+      height={size ? `${size}em` : "1.3em"}
+      width={size ? `${size}em` : "1.3em"}
+      style={{ transform: rotate ? `rotate(${rotate})` : 'rotate(45deg)' }}
       {...props}
     >
       <path

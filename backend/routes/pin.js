@@ -35,6 +35,7 @@ router.post('/createPin', pinUpload.single('image'), async (req, res) => {
       title: req.body.title,
       image: req.file.filename,
       description: req.body.description,
+      tags: req.body.tags,
       user: req.body.user
     })
     await pin.save()
@@ -49,6 +50,22 @@ router.get('/pins', async (req, res) => {
   try {
     const pins = await Pin.find()
       .populate('user', '-password -email')
+    res.status(200).json(pins)
+  } catch(error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
+router.get('/pins/search', async (req, res) => {
+  try {
+    const { query } = req.body
+    const pins = await Pin.find({ 
+      $or: [
+        { title: new RegExp(query, 'i')},
+        { description: new RegExp(query, 'i')},
+        { tags: { $in: [new RegExp(query, 'i')]}}
+      ]
+    }).populate('user', '-password -email')
     res.status(200).json(pins)
   } catch(error) {
     res.status(500).json({ message: error.message })

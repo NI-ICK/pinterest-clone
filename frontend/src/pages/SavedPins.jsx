@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useCollectionContext } from "../context/CollectionContext"
 import { useNavigate } from "react-router-dom"
 import { CreateCollection } from "../components/CreateCollection"
-import { CreateIcon } from "../assets/CreateIcon"
+import { XIcon } from "../assets/XIcon"
 
 export function SavedPins() {
   const { adjustGridRows } = usePinContext()
@@ -25,7 +25,7 @@ export function SavedPins() {
   return (
     <>
     <CreateCollection />
-    <button className='createColBtn' onClick={() => setShowCreateCol(true)}><CreateIcon color='grey'/></button>
+    <button className='createColBtn' onClick={() => setShowCreateCol(true)}><XIcon color='grey'/></button>
     <div className="userCollections">
       {collections.slice(1).map((collection, index) => (
         <div key={index} className="userCollection" onClick={() => navigate(`/collection/${collection._id}`)}>

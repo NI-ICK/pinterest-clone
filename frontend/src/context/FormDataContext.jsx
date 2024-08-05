@@ -3,6 +3,7 @@ import { useUserContext } from "./UserContext"
 import { usePinContext } from "./PinContext"
 import axios from "axios"
 import { useLocation } from 'react-router-dom'
+import { useCollectionContext } from './CollectionContext'
 
 const FormDataContext = createContext()
   
@@ -17,7 +18,8 @@ export function FormDataContextProvider({ children }) {
       title:  null,
       description:  null,
       image: null,
-      user:  null
+      tags: null,
+      user:  null,
     },
     register: {
       username:  null,
@@ -53,6 +55,11 @@ export function FormDataContextProvider({ children }) {
   const { fetchPins } = usePinContext()
   const [formFilled, setFormFilled] = useState(false)
   const location = useLocation()
+  const [showPopup, setShowPopup] = useState(false)
+  const [popupText, setPopupText] = useState('')
+  const [areCollecitonsFetched, setAreCollectionsFetched] = useState(false)
+  const { fetchUserCollections, collections, setSelectedCollection } = useCollectionContext()
+  const [isUserFetched, setIsUserFetched] = useState(false)
 
   useEffect(() => {
     const editFormFilled = Object.values(formData.edit).some(value => !!value)
@@ -76,6 +83,8 @@ export function FormDataContextProvider({ children }) {
     const { name, value, files } = e.target
     if(name === 'image') {
       setFormData(prevFormData => ({ ...prevFormData, createPin: { ...prevFormData.createPin, image: files[0] }}))
+    } else if (name === 'tags') {
+      setFormData(prevFormData => ({ ...prevFormData, createPin: { ...prevFormData.createPin, tags: value.split(',').map(tag => tag.trim()).filter(tag => tag)}})) 
     } else {
       setFormData(prevFormData => ({ ...prevFormData, createPin: { ...prevFormData.createPin, [name]: value }}))
     }  
@@ -104,11 +113,21 @@ export function FormDataContextProvider({ children }) {
 
   const handleRegisterSubmit = async () => {
     try {
-      await axios.post('https://localhost:5000/api/register', formData.register, {
+      const response = await axios.post('https://localhost:5000/api/register', formData.register, {
         withCredentials: true,
         headers: { 'Content-Type': 'application/json' }
       })
+      setPopupText('Account Created')
+      setShowPopup(true)
+      setTimeout(() => {
+        setShowPopup(false)
+      }, 3000)
     } catch (error) {
+      setPopupText(error.response.data.message)
+      setShowPopup(true)
+      setTimeout(() => {
+        setShowPopup(false)
+      }, 3000)
       console.error('Error registering:', error);
     }
     resetFormData()
@@ -128,11 +147,32 @@ export function FormDataContextProvider({ children }) {
         headers: { 'Content-Type': 'application/json' }
       })
       setCurrUser(response.data)
+      setIsUserFetched(true)
     } catch (error) {
+      setPopupText(error.response.data.message)
+      setShowPopup(true)
+      setTimeout(() => {
+        setShowPopup(false)
+      }, 3000)
       console.error('Error Loging in:', error);
     }
     resetFormData()
   }
+
+  const loadData = async () => {
+    if(isUserFetched) {
+      await fetchUserCollections(currUser._id)
+      setAreCollectionsFetched(true)  
+    }
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [isUserFetched])
+
+  useEffect(() => {
+    setSelectedCollection(collections[0])
+  }, [areCollecitonsFetched])
 
   // Edit User Form
 
@@ -214,6 +254,9 @@ export function FormDataContextProvider({ children }) {
       handleCreateCollectionChange,
       handleCreateCollectionSubmit,
       formFilled,
+      showPopup,
+      popupText,
+      setPopupText
       }} >
       {children}
     </FormDataContext.Provider>

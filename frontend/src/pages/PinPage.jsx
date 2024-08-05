@@ -145,7 +145,7 @@ export function PinPage() {
     <CreateCollection />
     <DeletePin showModal={showModal} modal={modal} id={id} setShowModal={setShowModal}/>
     {!loading &&
-      <div className="pinBackground">
+      <div className="pinPageBackground">
         <div className="pinContainer">
           <img src={`https://localhost:5000/public/pins/${pin.image}`} className='pinImg'/>
           <div className="pinDetails">

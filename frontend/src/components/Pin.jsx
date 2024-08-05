@@ -53,12 +53,14 @@ export function Pin({ pin, index, onLoad }) {
       }}>
       {hoverIndex === index && selectedCollection && <CollectionsModal />}
       <div className="pinContent">
-        <img 
-          className={`pinImg ${hoverIndex === index ? 'hover' : ''}`}
-          src={`https://localhost:5000/public/pins/${pin.image}`} 
-          alt={pin.title} 
-          onLoad={onLoad}
-          />
+        <div className={`pinBackground ${hoverIndex === index ? 'hover' : ''}`}>
+          <img 
+            className={`pinImg ${hoverIndex === index ? 'hover' : ''}`}
+            src={`https://localhost:5000/public/pins/${pin.image}`} 
+            alt={pin.title} 
+            onLoad={onLoad}
+            />
+        </div>
         <p className="pinTitle">{pin.title}</p>
         {hoverIndex === index && selectedCollection && currUser &&
         <div className="hoverOptions" onClick={(e) => e.stopPropagation()}>

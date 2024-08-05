@@ -79,7 +79,7 @@
   align-items: start;
   justify-content: start;
 
-  div:not(.name, .photoUpload, .passwordIcon) {
+  div:not(.name, .photoUpload, .passwordIcon, .tags) {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
@@ -287,5 +287,59 @@
     right: 0;
     padding: 15px;
     box-shadow: $box-shadow;
+  }
+}
+
+.tags {
+  margin-top: 20px;
+  width: 100%;
+  max-width: $input-size-l;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  span {
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+    background-color: $light-grey;
+
+    &:hover {
+      background-color: $dark-grey;
+    }
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    margin-left: 6px;
+  }
+
+  svg {
+    transform: scale(.2);
+  }
+}
+
+.popup {
+  position: fixed;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  box-shadow: $box-shadow;
+  padding: 12px 20px;
+  border-radius: 24px;
+  transition: bottom 0.3s ease-out;
+  background-color: white;
+
+  &.show {
+    bottom: 50px;
   }
 }

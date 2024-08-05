@@ -5,6 +5,7 @@ const pinSchema = new Schema({
   title: { type: String },
   image: { type: String },
   description: { type: String },
+  tags: [{ type: String }],
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   user: { type: Schema.Types.ObjectId, ref: 'User' },
 })
