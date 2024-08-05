@@ -21,7 +21,7 @@ const app = express()
 initializePassport(passport)
 
 app.use(cors({
-  origin: 'https://clonepinterest.netlify.app/',
+  origin: 'https://clonepinterest.netlify.app',
   credentials: true,
 }))
 app.use(express.json())
