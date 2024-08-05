@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "server": "node server.js",
-    "devServer": "nodemon server.js"
+    "devServer": "nodemon server.js",
+    "build": "echo 'No build step required'"
   },
   "keywords": [],
   "author": "",
