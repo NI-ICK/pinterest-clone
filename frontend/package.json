@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "proxy": "https://pinterest-j71p.onrender.com",
+  "proxy": "https://localhost:5000",
   "private": true,
   "version": "0.0.0",
   "type": "module",

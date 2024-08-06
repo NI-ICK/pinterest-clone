@@ -62,7 +62,7 @@ export function Navbar() {
         <SearchBar />
         <div className='profileBackground' onClick={() => navigate(`/${currUser.username}`)}>
           <div className='profile'>
-            <img src={currUser.photo ? `${process.env.SITE_URL}/public/photos/${currUser.photo}` : `${process.env.SITE_URL}/public/photos/noPhoto.jpg`}/>
+            <img src={currUser.photo ? `${import.meta.env.SITE_URL}/public/photos/${currUser.photo}` : `${import.meta.env.SITE_URL}/public/photos/noPhoto.jpg`}/>
           </div>
         </div>
         <div className='settingsIcon' onClick={() => setShowSettings(!showSettings)}>

@@ -62,7 +62,7 @@ export function UserProfile() {
     {!loading && 
       <div className="userProfile">
         <div className="userDetails">
-          <img className='photo' src={user.photo ? `${process.env.SITE_URL}/public/photos/${user.photo}` : `${process.env.SITE_URL}/public/photos/noPhoto.jpg`} />
+          <img className='photo' src={user.photo ? `${import.meta.env.SITE_URL}/public/photos/${user.photo}` : `${import.meta.env.SITE_URL}/public/photos/noPhoto.jpg`} />
           <p className="username">{user.username}</p>
           <p>{user.about}</p>
           {currUser._id === user._id ? <button className="greyBtn" onClick={() => navigate('/settings')}>Edit Profile</button> : null}

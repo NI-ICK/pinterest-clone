@@ -147,7 +147,7 @@ export function PinPage() {
     {!loading &&
       <div className="pinPageBackground">
         <div className="pinContainer">
-          <img src={`${process.env.SITE_URL}/public/pins/${pin.image}`} className='pinImg'/>
+          <img src={`${import.meta.env.SITE_URL}/public/pins/${pin.image}`} className='pinImg'/>
           <div className="pinDetails">
             <CollectionsModal />
             <div className="detailsTop">
@@ -169,7 +169,7 @@ export function PinPage() {
             <p>{pin.description}</p>
             <div className="pinUser"> 
               <img 
-                src={pinUser.photo ? `${process.env.SITE_URL}/public/photos/${pinUser.photo}` : `${process.env.SITE_URL}/public/photos/noPhoto.jpg`}
+                src={pinUser.photo ? `${import.meta.env.SITE_URL}/public/photos/${pinUser.photo}` : `${import.meta.env.SITE_URL}/public/photos/noPhoto.jpg`}
                 onClick={() => pinUser.username !== 'User Deleted' ? navigate(`/${pinUser.username}`) : null}/>
               <Link to={pinUser.username !== 'User Deleted' ? `/${pinUser.username}` : null} >{pinUser.username}</Link>
             </div>
@@ -179,7 +179,7 @@ export function PinPage() {
                 <div className="comment" key={index} >
                   <div className="commentContent">
                     <img
-                      src={comment.user && comment.user.photo ? `${process.env.SITE_URL}/public/photos/${comment.user.photo}` : `${process.env.SITE_URL}/public/photos/noPhoto.jpg`}
+                      src={comment.user && comment.user.photo ? `${import.meta.env.SITE_URL}/public/photos/${comment.user.photo}` : `${import.meta.env.SITE_URL}/public/photos/noPhoto.jpg`}
                       onClick={() => navigate(comment.user ? `/${comment.user.username}` : null)}/>
                     <div className="commentText">
                       <p><Link to={comment.user ? `/${comment.user.username}` : null}>{comment.user ? comment.user.username : 'User Deleted'}</Link>{comment.content}</p>
@@ -211,7 +211,7 @@ export function PinPage() {
                   {comment.replies.map((reply, index) => (
                     <div className="reply" key={index}>
                       <img
-                        src={reply.user.photo ? `${process.env.SITE_URL}/public/photos/${reply.user.photo}` : `${process.env.SITE_URL}/public/photos/noPhoto.jpg`}
+                        src={reply.user.photo ? `${import.meta.env.SITE_URL}/public/photos/${reply.user.photo}` : `${import.meta.env.SITE_URL}/public/photos/noPhoto.jpg`}
                         onClick={() => navigate(`/${reply.user.username}`)}/>
                       <div className="replyText">
                         <p><Link to={`/${reply.user.username}`}>{reply.user.username}</Link>{reply.content}</p>
@@ -234,7 +234,7 @@ export function PinPage() {
             </div>
             {currUser ? (
             <div className="addComment">
-              <img src={currUser.photo ? `${process.env.SITE_URL}/public/photos/${currUser.photo}` : `${process.env.SITE_URL}/public/photos/noPhoto.jpg`}/>
+              <img src={currUser.photo ? `${import.meta.env.SITE_URL}/public/photos/${currUser.photo}` : `${import.meta.env.SITE_URL}/public/photos/noPhoto.jpg`}/>
               <form className='fInput' onSubmit={formSubmit}>
                 <input type="text" name="content" placeholder='Add a comment' value={formData.content} onChange={(e) => handleCommentChange(e, id)} required/>
               </form>
