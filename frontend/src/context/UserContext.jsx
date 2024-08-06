@@ -15,7 +15,7 @@ export function UserContextProvider({ children }) {
   
   const fetchCurrUser = async () => {
     try {
-      const response = await axios.get('https://pinterest-j71p.onrender.com/api/currUser', { withCredentials: true })
+      const response = await axios.get(`${process.env.URL}/api/currUser`, { withCredentials: true })
       setCurrUser(response.data)
     } catch (error) {
       console.log(error)
@@ -24,7 +24,7 @@ export function UserContextProvider({ children }) {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('https://pinterest-j71p.onrender.com/api/users', { withCredentials: true })
+      const response = await axios.get(`${process.env.URL}/api/users`, { withCredentials: true })
       setUsers(response.data)
       setUserLoading(false)
     } catch (error) {
@@ -34,7 +34,7 @@ export function UserContextProvider({ children }) {
 
   const fetchUser = async (username) => {
     try {
-      const response = await axios.get('https://pinterest-j71p.onrender.com/api/user', { params: { username }})
+      const response = await axios.get(`${process.env.URL}/api/user`, { params: { username }})
       setUser(response.data)
     } catch (error) {
       console.log(error)
@@ -43,7 +43,7 @@ export function UserContextProvider({ children }) {
 
   const logoutUser = async () => {
     try {
-      await axios.get('https://pinterest-j71p.onrender.com/api/logout', { withCredentials: true })
+      await axios.get(`${process.env.URL}/api/logout`, { withCredentials: true })
       setCurrUser(null)
     } catch (error) {
       console.log(error)
@@ -53,7 +53,7 @@ export function UserContextProvider({ children }) {
   const handleDeleteUser = async () => {
     try {
       logoutUser()
-      await axios.delete(`https://pinterest-j71p.onrender.com/api/delete/user/${currUser._id}`)
+      await axios.delete(`${process.env.URL}/api/delete/user/${currUser._id}`)
       fetchUsers()
     } catch(error) {
       console.log('Error deleting user:', error)

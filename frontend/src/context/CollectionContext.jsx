@@ -35,7 +35,7 @@ export function CollectionContextProvider({ children }) {
 
   const fetchUserCollections = async (id) => {
     try {
-      const response = await axios.get('https://pinterest-j71p.onrender.com/api/collections', { params: { id }})
+      const response = await axios.get(`${process.env.URL}/api/collections`, { params: { id }})
       setCollections(response.data)
     } catch(error) {
       console.log("Error fetching collections: ", error)
@@ -44,7 +44,7 @@ export function CollectionContextProvider({ children }) {
 
   const fetchCollectionById = async (id) => {
     try {
-      const response = await axios.get(`https://pinterest-j71p.onrender.com/api/collections/id/${id}`)
+      const response = await axios.get(`${process.env.URL}/api/collections/id/${id}`)
       setCollection(response.data)
       return response.data
     } catch(error) {
@@ -54,7 +54,7 @@ export function CollectionContextProvider({ children }) {
 
   const handleCollectionAdd = async (id, pinId) => {
     try {
-      await axios.post('https://pinterest-j71p.onrender.com/api/collections/add', { id, pinId })
+      await axios.post(`${process.env.URL}/api/collections/add`, { id, pinId })
       const updatedCollection = await fetchCollectionById(id)
       setSelectedCollection(updatedCollection)
     } catch(error) {
@@ -64,7 +64,7 @@ export function CollectionContextProvider({ children }) {
 
   const handleCollectionRemove = async (id, pinId) => {
     try {
-      await axios.post('https://pinterest-j71p.onrender.com/api/collections/remove', { id, pinId })
+      await axios.post(`${process.env.URL}/api/collections/remove`, { id, pinId })
       const updatedCollection = await fetchCollectionById(id)
       setSelectedCollection(updatedCollection)
     } catch(error) {

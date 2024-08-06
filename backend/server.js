@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 })
 
 app.use(cors({
-  origin: 'https://clonepinterest.netlify.app',
+  origin: process.env.URL,
   credentials: true,
 }))
 

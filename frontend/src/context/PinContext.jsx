@@ -18,7 +18,7 @@ export function PinContextProvider({ children }) {
 
   const fetchPins = async () => {
     try {
-      const response = await axios.get('https://pinterest-j71p.onrender.com/api/pins', { withCredentials: true })
+      const response = await axios.get(`${process.env.URL}/api/pins`, { withCredentials: true })
       setPins(response.data)
       setPinLoading(false)
     } catch(error) {
@@ -28,7 +28,7 @@ export function PinContextProvider({ children }) {
 
   const fetchPin = async (id) => {
     try {
-      const response = await axios.get(`https://pinterest-j71p.onrender.com/api/pin/${id}`)
+      const response = await axios.get(`${process.env.URL}/api/pin/${id}`)
       setPin(response.data)
     } catch(error) {
       console.log('Error fetching pins: ', error)
@@ -37,7 +37,7 @@ export function PinContextProvider({ children }) {
 
   const fetchPinComments = async (id) => {
     try {
-      const response = await axios.get(`https://pinterest-j71p.onrender.com/api/pin/${id}/comments`)
+      const response = await axios.get(`${process.env.URL}/api/pin/${id}/comments`)
       return response.data.comments
     } catch(error) {
       console.log('Error fetching comments: ', error)
@@ -46,7 +46,7 @@ export function PinContextProvider({ children }) {
 
   const fetchCreatedPins = async (id) => {
     try {
-      const response = await axios.get('https://pinterest-j71p.onrender.com/api/pins/created', { params: { id }})
+      const response = await axios.get(`${process.env.URL}/api/pins/created`, { params: { id }})
       setCreatedPins(response.data)
     } catch(error) {
       console.log('Error fetching created pins', error)
@@ -55,7 +55,7 @@ export function PinContextProvider({ children }) {
 
   const fetchSearchedPins = async (query) => {
     try {
-      const response = await axios.get('https://pinterest-j71p.onrender.com/api/pins/search/', { params: { query }})
+      const response = await axios.get(`${process.env.URL}/api/pins/search/`, { params: { query }})
       setSearchedPins(response.data)
     } catch(error) {
       console.log('Error fetching searched pins', error)
@@ -82,7 +82,7 @@ export function PinContextProvider({ children }) {
   
   const handleDeletePin = async (id) => {
     try {
-      await axios.delete(`https://pinterest-j71p.onrender.com/api/delete/pin/${id}`)
+      await axios.delete(`${process.env.URL}/api/delete/pin/${id}`)
       fetchPins()
     } catch(error) {
       console.log('Error deleting pin:', error)
@@ -91,7 +91,7 @@ export function PinContextProvider({ children }) {
   
   const handleLikes = async (id, action) => {
     try {
-      await axios.put('https://pinterest-j71p.onrender.com/api/likes', { id, action, currUser })
+      await axios.put(`${process.env.URL}/api/likes`, { id, action, currUser })
     } catch(error) {
       console.log("Error: ", error)
     }

@@ -43,7 +43,7 @@ export function EditProfile() {
             style={{ display: 'none' }}/>
           <div>
             <label>Photo</label>
-            <img src={currUser.photo ? `https://pinterest-j71p.onrender.com/public/photos/${currUser.photo}` : `https://pinterest-j71p.onrender.com/public/photos/noPhoto.jpg`} />
+            <img src={currUser.photo ? `${process.env.URL}/public/photos/${currUser.photo}` : `${process.env.URL}/public/photos/noPhoto.jpg`} />
           </div>
           <button onClick={handleInputClick} type="button" className="greyBtn">Change</button>
         </div>
