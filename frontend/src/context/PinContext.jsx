@@ -18,7 +18,11 @@ export function PinContextProvider({ children }) {
 
   const fetchPins = async () => {
     try {
-      const response = await axios.get('https://pinterest-j71p.onrender.com/api/pins')
+      const response = await axios.get('https://pinterest-j71p.onrender.com/api/pins', {
+        withCredentials: true,
+        headers: {
+          'Access-Control-Allow-Origin': 'https://clonepinterest.netlify.app',
+        }})
       setPins(response.data)
       setPinLoading(false)
     } catch(error) {
