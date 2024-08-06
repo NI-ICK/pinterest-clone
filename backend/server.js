@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 })
 
 app.use(cors({
-  origin: process.env.URL,
+  origin: process.env.SITE_URL,
   credentials: true,
 }))
 
