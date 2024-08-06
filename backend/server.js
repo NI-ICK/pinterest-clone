@@ -20,6 +20,11 @@ const app = express()
 
 initializePassport(passport)
 
+app.use((req, res, next) => {
+  res.setHeader('Permissions-Policy', 'attribution-reporting=(), run-ad-auction=(), join-ad-interest-group=(), compute-pressure=(), browsing-topics=()')
+  next()
+})
+
 app.use(cors({
   origin: 'https://clonepinterest.netlify.app',
   credentials: true,
