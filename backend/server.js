@@ -51,9 +51,10 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'))
 })
 
-const options = {
-  key: fs.readFileSync(process.env.SSL_KEY_FILE),
-  cert: fs.readFileSync(process.env.SSL_CRT_FILE)
-}
+// const options = {
+//   key: fs.readFileSync(process.env.SSL_KEY_FILE),
+//   cert: fs.readFileSync(process.env.SSL_CRT_FILE)
+// }
 
-https.createServer(options, app).listen(process.env.PORT, '0.0.0.0', () => console.log("Server running on port 5000"))
+// https.createServer(options, app)
+app.listen(process.env.PORT, '0.0.0.0', () => console.log("Server running on port 5000"))
