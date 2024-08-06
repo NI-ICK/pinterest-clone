@@ -20,6 +20,12 @@ const app = express()
 
 initializePassport(passport)
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://clonepinterest.netlify.app')
+  res.header('Access-Control-Allow-Credentials', 'true')
+  next();
+})
+
 app.use(cors({
   origin: 'https://clonepinterest.netlify.app',
   credentials: true,
