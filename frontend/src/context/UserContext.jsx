@@ -1,4 +1,4 @@
-import { useContext, createContext, useState, useEffect } from "react"
+import { useContext, createContext, useState } from "react"
 import axios from 'axios'
 
 const UserContext = createContext()
@@ -10,12 +10,11 @@ export function useUserContext() {
 export function UserContextProvider({ children }) {
   const [currUser, setCurrUser] = useState({ username: null })
   const [users, setUsers] = useState([])
-  const [userLoading, setUserLoading] = useState(true)
   const [user, setUser] = useState(null)
   
   const fetchCurrUser = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.SITE_URL}/api/currUser`, { withCredentials: true })
+      const response = await axios.get(`/api/currUser`, { withCredentials: true })
       setCurrUser(response.data)
     } catch (error) {
       console.log(error)
@@ -24,9 +23,8 @@ export function UserContextProvider({ children }) {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.SITE_URL}/api/users`, { withCredentials: true })
+      const response = await axios.get(`/api/users`)
       setUsers(response.data)
-      setUserLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -34,7 +32,7 @@ export function UserContextProvider({ children }) {
 
   const fetchUser = async (username) => {
     try {
-      const response = await axios.get(`${import.meta.env.SITE_URL}/api/user`, { params: { username }})
+      const response = await axios.get(`/api/user`, { params: { username }})
       setUser(response.data)
     } catch (error) {
       console.log(error)
@@ -43,7 +41,7 @@ export function UserContextProvider({ children }) {
 
   const logoutUser = async () => {
     try {
-      await axios.get(`${import.meta.env.SITE_URL}/api/logout`, { withCredentials: true })
+      await axios.get(`/api/logout`)
       setCurrUser(null)
     } catch (error) {
       console.log(error)
@@ -53,7 +51,7 @@ export function UserContextProvider({ children }) {
   const handleDeleteUser = async () => {
     try {
       logoutUser()
-      await axios.delete(`${import.meta.env.SITE_URL}/api/delete/user/${currUser._id}`)
+      await axios.delete(`/api/delete/user/${currUser._id}`)
       fetchUsers()
     } catch(error) {
       console.log('Error deleting user:', error)
@@ -66,8 +64,6 @@ export function UserContextProvider({ children }) {
       currUser, 
       setCurrUser, 
       logoutUser, 
-      userLoading, 
-      setUserLoading, 
       fetchCurrUser, 
       fetchUsers,
       handleDeleteUser,

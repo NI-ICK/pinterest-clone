@@ -29,9 +29,9 @@ export function SavedPins() {
     <div className="userCollections">
       {collections.slice(1).map((collection, index) => (
         <div key={index} className="userCollection" onClick={() => navigate(`/collection/${collection._id}`)}>
-          <img className='colImg1' src={collection.pins.length > 0 ? `${import.meta.env.SITE_URL}/public/pins/${collection.pins[collection.pins.length - 1].image}` : `${import.meta.env.SITE_URL}/public/noCollectionImg.webp`}/>
-          <img className='colImg2' src={collection.pins.length > 1 ? `${import.meta.env.SITE_URL}/public/pins/${collection.pins[collection.pins.length - 2].image}` : `${import.meta.env.SITE_URL}/public/noCollectionImg.webp`}/>
-          <img className='colImg3' src={collection.pins.length > 2 ?`${import.meta.env.SITE_URL}/public/pins/${collection.pins[collection.pins.length - 3].image}` : `${import.meta.env.SITE_URL}/public/noCollectionImg.webp`}/>
+          <img className='colImg1' src={collection.pins.length > 0 ? `${import.meta.env.VITE_SERVER_URL}/public/pins/${collection.pins[collection.pins.length - 1].image}` : `${import.meta.env.VITE_SERVER_URL}/public/noCollectionImg.webp`}/>
+          <img className='colImg2' src={collection.pins.length > 1 ? `${import.meta.env.VITE_SERVER_URL}/public/pins/${collection.pins[collection.pins.length - 2].image}` : `${import.meta.env.VITE_SERVER_URL}/public/noCollectionImg.webp`}/>
+          <img className='colImg3' src={collection.pins.length > 2 ?`${import.meta.env.VITE_SERVER_URL}/public/pins/${collection.pins[collection.pins.length - 3].image}` : `${import.meta.env.VITE_SERVER_URL}/public/noCollectionImg.webp`}/>
           <p>{collection.name}</p>
         </div>
       ))}

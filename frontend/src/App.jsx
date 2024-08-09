@@ -13,8 +13,10 @@ import { SavedPins } from './pages/SavedPins'
 import { CreatedPins } from './pages/CreatedPins'
 import { CollectionPage } from './pages/CollectionPage'
 import { SearchedPins } from './pages/SearchedPins'
+import axios from 'axios'
 
-function App() {
+export function App() {
+  axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
 
   return (
     <>
@@ -40,5 +42,3 @@ function App() {
     </>
   )
 }
-
-export default App

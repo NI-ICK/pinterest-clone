@@ -77,7 +77,6 @@ router.post('/login', (req, res, next) => {
   
       req.logIn(user, (error) => {
         if (error) return next(error)
-  
         return res.json(user)
       })
     })(req, res, next) 
@@ -102,9 +101,7 @@ router.get('/logout', (req, res) => {
 
 router.get('/currUser', (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(200).json(req.user)
-    }
+    if (!req.user) return res.status(200).json(req.user)
     const { password, email, ...user } = req.user._doc
     res.status(200).json(user)
   } catch(error) {

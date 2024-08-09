@@ -56,7 +56,7 @@ export function Pin({ pin, index, onLoad }) {
         <div className={`pinBackground ${hoverIndex === index ? 'hover' : ''}`}>
           <img 
             className={`pinImg ${hoverIndex === index ? 'hover' : ''}`}
-            src={`${import.meta.env.SITE_URL}/public/pins/${pin.image}`} 
+            src={`${import.meta.env.VITE_SERVER_URL}/public/pins/${pin.image}`} 
             alt={pin.title} 
             onLoad={onLoad}
             />

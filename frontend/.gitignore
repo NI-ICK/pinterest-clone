@@ -7,6 +7,8 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+server.cert
+server.key
 node_modules
 dist
 dist-ssr
