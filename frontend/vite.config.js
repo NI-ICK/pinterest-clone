@@ -6,7 +6,8 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-// https://vitejs.dev/config/
+const isLocal = process.env.NODE_ENV === 'development';
+
 export default defineConfig({
   plugins: [react()],
   build: {
@@ -14,9 +15,9 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    https: {
+    https: isLocal ? {
       key: fs.readFileSync(path.resolve(process.env.VITE_KEY_PATH)),
       cert: fs.readFileSync(path.resolve(process.env.VITE_CERT_PATH)),
-    },
-  }
+    } : false,
+  },
 })
