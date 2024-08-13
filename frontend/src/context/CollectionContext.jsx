@@ -47,7 +47,8 @@ export function CollectionContextProvider({ children }) {
     try {
       const response = await axios.get(`/api/collections/id/${id}`)
       setCollection(response.data)
-      return response.data
+      if(!response.data) return false
+      return true
     } catch(error) {
       console.log("Error fetching collection: ", error)
     }

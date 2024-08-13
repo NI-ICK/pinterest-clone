@@ -25,7 +25,8 @@ export function UserProfile() {
   const loadUserData = async () => {
     await fetchUsers()
     await fetchCurrUser() 
-    await fetchUser(username)
+    const foundUser = await fetchUser(username)
+    if(!foundUser) return navigate('/404')
   }
 
   const loadPinData = async () => {
@@ -48,12 +49,6 @@ export function UserProfile() {
   useEffect(() => {
     loadPinData()
   }, [user])
-
-  useEffect(() => {
-    if(!loading) {
-      if(!user) navigate('/404')
-    }
-  }, [users, loading, user])
 
   if(!user) return null
 

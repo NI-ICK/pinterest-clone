@@ -1,6 +1,7 @@
 import { useContext, createContext, useState, useEffect } from "react"
 import axios from "axios"
 import { useUserContext } from "./UserContext"
+import { useNavigate } from "react-router-dom"
 
 const PinContext = createContext()
 
@@ -10,10 +11,12 @@ export function usePinContext() {
 
 export function PinContextProvider({ children }) {
   const [pins, setPins] = useState([])
-  const [pin, setPin] = useState({})
+  const [pin, setPin] = useState(null)
   const { currUser } = useUserContext()
   const [createdPins, setCreatedPins] = useState([])
   const [searchedPins, setSearchedPins] = useState([])
+  const [comments, setComments] = useState([])
+  const navigate = useNavigate()
 
   const fetchPins = async () => {
     try {
@@ -28,6 +31,8 @@ export function PinContextProvider({ children }) {
     try {
       const response = await axios.get(`/api/pin/${id}`)
       setPin(response.data)
+      if(!response.data) return false
+      return true
     } catch(error) {
       console.log('Error fetching pins: ', error)
     }
@@ -36,7 +41,7 @@ export function PinContextProvider({ children }) {
   const fetchPinComments = async (id) => {
     try {
       const response = await axios.get(`/api/pin/${id}/comments`)
-      return response.data.comments
+      setComments(response.data.comments)
     } catch(error) {
       console.log('Error fetching comments: ', error)
     }
@@ -110,7 +115,8 @@ export function PinContextProvider({ children }) {
       adjustGridRows,
       searchedPins,
       fetchSearchedPins,
-      setSearchedPins
+      setSearchedPins,
+      comments
       }}>
       {children}
     </PinContext.Provider>

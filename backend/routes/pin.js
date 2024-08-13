@@ -5,6 +5,7 @@ const multer = require('multer')
 require('dotenv').config()
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
+const mongoose = require('mongoose')
 
 const fileFilter = (req, file, cb) => {
   if(file.mimetype.startsWith('image/')) {
@@ -101,8 +102,12 @@ router.get('/pins/created', async (req, res) => {
   }
 })
 
+const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id)
+
 router.get('/pin/:id', async (req, res) => {
   try {
+    if(!isValidObjectId(req.params.id)) return res.status(200).json(null)
+
     const pin = await Pin.findById(req.params.id)
       .select('-comments -likes')
       .populate('user', '-password -email')

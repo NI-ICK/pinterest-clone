@@ -14,7 +14,7 @@ import { ArrowDownIcon } from '../assets/ArrowDownIcon'
 
 export function PinPage() {
   const { id } = useParams()
-  const { pins, fetchPin, pin, handleLikes, fetchPinComments } = usePinContext()
+  const { pins, fetchPin, pin, handleLikes, fetchPinComments, comments } = usePinContext()
   const { users, currUser, fetchUsers, fetchCurrUser, noUserImgUrl } = useUserContext()
   const { formData, handleCommentChange, handleCommentSubmit, formFilled, setFormData } = useFormDataContext()
   const { selectedCollection, setShowColModal, handleCollectionAdd, handleCollectionRemove, fetchUserCollections, setSelectedCollection, collections } = useCollectionContext()
@@ -25,7 +25,6 @@ export function PinPage() {
   const [loading, setLoading] = useState(true)
   const [showReply, setShowReply] = useState(null)
   const [showModal, setShowModal] = useState(false)
-  const [comments, setComments] = useState([])
   const [saved, setSaved] = useState(false)
   const [areCollectionsFetched, setAreCollectionsFetched] = useState(false)
   const [isCurrUserFetched, setIsCurrUserFetched] = useState(false)
@@ -34,8 +33,9 @@ export function PinPage() {
   const loadData = async () => {
     await fetchUsers()
     await fetchCurrUser()
-    await fetchPin(id)
-    setComments(await fetchPinComments(id))
+    const pinFetched = await fetchPin(id)
+    if(!pinFetched) return navigate('/404')
+    await fetchPinComments(id)
     setIsCurrUserFetched(true)
   }
 
@@ -64,15 +64,13 @@ export function PinPage() {
   useEffect(() => {
     if (!loading) {
       if(pin) setPinUser(pin.user ? users.find(user => user.username === pin.user.username) : { username: 'User Deleted' })
-      if(!pin) navigate('/404')
     }
   }, [loading, pins, users])
 
   const formSubmit = async (e) => {
     e.preventDefault()
     await handleCommentSubmit()
-    const updatedComments = await fetchPinComments(id)
-    setComments(updatedComments)
+    await fetchPinComments(id)
     const form = e.target
     form.reset()
   }

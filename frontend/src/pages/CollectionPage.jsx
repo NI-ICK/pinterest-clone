@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useCollectionContext } from "../context/CollectionContext"
 import { useEffect, useState } from "react"
 import { Pin } from "../components/Pin"
@@ -10,9 +10,11 @@ export function CollectionPage() {
   const { adjustGridRows } = usePinContext()
   const [loading, setLoading] = useState(true)
   const [imagesLoaded, setImagesLoaded] = useState(0)
+  const navigate = useNavigate()
 
   const loadData = async () => {
-    await fetchCollectionById(id)
+    const foundCol = await fetchCollectionById(id)
+    if(!foundCol) return navigate('/404')
     setLoading(false)
   }
 

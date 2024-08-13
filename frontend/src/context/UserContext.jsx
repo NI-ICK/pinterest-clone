@@ -35,6 +35,8 @@ export function UserContextProvider({ children }) {
     try {
       const response = await axios.get(`/api/user`, { params: { username }})
       setUser(response.data)
+      if(!response.data) return false
+      return true
     } catch (error) {
       console.log(error)
     }
