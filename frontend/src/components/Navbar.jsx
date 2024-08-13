@@ -15,7 +15,7 @@ export function Navbar() {
   const [homeActive, setHomeActive] = useState(false)
   const [createActive, setCreateActive] = useState(false)
   const modalRef = useRef()
-  const { currUser } = useUserContext()
+  const { currUser, noUserImgUrl } = useUserContext()
   const navigate = useNavigate()
   const location = useLocation()
   const path = location.pathname
@@ -62,7 +62,7 @@ export function Navbar() {
         <SearchBar />
         <div className='profileBackground' onClick={() => navigate(`/${currUser.username}`)}>
           <div className='profile'>
-            <img src={currUser.photo ? `${import.meta.env.VITE_SERVER_URL}/public/photos/${currUser.photo}` : `${import.meta.env.VITE_SERVER_URL}/public/photos/noPhoto.jpg`}/>
+            <img src={currUser.photo ? currUser.photo : noUserImgUrl}/>
           </div>
         </div>
         <div className='settingsIcon' onClick={() => setShowSettings(!showSettings)}>

@@ -11,6 +11,7 @@ export function UserContextProvider({ children }) {
   const [currUser, setCurrUser] = useState({ username: null })
   const [users, setUsers] = useState([])
   const [user, setUser] = useState(null)
+  const noUserImgUrl = 'https://res.cloudinary.com/dzg5ek6qa/image/upload/v1723557462/noPhoto_pmhtnl.jpg'
   
   const fetchCurrUser = async () => {
     try {
@@ -68,7 +69,8 @@ export function UserContextProvider({ children }) {
       fetchUsers,
       handleDeleteUser,
       fetchUser,
-      user
+      user,
+      noUserImgUrl
       }}>
       {children}
     </UserContext.Provider>

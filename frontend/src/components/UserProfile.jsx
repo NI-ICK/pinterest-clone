@@ -7,7 +7,7 @@ import { useCollectionContext } from "../context/CollectionContext"
 export function UserProfile() {
   const navigate = useNavigate()
   const { username } = useParams()
-  const { users, fetchUsers, fetchCurrUser, currUser, user, fetchUser } = useUserContext()
+  const { users, fetchUsers, fetchCurrUser, currUser, user, fetchUser, noUserImgUrl } = useUserContext()
   const { fetchCreatedPins } = usePinContext()
   const { fetchUserCollections, setSelectedCollection, collections } = useCollectionContext()
   const [loading, setLoading] = useState(true)
@@ -62,7 +62,7 @@ export function UserProfile() {
     {!loading && 
       <div className="userProfile">
         <div className="userDetails">
-          <img className='photo' src={user.photo ? `${import.meta.env.VITE_SERVER_URL}/public/photos/${user.photo}` : `${import.meta.env.VITE_SERVER_URL}/public/photos/noPhoto.jpg`} />
+          <img className='photo' src={user.photo ? user.photo : noUserImgUrl} />
           <p className="username">{user.username}</p>
           <p>{user.about}</p>
           {currUser._id === user._id ? <button className="greyBtn" onClick={() => navigate('/settings')}>Edit Profile</button> : null}

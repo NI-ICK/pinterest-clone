@@ -3,8 +3,8 @@ import { useCollectionContext } from "../context/CollectionContext"
 import { useEffect, useState } from "react"
 import { XIcon } from "../assets/XIcon"
 
-export function CollectionsModal({ hoverIndex }) {
-  const { collections, setSelectedCollection, showColModal, setShowCreateCol, modalRef } = useCollectionContext()
+export function CollectionsModal() {
+  const { collections, setSelectedCollection, showColModal, setShowCreateCol, modalRef, noColImgUrl } = useCollectionContext()
   const location = useLocation()
   const path = location.pathname
   const [style, setStyle] = useState()
@@ -54,7 +54,7 @@ export function CollectionsModal({ hoverIndex }) {
               onClick={() => {
                 setSelectedCollection(collection)}}
               className="collection">
-                <img src={collection.pins.length > 0 ? `${import.meta.env.VITE_SERVER_URL}/public/pins/${collection.pins[collection.pins.length - 1].image}` : `${import.meta.env.VITE_SERVER_URL}/public/noCollectionImg.webp`}/>
+                <img src={collection.pins.length > 0 ? collection.pins[collection.pins.length - 1].image : noColImgUrl}/>
               <p>{collection.name}</p>
             </div>
           )})}

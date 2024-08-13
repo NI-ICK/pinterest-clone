@@ -15,9 +15,9 @@ import { ArrowDownIcon } from '../assets/ArrowDownIcon'
 export function PinPage() {
   const { id } = useParams()
   const { pins, fetchPin, pin, handleLikes, fetchPinComments } = usePinContext()
-  const { users, currUser, fetchUsers, fetchCurrUser } = useUserContext()
+  const { users, currUser, fetchUsers, fetchCurrUser, noUserImgUrl } = useUserContext()
   const { formData, handleCommentChange, handleCommentSubmit, formFilled, setFormData } = useFormDataContext()
-  const { selectedCollection, setShowColModal, handleSaved, handleCollectionAdd, handleCollectionRemove, fetchUserCollections, setSelectedCollection, collections } = useCollectionContext()
+  const { selectedCollection, setShowColModal, handleCollectionAdd, handleCollectionRemove, fetchUserCollections, setSelectedCollection, collections } = useCollectionContext()
   const navigate = useNavigate()
   const modal = useRef()
   const replyInput = useRef()
@@ -147,7 +147,7 @@ export function PinPage() {
     {!loading &&
       <div className="pinPageBackground">
         <div className="pinContainer">
-          <img src={`${import.meta.env.VITE_SERVER_URL}/public/pins/${pin.image}`} className='pinImg'/>
+          <img src={pin.image} className='pinImg'/>
           <div className="pinDetails">
             <CollectionsModal />
             <div className="detailsTop">
@@ -169,17 +169,17 @@ export function PinPage() {
             <p>{pin.description}</p>
             <div className="pinUser"> 
               <img 
-                src={pinUser.photo ? `${import.meta.env.VITE_SERVER_URL}/public/photos/${pinUser.photo}` : `${import.meta.env.VITE_SERVER_URL}/public/photos/noPhoto.jpg`}
+                src={pinUser.photo ? pinUser.photo : noUserImgUrl}
                 onClick={() => pinUser.username !== 'User Deleted' ? navigate(`/${pinUser.username}`) : null}/>
               <Link to={pinUser.username !== 'User Deleted' ? `/${pinUser.username}` : null} >{pinUser.username}</Link>
             </div>
             <h3>Comments</h3>
-            <div className="comments">
+            <div className="comments"> 
               {comments ? (comments.map((comment, index) => (
                 <div className="comment" key={index} >
                   <div className="commentContent">
                     <img
-                      src={comment.user && comment.user.photo ? `${import.meta.env.VITE_SERVER_URL}/public/photos/${comment.user.photo}` : `${import.meta.env.VITE_SERVER_URL}/public/photos/noPhoto.jpg`}
+                      src={comment.user && comment.user.photo ? comment.user.photo : noUserImgUrl}
                       onClick={() => navigate(comment.user ? `/${comment.user.username}` : null)}/>
                     <div className="commentText">
                       <p><Link to={comment.user ? `/${comment.user.username}` : null}>{comment.user ? comment.user.username : 'User Deleted'}</Link>{comment.content}</p>
@@ -211,7 +211,7 @@ export function PinPage() {
                   {comment.replies.map((reply, index) => (
                     <div className="reply" key={index}>
                       <img
-                        src={reply.user.photo ? `${import.meta.env.VITE_SERVER_URL}/public/photos/${reply.user.photo}` : `${import.meta.env.VITE_SERVER_URL}/public/photos/noPhoto.jpg`}
+                        src={reply.user.photo ? reply.user.photo : noUserImgUrl}
                         onClick={() => navigate(`/${reply.user.username}`)}/>
                       <div className="replyText">
                         <p><Link to={`/${reply.user.username}`}>{reply.user.username}</Link>{reply.content}</p>
@@ -234,7 +234,7 @@ export function PinPage() {
             </div>
             {currUser ? (
             <div className="addComment">
-              <img src={currUser.photo ? `${import.meta.env.VITE_SERVER_URL}/public/photos/${currUser.photo}` : `${import.meta.env.VITE_SERVER_URL}/public/photos/noPhoto.jpg`}/>
+              <img src={currUser.photo ? currUser.photo : noUserImgUrl}/>
               <form className='fInput' onSubmit={formSubmit}>
                 <input type="text" name="content" placeholder='Add a comment' value={formData.content} onChange={(e) => handleCommentChange(e, id)} required/>
               </form>

@@ -15,6 +15,7 @@ export function CollectionContextProvider({ children }) {
   const [showCreateCol, setShowCreateCol] = useState(false)
   const [collection, setCollection] = useState(null)
   const modalRef = useRef()
+  const noColImgUrl = 'https://res.cloudinary.com/dzg5ek6qa/image/upload/v1723557472/noCollectionImg_ujjhcl.webp'
 
   useEffect(() => {
     if(showCreateCol || showColModal) {
@@ -88,7 +89,8 @@ export function CollectionContextProvider({ children }) {
       modalRef,
       fetchUserCollections,
       fetchCollectionById,
-      collection
+      collection,
+      noColImgUrl
       }}>
       {children}
     </CollectionContext.Provider>

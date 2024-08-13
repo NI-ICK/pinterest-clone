@@ -4,7 +4,7 @@ import { useUserContext } from "../context/UserContext"
 
 export function EditProfile() {
   const { formData, handleEditUserChange, handleEditUserSubmit } = useFormDataContext()
-  const { currUser, fetchCurrUser } = useUserContext()
+  const { currUser, fetchCurrUser, noUserImgUrl } = useUserContext()
   const [loading, setLoading] = useState(true)
   const fileInput = useRef()
 
@@ -43,7 +43,7 @@ export function EditProfile() {
             style={{ display: 'none' }}/>
           <div>
             <label>Photo</label>
-            <img src={currUser.photo ? `${import.meta.env.VITE_SERVER_URL}/public/photos/${currUser.photo}` : `${import.meta.env.VITE_SERVER_URL}/public/photos/noPhoto.jpg`} />
+            <img src={currUser.photo ? currUser.photo : noUserImgUrl} />
           </div>
           <button onClick={handleInputClick} type="button" className="greyBtn">Change</button>
         </div>

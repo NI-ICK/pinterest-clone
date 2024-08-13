@@ -10,6 +10,7 @@ lerna-debug.log*
 server.cert
 server.key
 node_modules
+build
 dist
 dist-ssr
 *.local

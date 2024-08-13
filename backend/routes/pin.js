@@ -2,7 +2,9 @@ const express = require('express')
 const router = express.Router()
 const { Pin, Comment, Reply } = require('../model/Pin')
 const multer = require('multer')
-const bcrypt = require('bcrypt')
+require('dotenv').config()
+const cloudinary = require('cloudinary').v2
+const streamifier = require('streamifier')
 
 const fileFilter = (req, file, cb) => {
   if(file.mimetype.startsWith('image/')) {
@@ -12,38 +14,55 @@ const fileFilter = (req, file, cb) => {
   }
 }
 
-const pinStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-      cb(null, './public/pins')
-  },
-  filename: (req, file, cb) => {
-      cb(null, Date.now() + file.originalname)
-  }
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
-const pinUpload = multer({ 
-  storage: pinStorage, 
+const storage = multer.memoryStorage()
+
+const upload = multer({ 
+  storage: storage, 
   limits: {
-    fileSize: 1024 * 1024 * 10
+    fileSize: 1024 * 1024 * 10 // 10 MB
   },
   fileFilter: fileFilter
 })
 
-router.post('/createPin', pinUpload.single('image'), async (req, res) => {
+router.post('/createPin', upload.single('image'), async (req, res) => {
   try {
+     const streamUpload = (buffer) => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: 'pins', resource_type: 'image' },
+          (error, result) => {
+            if (result) {
+              resolve(result)
+            } else {
+              reject(error)
+            }
+          }
+        )
+        streamifier.createReadStream(buffer).pipe(stream)
+      })
+    }
+
+    const result = await streamUpload(req.file.buffer)
+
     const pin = new Pin({
       title: req.body.title,
-      image: req.file.filename,
+      image: result.secure_url, 
       description: req.body.description,
       tags: req.body.tags,
-      user: req.body.user
-    })
+      user: req.body.user,
+    });
+
     await pin.save()
     res.status(201).json(pin)
   } catch(error) {
     res.status(500).json({ message: error.message })
   }
-  
 })
 
 router.get('/pins', async (req, res) => {

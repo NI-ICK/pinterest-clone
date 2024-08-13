@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 const pinSchema = new Schema({
   title: { type: String },
   image: { type: String },
+  imageId: { type: String },
   description: { type: String },
   tags: [{ type: String }],
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],

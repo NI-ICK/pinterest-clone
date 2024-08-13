@@ -4,6 +4,15 @@ const passport = require('passport')
 const multer = require('multer')
 const { User, Collection } = require('../model/User')
 const bcrypt = require('bcrypt')
+require('dotenv').config()
+const cloudinary = require('cloudinary').v2
+const streamifier = require('streamifier')
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+})
 
 const fileFilter = (req, file, cb) => {
   if(file.mimetype.startsWith('image/')) {
@@ -13,28 +22,38 @@ const fileFilter = (req, file, cb) => {
   }
 }
 
-const photoStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-      cb(null, './public/photos')
-  },
-  filename: (req, file, cb) => {
-      cb(null, Date.now() + file.originalname)
-  }
-})
+const storage = multer.memoryStorage()
 
-const photoUpload = multer({ 
-  storage: photoStorage, 
+const upload = multer({ 
+  storage: storage, 
   limits: {
-    fileSize: 1024 * 1024 * 10
+    fileSize: 1024 * 1024 * 10 // 10 MB
   },
   fileFilter: fileFilter
 })
 
-router.put('/editUser', photoUpload.single('photo'), async (req, res) => {
+router.put('/editUser', upload.single('photo'), async (req, res) => {
   try {
-    const updateFields = {}
+    const streamUpload = (buffer) => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: 'photos', resource_type: 'image' },
+          (error, result) => {
+            if (result) {
+              resolve(result)
+            } else {
+              reject(error)
+            }
+          }
+        )
+        streamifier.createReadStream(buffer).pipe(stream)
+      })
+    }
 
-    if(req.file) updateFields.photo = req.file.filename
+    const result = await streamUpload(req.file.buffer)
+
+    const updateFields = {}
+    if(req.file) updateFields.photo = result.secure_url
     if(req.body.username) updateFields.username = req.body.username 
     if(req.body.password) updateFields.password = await bcrypt.hash(req.body.password, 10)
     if(req.body.email) updateFields.email = req.body.email
