@@ -1,7 +1,6 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
-const path = require('path')
 const cors = require('cors')
 const passport = require('passport')
 const pinRoutes = require('./routes/pin')
@@ -44,12 +43,6 @@ app.use('/api', pinRoutes)
 app.use('/api', usersRoutes)
 app.use('/api', collectionRoutes)
 
-app.use(express.static(path.join(__dirname, '../frontend/build')))
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'))
-})
-
 if(process.env.NODE_ENV === 'development') {
   const options = {
     key: fs.readFileSync(process.env.SSL_KEY_FILE),
@@ -60,3 +53,5 @@ if(process.env.NODE_ENV === 'development') {
 } else {
   app.listen(process.env.PORT, '0.0.0.0', () => console.log(`Server running on port ${process.env.PORT}`))
 }
+
+module.exports = app
