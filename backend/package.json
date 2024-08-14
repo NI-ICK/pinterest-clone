@@ -1,6 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "proxy": "https://pinterest-backend-rust.vercel.app/",
   "description": "",
   "main": "server.js",
   "scripts": {
