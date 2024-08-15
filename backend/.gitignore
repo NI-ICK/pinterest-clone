@@ -1,10 +1,6 @@
 node_modules
 .env
 
-public/pins/*
-public/photos/*
-!public/photos/noPhoto.jpg
-!public/noCollectionImg.webp
-
 key.pem
 cert.pem
+.vercel
