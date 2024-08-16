@@ -93,7 +93,7 @@ export function FormDataContextProvider({ children }) {
   const handleCreatePinSubmit = async () => {
     const updatedFormData = { ...formData.createPin, user: currUser }
     try {
-      await axios.post(`/api/createPin`, updatedFormData, {
+      await axios.post(`/createPin`, updatedFormData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
     } catch (error) {
@@ -112,7 +112,7 @@ export function FormDataContextProvider({ children }) {
 
   const handleRegisterSubmit = async () => {
     try {
-      await axios.post(`/api/register`, formData.register, {
+      await axios.post(`/register`, formData.register, {
         headers: { 'Content-Type': 'application/json' }
       })
       setPopupText('Account Created')
@@ -140,7 +140,7 @@ export function FormDataContextProvider({ children }) {
 
   const handleLoginSubmit = async () => {
     try {
-      const response = await axios.post(`/api/login`, formData.login, { 
+      const response = await axios.post(`/login`, formData.login, { 
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true
       })
@@ -186,7 +186,7 @@ export function FormDataContextProvider({ children }) {
   const handleEditUserSubmit = async () => {
     const updatedFormData = { ...formData.edit, user: currUser._id }
     try {
-      await axios.put(`/api/editUser`, updatedFormData, {
+      await axios.put(`/editUser`, updatedFormData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
     } catch (error) {
@@ -208,7 +208,7 @@ export function FormDataContextProvider({ children }) {
   const handleCommentSubmit = async () => {
     const updatedFormData = { ...formData.comment, user: currUser }
     try {
-      await axios.post(`/api/comment`, updatedFormData, {
+      await axios.post(`/comment`, updatedFormData, {
         headers: { 'Content-Type': 'application/json' }
       })
     } catch (error) {
@@ -227,7 +227,7 @@ export function FormDataContextProvider({ children }) {
   const handleCreateCollectionSubmit = async (id) => {
     const updatedFormData = { ...formData.collection, user: currUser._id, pin: id }
     try {
-      await axios.post(`/api/collections/create`, updatedFormData)
+      await axios.post(`/collections/create`, updatedFormData)
     } catch(error) {
       console.log("Error creating collection: ", error)
     }

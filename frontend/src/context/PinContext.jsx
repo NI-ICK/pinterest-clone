@@ -20,7 +20,7 @@ export function PinContextProvider({ children }) {
 
   const fetchPins = async () => {
     try {
-      const response = await axios.get(`/api/pins`)
+      const response = await axios.get(`/pins`)
       setPins(response.data)
     } catch(error) {
       console.log('Error fetching pins: ', error)
@@ -29,7 +29,7 @@ export function PinContextProvider({ children }) {
 
   const fetchPin = async (id) => {
     try {
-      const response = await axios.get(`/api/pin/${id}`)
+      const response = await axios.get(`/pin/${id}`)
       setPin(response.data)
       if(!response.data) return false
       return true
@@ -40,7 +40,7 @@ export function PinContextProvider({ children }) {
 
   const fetchPinComments = async (id) => {
     try {
-      const response = await axios.get(`/api/pin/${id}/comments`)
+      const response = await axios.get(`/pin/${id}/comments`)
       setComments(response.data.comments)
     } catch(error) {
       console.log('Error fetching comments: ', error)
@@ -49,7 +49,7 @@ export function PinContextProvider({ children }) {
 
   const fetchCreatedPins = async (id) => {
     try {
-      const response = await axios.get(`/api/pins/created`, { params: { id }})
+      const response = await axios.get(`/pins/created`, { params: { id }})
       setCreatedPins(response.data)
     } catch(error) {
       console.log('Error fetching created pins', error)
@@ -58,7 +58,7 @@ export function PinContextProvider({ children }) {
 
   const fetchSearchedPins = async (query) => {
     try {
-      const response = await axios.get(`/api/pins/search/`, { params: { query }})
+      const response = await axios.get(`/pins/search/`, { params: { query }})
       setSearchedPins(response.data)
     } catch(error) {
       console.log('Error fetching searched pins', error)
@@ -85,7 +85,7 @@ export function PinContextProvider({ children }) {
   
   const handleDeletePin = async (id) => {
     try {
-      await axios.delete(`/api/delete/pin/${id}`)
+      await axios.delete(`/delete/pin/${id}`)
       fetchPins()
     } catch(error) {
       console.log('Error deleting pin:', error)
@@ -94,7 +94,7 @@ export function PinContextProvider({ children }) {
   
   const handleLikes = async (id, action) => {
     try {
-      await axios.put(`/api/likes`, { id, action, currUser })
+      await axios.put(`/likes`, { id, action, currUser })
     } catch(error) {
       console.log("Error: ", error)
     }

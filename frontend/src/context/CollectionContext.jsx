@@ -36,7 +36,7 @@ export function CollectionContextProvider({ children }) {
 
   const fetchUserCollections = async (id) => {
     try {
-      const response = await axios.get(`/api/collections`, { params: { id }})
+      const response = await axios.get(`/collections`, { params: { id }})
       setCollections(response.data)
     } catch(error) {
       console.log("Error fetching collections: ", error)
@@ -45,7 +45,7 @@ export function CollectionContextProvider({ children }) {
 
   const fetchCollectionById = async (id) => {
     try {
-      const response = await axios.get(`/api/collections/id/${id}`)
+      const response = await axios.get(`/collections/id/${id}`)
       setCollection(response.data)
       if(!response.data) return false
       return true
@@ -56,7 +56,7 @@ export function CollectionContextProvider({ children }) {
 
   const handleCollectionAdd = async (id, pinId) => {
     try {
-      await axios.post(`/api/collections/add`, { id, pinId })
+      await axios.post(`/collections/add`, { id, pinId })
       const updatedCollection = await fetchCollectionById(id)
       setSelectedCollection(updatedCollection)
     } catch(error) {
@@ -66,7 +66,7 @@ export function CollectionContextProvider({ children }) {
 
   const handleCollectionRemove = async (id, pinId) => {
     try {
-      await axios.post(`/api/collections/remove`, { id, pinId })
+      await axios.post(`/collections/remove`, { id, pinId })
       const updatedCollection = await fetchCollectionById(id)
       setSelectedCollection(updatedCollection)
     } catch(error) {

@@ -15,7 +15,7 @@ export function UserContextProvider({ children }) {
   
   const fetchCurrUser = async () => {
     try {
-      const response = await axios.get(`/api/currUser`, { withCredentials: true })
+      const response = await axios.get(`/currUser`, { withCredentials: true })
       setCurrUser(response.data)
     } catch (error) {
       console.log(error)
@@ -24,7 +24,7 @@ export function UserContextProvider({ children }) {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`/api/users`)
+      const response = await axios.get(`/users`)
       setUsers(response.data)
     } catch (error) {
       console.log(error)
@@ -33,7 +33,7 @@ export function UserContextProvider({ children }) {
 
   const fetchUser = async (username) => {
     try {
-      const response = await axios.get(`/api/user`, { params: { username }})
+      const response = await axios.get(`/user`, { params: { username }})
       setUser(response.data)
       if(!response.data) return false
       return true
@@ -44,7 +44,7 @@ export function UserContextProvider({ children }) {
 
   const logoutUser = async () => {
     try {
-      await axios.get(`/api/logout`)
+      await axios.get(`/logout`)
       setCurrUser(null)
     } catch (error) {
       console.log(error)
@@ -54,7 +54,7 @@ export function UserContextProvider({ children }) {
   const handleDeleteUser = async () => {
     try {
       logoutUser()
-      await axios.delete(`/api/delete/user/${currUser._id}`)
+      await axios.delete(`/delete/user/${currUser._id}`)
       fetchUsers()
     } catch(error) {
       console.log('Error deleting user:', error)

@@ -39,9 +39,9 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use(pinRoutes)
-app.use(usersRoutes)
-app.use(collectionRoutes)
+app.use('/api', pinRoutes)
+app.use('/api', usersRoutes)
+app.use('/api', collectionRoutes)
 
 if(process.env.NODE_ENV === 'development') {
   const options = {
