@@ -33,6 +33,7 @@ app.use(session({
   cookie: {
     maxAge: 1000 * 60 * 60 * 5, // 5 h
     secure: true,
+    sameSite: 'Lax',
   }
 }))
 app.use(passport.initialize())
