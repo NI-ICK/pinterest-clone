@@ -10,9 +10,6 @@ const isLocal = process.env.NODE_ENV === 'development';
 
 export default defineConfig({
   plugins: [react()],
-  build: {
-    outDir: 'build',
-  },
   server: {
     port: 3000,
     https: isLocal ? {
