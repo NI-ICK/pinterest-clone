@@ -12,7 +12,8 @@ const MongoStore = require('connect-mongo')
 const https = require('https')
 const fs = require('fs')
 
-const db = `mongodb+srv://Admin:${process.env.DB_PASS}@pins.m5wwv9v.mongodb.net/?retryWrites=true&w=majority&appName=Pins`
+
+const db = `mongodb+srv://Admin:${process.env.DB_PASS}@main.5ak1f4t.mongodb.net/?retryWrites=true&w=majority&appName=Main`
 mongoose.connect(db)
 const app = express()
 
