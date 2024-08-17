@@ -12,7 +12,6 @@ const MongoStore = require('connect-mongo')
 const https = require('https')
 const fs = require('fs')
 
-
 const db = process.env.MONGODB_URI
 mongoose.connect(db)
 const app = express()
@@ -35,7 +34,6 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 5, // 5 h
     secure: true,
     sameSite: 'strict',
-    domain: process.env.SITE_URL,
     path: '/',  
   }
 }))
