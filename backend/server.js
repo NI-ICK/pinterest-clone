@@ -34,6 +34,8 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 5, // 5 h
     secure: true,
     sameSite: 'Lax',
+    domain: process.env.SITE_URL,
+    path: '/',  
   }
 }))
 app.use(passport.initialize())
