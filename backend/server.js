@@ -13,7 +13,7 @@ const https = require('https')
 const fs = require('fs')
 
 
-const db = `mongodb+srv://Admin:${process.env.DB_PASS}@main.5ak1f4t.mongodb.net/?retryWrites=true&w=majority&appName=Main`
+const db = process.env.MONGODB_URI
 mongoose.connect(db)
 const app = express()
 
