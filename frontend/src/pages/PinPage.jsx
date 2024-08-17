@@ -183,9 +183,9 @@ export function PinPage() {
                       <p><Link to={comment.user ? `/${comment.user.username}` : null}>{comment.user ? comment.user.username : 'User Deleted'}</Link>{comment.content}</p>
                       <div className="commentDetails">
                         <div className='date'><FormatDate postDate={comment.createdAt}/></div>
-                        <p className="replyBtn" onClick={() => setShowReply(index)}>Reply</p>
+                        <p className="replyBtn" onClick={() => currUser ? setShowReply(index) : null}>Reply</p>
                         <div 
-                          onClick={() => handleLikeClick(comment._id, comment.likes)}
+                          onClick={() => currUser ? handleLikeClick(comment._id, comment.likes) : null}
                           className={`likes ${comment.likes.includes(currUser._id) ? 'liked' : ''}`}>
                           <LikeIcon />
                           <p>{comment.likes.length}</p>
