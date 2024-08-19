@@ -146,7 +146,7 @@ export function FormDataContextProvider({ children }) {
       })
       console.log(response)
       localStorage.setItem('token', response.data.token)
-      setCurrUser(response.data)
+      setCurrUser(response.data.user)
       setIsUserFetched(true)
     } catch (error) {
       setPopupText(error.response.data.message)
