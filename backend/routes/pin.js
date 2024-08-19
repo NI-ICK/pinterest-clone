@@ -54,6 +54,7 @@ router.post('/createPin', upload.single('image'), async (req, res) => {
     const pin = new Pin({
       title: req.body.title,
       image: result.secure_url, 
+      imageId: result.public_id,
       description: req.body.description,
       tags: req.body.tags,
       user: req.body.user,
@@ -145,6 +146,7 @@ router.delete('/delete/pin/:id', async (req, res) => {
         path: 'comments',
         populate: { path: 'replies' }
       })
+    await cloudinary.uploader.destroy(pin.imageId)
 
     for (const comment of pin.comments) {
       for (const reply of comment.replies) {

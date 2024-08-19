@@ -144,6 +144,8 @@ export function FormDataContextProvider({ children }) {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true
       })
+      console.log(response)
+      localStorage.setItem('token', response.data.token)
       setCurrUser(response.data)
       setIsUserFetched(true)
     } catch (error) {

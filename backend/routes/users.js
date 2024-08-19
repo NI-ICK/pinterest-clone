@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const passport = require('passport')
 const multer = require('multer')
 const { User, Collection } = require('../model/User')
 const bcrypt = require('bcrypt')
 require('dotenv').config()
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
+const jwt = require('jsonwebtoken')
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -54,6 +54,7 @@ router.put('/editUser', upload.single('photo'), async (req, res) => {
 
     const updateFields = {}
     if(req.file) updateFields.photo = result.secure_url
+    if(req.file) updateFields.imageId = result.public_id
     if(req.body.username) updateFields.username = req.body.username 
     if(req.body.password) updateFields.password = await bcrypt.hash(req.body.password, 10)
     if(req.body.email) updateFields.email = req.body.email
@@ -61,20 +62,39 @@ router.put('/editUser', upload.single('photo'), async (req, res) => {
     if(req.body.lastName) updateFields.lastName = req.body.lastName
     if(req.body.about) updateFields.about = req.body.about
     const user = await User.findById(req.body.user)
+    if(user.imageId) await cloudinary.uploader.destroy(user.imageId)
     await user.updateOne({ $set: updateFields })
     res.status(200).json(user)
-    console.log(user)
   } catch(error) {
     res.status(500).json({ message: error.message })  
   }
 })
 
+const generateToken = (user) => {
+  return jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '5h' })
+}
+
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+
+  if (!token) return res.status(200).json(null)
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403)
+    req.user = user
+    next()
+  })
+}
+
 router.post('/register', async (req, res) => {
   try {
     const checkEmail = await User.findOne({ email: req.body.email })
     if(checkEmail) return res.status(401).json({ message: 'Account with that email already exists' })
+
     const checkUsername = await User.findOne({ username: req.body.username })
     if(checkUsername) return res.status(401).json({ message: 'Account with that username already exists' })
+
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     const user = new User({
       username: req.body.username,
@@ -82,46 +102,31 @@ router.post('/register', async (req, res) => {
       email: req.body.email
     })
     await user.save()
-    res.status(201).json(user)
+    const token = generateToken(user)
+    res.status(201).json({ user, token })
   } catch(error) {
     res.status(500).json({ message: error.moessage })
   }
 })
 
-router.post('/login', (req, res, next) => {
+router.post('/login', async (req, res) => {
   try {
-    passport.authenticate('local', (error, user, info) => {
-      if (error) throw error
-      if (!user) return res.status(401).json({ message: info.message })
-  
-      req.logIn(user, (error) => {
-        if (error) return next(error)
-        return res.json(user)
-      })
-    })(req, res, next) 
+    const user = await User.findOne({ email: req.body.email })
+    if (!user) return res.status(401).json({ message: 'Invalid email' })
+
+    const isMatch = await bcrypt.compare(req.body.password, user.password)
+    if (!isMatch) return res.status(401).json({ message: 'Invalid password' })
+
+    const token = generateToken(user)
+    res.status(200).json({ token })
   } catch(error) {
     res.status(500).json({ message: error.message })
   }
 })
 
-router.get('/logout', (req, res) => {
+router.get('/currUser', authenticateToken, async (req, res) => {
   try {
-    req.logout((error) => {
-      if (error) {
-        console.error('Logout error:', error)
-        return res.status(500).json({ message: error.message })
-      }
-      res.status(200).json({ message: 'Logged out successfully' })
-    })
-  } catch(error) {
-    res.status(500).json({ message: error.message })
-  }
-})
-
-router.get('/currUser', (req, res) => {
-  try {
-    if (!req.user) return res.status(200).json(req.user)
-    const { password, email, ...user } = req.user._doc
+    const user = await User.findById(req.user.id).select('-password -email')
     res.status(200).json(user)
   } catch(error) {
     res.status(500).json({ message: error.message })
@@ -149,6 +154,7 @@ router.get('/users', async (req, res) => {
 router.delete('/delete/user/:id', async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
+    await cloudinary.uploader.destroy(user.imageId)
     const collectionIds = user.collections
     await Collection.deleteMany({ _id: { $in: collectionIds } })
     await user.deleteOne()

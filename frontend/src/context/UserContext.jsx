@@ -8,14 +8,19 @@ export function useUserContext() {
 }
 
 export function UserContextProvider({ children }) {
-  const [currUser, setCurrUser] = useState({ username: null })
+  const [currUser, setCurrUser] = useState(null)
   const [users, setUsers] = useState([])
   const [user, setUser] = useState(null)
   const noUserImgUrl = 'https://res.cloudinary.com/dzg5ek6qa/image/upload/v1723557462/noPhoto_pmhtnl.jpg'
   
   const fetchCurrUser = async () => {
     try {
-      const response = await axios.get(`/currUser`, { withCredentials: true })
+      const config = { withCredentials: true }
+      const token = localStorage.getItem('token')
+      
+      if(token) config.headers = { 'Authorization': `Bearer ${token}` }
+
+      const response = await axios.get(`/currUser`, config)
       setCurrUser(response.data)
     } catch (error) {
       console.log(error)
@@ -44,7 +49,7 @@ export function UserContextProvider({ children }) {
 
   const logoutUser = async () => {
     try {
-      await axios.get(`/logout`)
+      localStorage.removeItem('token')
       setCurrUser(null)
     } catch (error) {
       console.log(error)
