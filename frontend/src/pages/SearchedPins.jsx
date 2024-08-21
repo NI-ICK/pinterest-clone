@@ -4,6 +4,7 @@ import { Pin } from '../components/Pin'
 import { useParams } from "react-router-dom"
 import { useCollectionContext } from "../context/CollectionContext"
 import { useUserContext } from "../context/UserContext"
+import { CreateCollection } from "../components/CreateCollection"
 
 export function SearchedPins() {
   const { searchedPins, adjustGridRows, fetchSearchedPins } = usePinContext()
@@ -25,7 +26,7 @@ export function SearchedPins() {
   }, [imagesLoaded, searchedPins])
 
   const loadData = async () => {
-    if(!currUser.username) {
+    if(!currUser) {
       await fetchCurrUser()
       setIsUserFetched(true)
     }
@@ -53,6 +54,7 @@ export function SearchedPins() {
 
   return (
     <>
+    <CreateCollection />
     <div className="pins">
       {searchedPins && searchedPins.map((pin, index) => (
         <Pin 

@@ -3,16 +3,19 @@ import { useCollectionContext } from "../context/CollectionContext"
 import { useEffect, useState } from "react"
 import { Pin } from "../components/Pin"
 import { usePinContext } from "../context/PinContext"
+import { useUserContext } from "../context/UserContext"
 
 export function CollectionPage() {
   const { id } = useParams()
   const { fetchCollectionById, collection } = useCollectionContext()
   const { adjustGridRows } = usePinContext()
+  const { currUser, fetchCurrUser } = useUserContext()
   const [loading, setLoading] = useState(true)
   const [imagesLoaded, setImagesLoaded] = useState(0)
   const navigate = useNavigate()
 
   const loadData = async () => {
+    if(!currUser) await fetchCurrUser()
     const foundCol = await fetchCollectionById(id)
     if(!foundCol) return navigate('/404')
     setLoading(false)
@@ -42,7 +45,7 @@ export function CollectionPage() {
           <Pin 
             key={pin._id}
             pin={pin}
-            index={index}
+            index={index + 1}
             onLoad={handleImageLoad} 
           />
         ))}

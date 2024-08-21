@@ -1,6 +1,7 @@
 import { usePinContext } from "../context/PinContext"
 import { Pin } from '../components/Pin'
 import { useEffect, useState } from "react"
+import { CreateCollection } from "../components/CreateCollection"
 
 export function CreatedPins() {
   const { createdPins, adjustGridRows } = usePinContext()
@@ -18,6 +19,7 @@ export function CreatedPins() {
   
   return (
     <>
+    <CreateCollection />
     <div className="pins" >
     {createdPins.map((pin, index) => (
       <Pin 

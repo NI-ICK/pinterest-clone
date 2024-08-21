@@ -8,7 +8,7 @@ import { XIcon } from "../assets/XIcon"
 
 export function SavedPins() {
   const { adjustGridRows } = usePinContext()
-  const { collections, setShowCreateCol, noColImgUrl } = useCollectionContext()
+  const { collections, setShowCreateCol, noColImgUrl, setSelectedPinId } = useCollectionContext()
   const [imagesLoaded, setImagesLoaded] = useState(0)
   const navigate = useNavigate()
 
@@ -25,7 +25,10 @@ export function SavedPins() {
   return (
     <>
     <CreateCollection />
-    <button className='createColBtn' onClick={() => setShowCreateCol(true)}><XIcon color='grey'/></button>
+    <button className='createColBtn' onClick={() => {
+      setSelectedPinId(null)
+      setShowCreateCol(true)
+      }}><XIcon color='grey'/></button>
     <div className="userCollections">
       {collections.slice(1).map((collection, index) => (
         <div key={index} className="userCollection" onClick={() => navigate(`/collection/${collection._id}`)}>

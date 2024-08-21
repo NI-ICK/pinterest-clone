@@ -1,45 +1,26 @@
-import { useLocation } from "react-router-dom"
 import { useCollectionContext } from "../context/CollectionContext"
 import { useEffect, useState } from "react"
 import { XIcon } from "../assets/XIcon"
+import { usePinContext } from "../context/PinContext"
 
 export function CollectionsModal() {
   const { collections, setSelectedCollection, showColModal, setShowCreateCol, modalRef, noColImgUrl } = useCollectionContext()
-  const location = useLocation()
-  const path = location.pathname
+  const { pinModal } = usePinContext()
   const [style, setStyle] = useState()
   const styleBase = {
     top: '60px',
     left: '50%',
     transform: 'translateX(-50%)',
-    position: "absolute",
-    backgroundColor: "white",
-    padding: "1em",
-    zIndex: 1000,
-    width: '320px',
-    height: '400px',
-    boxShadow: '0px 0px 8px 0px rgba(0, 0, 0, 0.3)',
-    borderRadius: '24px',
-    color: 'black',
   }
   const stylePin = {
     right: '-50px',
     top: '70px',
-    position: "absolute",
-    backgroundColor: "white",
-    padding: "1em",
-    zIndex: 1000,
-    width: '320px',
-    height: '400px',
-    boxShadow: '0px 0px 8px 0px rgba(0, 0, 0, 0.3)',
-    borderRadius: '24px',
-    color: 'black',
   }
-
+  
   useEffect(() => {
-    setStyle(styleBase)
-    if(path.startsWith('/pin/')) setStyle(stylePin)
-  }, [location])
+    if(!pinModal) setStyle(styleBase)
+    if(pinModal) setStyle(stylePin)
+  }, [pinModal])
 
   return (
     <>

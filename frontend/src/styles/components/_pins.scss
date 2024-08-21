@@ -330,8 +330,15 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
-
+  position: absolute;
+  background-color: white;
+  padding: 1em;
+  z-index: 1000;
+  width: 320px;
+  height: 400px;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 24px;
+  color: black;
 }
 
 .colTitle {
@@ -414,4 +421,13 @@
 
 .hoverOptions {
   padding-bottom: 20px;
+}
+
+.similarPins {
+  h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
 }

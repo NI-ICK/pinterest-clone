@@ -1,7 +1,6 @@
-import { useContext, createContext, useState, useEffect } from "react"
+import { useContext, createContext, useState } from "react"
 import axios from "axios"
 import { useUserContext } from "./UserContext"
-import { useNavigate } from "react-router-dom"
 
 const PinContext = createContext()
 
@@ -16,7 +15,8 @@ export function PinContextProvider({ children }) {
   const [createdPins, setCreatedPins] = useState([])
   const [searchedPins, setSearchedPins] = useState([])
   const [comments, setComments] = useState([])
-  const navigate = useNavigate()
+  const [similarPins, setSimilarPins] = useState([])
+  const [pinModal, setPinModal] = useState(false)
 
   const fetchPins = async () => {
     try {
@@ -62,6 +62,15 @@ export function PinContextProvider({ children }) {
       setSearchedPins(response.data)
     } catch(error) {
       console.log('Error fetching searched pins', error)
+    }
+  }
+
+  const fetchSimilarPins = async (id) => {
+    try {
+      const response = await axios.get(`/pins/similar/`, { params: { id }})
+      setSimilarPins(response.data)
+    } catch(error) {
+      console.log('Error fetching similar pins', error)
     }
   }
 
@@ -116,7 +125,12 @@ export function PinContextProvider({ children }) {
       searchedPins,
       fetchSearchedPins,
       setSearchedPins,
-      comments
+      comments,
+      setComments,
+      similarPins,
+      fetchSimilarPins,
+      setPinModal,
+      pinModal
       }}>
       {children}
     </PinContext.Provider>

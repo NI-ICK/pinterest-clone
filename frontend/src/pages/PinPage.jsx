@@ -1,5 +1,5 @@
 import { usePinContext } from '../context/PinContext'
-import { useNavigate, useParams, Link } from 'react-router-dom'
+import { useNavigate, useParams, Link, useLocation } from 'react-router-dom'
 import { useUserContext } from '../context/UserContext'
 import { useEffect, useState, useRef } from 'react'
 import { useFormDataContext } from '../context/FormDataContext'
@@ -11,13 +11,14 @@ import { useCollectionContext } from '../context/CollectionContext'
 import { CollectionsModal } from '../components/CollectionsModal'
 import { CreateCollection } from '../components/CreateCollection'
 import { ArrowDownIcon } from '../assets/ArrowDownIcon'
+import { Pin } from '../components/Pin'
 
 export function PinPage() {
   const { id } = useParams()
-  const { pins, fetchPin, pin, handleLikes, fetchPinComments, comments } = usePinContext()
+  const { pins, fetchPin, pin, handleLikes, fetchPinComments, comments, fetchSimilarPins, similarPins, adjustGridRows, setPinModal, pinModal, setComments } = usePinContext()
   const { users, currUser, fetchUsers, fetchCurrUser, noUserImgUrl } = useUserContext()
   const { formData, handleCommentChange, handleCommentSubmit, formFilled, setFormData } = useFormDataContext()
-  const { selectedCollection, setShowColModal, handleCollectionAdd, handleCollectionRemove, fetchUserCollections, setSelectedCollection, collections } = useCollectionContext()
+  const { selectedCollection, setSelectedPinId, setShowColModal, handleCollectionAdd, handleCollectionRemove, fetchUserCollections, setSelectedCollection, collections } = useCollectionContext()
   const navigate = useNavigate()
   const modal = useRef()
   const replyInput = useRef()
@@ -29,6 +30,8 @@ export function PinPage() {
   const [areCollectionsFetched, setAreCollectionsFetched] = useState(false)
   const [isCurrUserFetched, setIsCurrUserFetched] = useState(false)
   const [colLoading, setColLoading] = useState(false)
+  const [imagesLoaded, setImagesLoaded] = useState(0)
+  const location = useLocation()
 
   const loadData = async () => {
     await fetchUsers()
@@ -36,6 +39,7 @@ export function PinPage() {
     const pinFetched = await fetchPin(id)
     if(!pinFetched) return navigate('/404')
     await fetchPinComments(id)
+    await fetchSimilarPins(id)
     setIsCurrUserFetched(true)
   }
 
@@ -45,6 +49,16 @@ export function PinPage() {
       setAreCollectionsFetched(true)
     }
   }
+
+  useEffect(() => {
+    if(location.pathname.startsWith('/pin/')) {
+      setImagesLoaded(0)
+      setLoading(true)
+      setAreCollectionsFetched(false)
+      setIsCurrUserFetched(false)
+      loadData()
+    }
+  }, [location])
 
   useEffect(() => {
     loadCollectionData()
@@ -58,16 +72,13 @@ export function PinPage() {
   }, [areCollectionsFetched])
 
   useEffect(() => {
-    loadData()
-  }, [])
-
-  useEffect(() => {
     if (!loading) {
       if(pin) setPinUser(pin.user ? users.find(user => user.username === pin.user.username) : { username: 'User Deleted' })
     }
   }, [loading, pins, users])
 
   const formSubmit = async (e) => {
+    setShowReply(false)
     e.preventDefault()
     await handleCommentSubmit()
     await fetchPinComments(id)
@@ -136,6 +147,16 @@ export function PinPage() {
     setColLoading(false)
   }
 
+  const handleImageLoad = () => {
+    setImagesLoaded(prev => prev + 1)
+  }
+
+  useEffect(() => {
+    if (!loading && imagesLoaded === similarPins.length) {
+      adjustGridRows()
+    }
+  }, [loading, imagesLoaded, similarPins])
+
   if(!pin) return null
 
   return (
@@ -143,14 +164,22 @@ export function PinPage() {
     <CreateCollection />
     <DeletePin showModal={showModal} modal={modal} id={id} setShowModal={setShowModal}/>
     {!loading &&
-      <div className="pinPageBackground">
+    <>
+      <div className="pinPageBackground" 
+      onMouseEnter={() => setPinModal(true)}
+      onMouseLeave={() => {
+        setPinModal(false)
+        setShowColModal(false)
+        }}>
         <div className="pinContainer">
           <img src={pin.image} className='pinImg'/>
           <div className="pinDetails">
-            <CollectionsModal />
+            {pinModal && <CollectionsModal />}
             <div className="detailsTop">
               {currUser &&
-              <div className="collectionsBtn" onClick={() => setShowColModal(true)}>
+              <div className="collectionsBtn" onClick={() => {
+                setSelectedPinId(id)
+                setShowColModal(true)}}>
                 <p>{selectedCollection.name}</p>
                 <ArrowDownIcon color='black' />
               </div>}
@@ -243,7 +272,23 @@ export function PinPage() {
           </div>
         </div>
       </div>
-    }
+      {similarPins.length > 0 &&
+      <div className="similarPins">
+      <h1>More to explore</h1>
+      <div className="pins">
+        {similarPins.map((pin, index) => (
+          <Pin
+            key={pin._id}
+            pin={pin}
+            index={index + 1}
+            onLoad={handleImageLoad}
+          />
+        ))}
+      </div>
+      </div>
+      }
+      </>
+}
     </>
   )
 }

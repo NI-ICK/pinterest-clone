@@ -79,7 +79,7 @@ router.get('/pins', async (req, res) => {
 
 router.get('/pins/search', async (req, res) => {
   try {
-    const { query } = req.body
+    const { query } = req.query
     const pins = await Pin.find({ 
       $or: [
         { title: new RegExp(query, 'i')},
@@ -88,6 +88,26 @@ router.get('/pins/search', async (req, res) => {
       ]
     }).populate('user', '-password -email')
     res.status(200).json(pins)
+  } catch(error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
+router.get('/pins/similar', async (req, res) => {
+  try {
+    const pin = await Pin.findById(req.query.id)
+    const { title, description, tags } = pin
+
+    const similarPins = await Pin.find({
+      $or: [
+        { tags: { $in: tags } },
+        { title: new RegExp(title, 'i')},
+        { description: new RegExp(description, 'i')},
+      ],
+      _id: { $ne: req.query.id } 
+    }).populate('user', '-password -email')
+    
+    res.status(200).json(similarPins)
   } catch(error) {
     res.status(500).json({ message: error.message })
   }

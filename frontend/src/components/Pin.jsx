@@ -38,7 +38,7 @@ export function Pin({ pin, index, onLoad }) {
   }, [selectedCollection])
 
   const handleCollectionName = () => {
-    return selectedCollection.name.length < 8 ? selectedCollection.name : selectedCollection.name.substring(0, 8 - 3) + '...'
+    return selectedCollection.name.length < 8 ? selectedCollection.name : selectedCollection.name.substring(0, 5) + '...'
   }
 
   return (
