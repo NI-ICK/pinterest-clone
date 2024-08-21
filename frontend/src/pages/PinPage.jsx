@@ -44,11 +44,16 @@ export function PinPage() {
   }
 
   const loadCollectionData = async () => {
-    if(isCurrUserFetched) {
+    if(currUser && isCurrUserFetched) {
       await fetchUserCollections(currUser._id)
       setAreCollectionsFetched(true)
     }
+    if(!currUser && isCurrUserFetched) setLoading(false)
   }
+
+  useEffect(() => {
+    loadData()
+  }, [localStorage])
 
   useEffect(() => {
     if(location.pathname.startsWith('/pin/')) {
@@ -73,7 +78,10 @@ export function PinPage() {
 
   useEffect(() => {
     if (!loading) {
-      if(pin) setPinUser(pin.user ? users.find(user => user.username === pin.user.username) : { username: 'User Deleted' })
+      if(pin) {
+        const foundUser = users.find(user => user.username === pin.user.username)
+        setPinUser(foundUser ? foundUser : { username: 'User Deleted' })
+      }
     }
   }, [loading, pins, users])
 
@@ -103,6 +111,7 @@ export function PinPage() {
   }
 
   const handleLikeClick = debounce(async (commentId, likes) => {
+    if(!currUser) return
     const isLiked = likes.includes(currUser._id)
   
     const updateCommentAndReplies = (comments) => {
@@ -183,7 +192,7 @@ export function PinPage() {
                 <p>{selectedCollection.name}</p>
                 <ArrowDownIcon color='black' />
               </div>}
-              {pinUser.username === currUser.username ? 
+              {currUser && pinUser._id === currUser._id ? 
               <button className='greyBtn' onClick={() => setShowModal(!showModal)}>Delete</button> : null}
               {currUser &&
               <button 
@@ -215,7 +224,7 @@ export function PinPage() {
                         <p className="replyBtn" onClick={() => currUser ? setShowReply(index) : null}>Reply</p>
                         <div 
                           onClick={() => currUser ? handleLikeClick(comment._id, comment.likes) : null}
-                          className={`likes ${comment.likes.includes(currUser._id) ? 'liked' : ''}`}>
+                          className={`likes ${currUser && comment.likes.includes(currUser._id) ? 'liked' : ''}`}>
                           <LikeIcon />
                           <p>{comment.likes.length}</p>
                         </div>
@@ -246,7 +255,7 @@ export function PinPage() {
                           <div className='date'><FormatDate postDate={reply.createdAt}/></div>
                           <div 
                               onClick={() => handleLikeClick(reply._id, reply.likes)}
-                              className={`likes ${reply.likes.includes(currUser._id) ? 'liked' : ''}`}>
+                              className={`likes ${currUser && reply.likes.includes(currUser._id) ? 'liked' : ''}`}>
                             <LikeIcon />
                             <p>{reply.likes.length}</p>
                           </div>

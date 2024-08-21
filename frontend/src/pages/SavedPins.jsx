@@ -5,10 +5,12 @@ import { useCollectionContext } from "../context/CollectionContext"
 import { useNavigate } from "react-router-dom"
 import { CreateCollection } from "../components/CreateCollection"
 import { XIcon } from "../assets/XIcon"
+import { useUserContext } from "../context/UserContext"
 
 export function SavedPins() {
   const { adjustGridRows } = usePinContext()
   const { collections, setShowCreateCol, noColImgUrl, setSelectedPinId } = useCollectionContext()
+  const { user, currUser } = useUserContext()
   const [imagesLoaded, setImagesLoaded] = useState(0)
   const navigate = useNavigate()
 
@@ -25,10 +27,10 @@ export function SavedPins() {
   return (
     <>
     <CreateCollection />
-    <button className='createColBtn' onClick={() => {
+    {currUser && currUser._id === user._id && <button className='createColBtn' onClick={() => {
       setSelectedPinId(null)
       setShowCreateCol(true)
-      }}><XIcon color='grey'/></button>
+      }}><XIcon color='grey'/></button>}
     <div className="userCollections">
       {collections.slice(1).map((collection, index) => (
         <div key={index} className="userCollection" onClick={() => navigate(`/collection/${collection._id}`)}>

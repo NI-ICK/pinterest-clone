@@ -34,7 +34,7 @@ export function SearchedPins() {
   }
 
   const loadColData = async () => {
-    if(isUserFetched) {
+    if(currUser && isUserFetched) {
       await fetchUserCollections(currUser._id)
       setAreCollectionsFetched(true)
     }
