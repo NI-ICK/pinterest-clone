@@ -52,6 +52,7 @@ export function PinPage() {
   }
 
   useEffect(() => {
+    setLoading(true)
     loadData()
   }, [localStorage])
 
