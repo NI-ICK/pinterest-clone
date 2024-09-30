@@ -1,18 +1,21 @@
+require('dotenv').config()
 const express = require('express')
 const router = express.Router()
 const multer = require('multer')
 const { User, Collection } = require('../model/User')
 const bcrypt = require('bcrypt')
-require('dotenv').config()
-const cloudinary = require('cloudinary').v2
-const streamifier = require('streamifier')
 const jwt = require('jsonwebtoken')
+const { S3Client, DeleteObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3')
+const sharp = require('sharp')
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-})
+const removeFromBucket = async (objectKey) => {
+    const command = new DeleteObjectCommand({
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: objectKey,
+    })
+    
+    await s3Client.send(command)
+}
 
 const fileFilter = (req, file, cb) => {
   if(file.mimetype.startsWith('image/')) {
@@ -22,39 +25,46 @@ const fileFilter = (req, file, cb) => {
   }
 }
 
-const storage = multer.memoryStorage()
+const s3Client = new S3Client({
+    region: process.env.AWS_REGION,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
+})
 
 const upload = multer({ 
-  storage: storage, 
-  limits: {
-    fileSize: 1024 * 1024 * 10 // 10 MB
-  },
-  fileFilter: fileFilter
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: 1024 * 1024 * 5 // 5 MB
+    },
+    fileFilter: fileFilter
 })
+
+const optimiseImage = async (buffer) => {
+    const image = sharp(buffer)
+    const metadata = await image.metadata()
+
+    if(metadata.hasAlpha) return image.png({ compressionLevel: 9, quality: 80 }).toBuffer()
+    return image.webp({ quality: 80 }).toBuffer()
+}
 
 router.put('/editUser', upload.single('photo'), async (req, res) => {
   try {
-    const streamUpload = (buffer) => {
-      return new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { folder: 'photos', resource_type: 'image' },
-          (error, result) => {
-            if (result) {
-              resolve(result)
-            } else {
-              reject(error)
-            }
-          }
-        )
-        streamifier.createReadStream(buffer).pipe(stream)
-      })
-    }
+    const optimisedBuffer = await optimiseImage(req.file.buffer)
+    const fileKey = `profile/${Date.now().toString()}-${req.file.originalname.split('.').slice(0, -1).join('.')}`
 
-    const result = await streamUpload(req.file.buffer)
+    await s3Client.send(
+        new PutObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: fileKey,
+            Body: optimisedBuffer,
+            ContentType: req.file.mimetype,
+    }))
 
     const updateFields = {}
-    if(req.file) updateFields.photo = result.secure_url
-    if(req.file) updateFields.imageId = result.public_id
+    if(req.file) updateFields.photo = `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${fileKey}`
+    if(req.file) updateFields.imageId = fileKey
     if(req.body.username) updateFields.username = req.body.username 
     if(req.body.password) updateFields.password = await bcrypt.hash(req.body.password, 10)
     if(req.body.email) updateFields.email = req.body.email
@@ -62,7 +72,7 @@ router.put('/editUser', upload.single('photo'), async (req, res) => {
     if(req.body.lastName) updateFields.lastName = req.body.lastName
     if(req.body.about) updateFields.about = req.body.about
     const user = await User.findById(req.body.user)
-    if(user.imageId) await cloudinary.uploader.destroy(user.imageId)
+    if(user.imageId) await removeFromBucket(user.imageId)
     await user.updateOne({ $set: updateFields })
     res.status(200).json(user)
   } catch(error) {
@@ -154,7 +164,7 @@ router.get('/users', async (req, res) => {
 router.delete('/delete/user/:id', async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
-    await cloudinary.uploader.destroy(user.imageId)
+    if(user.imageId) await removeFromBucket(user.imageId)
     const collectionIds = user.collections
     await Collection.deleteMany({ _id: { $in: collectionIds } })
     await user.deleteOne()
@@ -163,6 +173,5 @@ router.delete('/delete/user/:id', async (req, res) => {
     res.status(500).json({ message: error.message })
   }
 })
-
 
 module.exports = router

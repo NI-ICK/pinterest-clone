@@ -94,12 +94,7 @@
     padding: 10px 16px;
     border: 2px solid $dark-grey;
     border-radius: 16px;
-    outline: none;
     resize: none;
-
-    &:focus {
-      border: 3px solid $light-blue;
-    }
   }
 }
 
@@ -135,6 +130,7 @@
 .settings {
   display: flex;
   align-items: start;
+  text-wrap: nowrap;
 
   p {
     margin-bottom: 30px;
@@ -158,13 +154,13 @@
     cursor: pointer;
     color: black;
 
-    &.active:after {
-      display: block;
+    &.active::after {
       content: '';
       height: 3px;
       background-color: black;
       position: absolute;
       right: 10px;
+      bottom: 0;
       left: 10px;
     }
    

@@ -43,7 +43,7 @@ export function CreatePin() {
       <form onSubmit={formSubmit} className="fInput">
         <div className="formHeader">
           <h2>Create Pin</h2>
-          <button type="submit" className="redBtn">Publish</button>
+          <button type="submit" className="redBtn" tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>Publish</button>
         </div>
         <div className="formInputs">
           <Dropzone />

@@ -32,7 +32,7 @@ if(process.env.NODE_ENV === 'development') {
 
   https.createServer(options, app).listen(process.env.PORT, '0.0.0.0', () => console.log(`Server running on port ${process.env.PORT}`))
 } else {
-  app.listen(process.env.PORT, '0.0.0.0', () => console.log(`Server running on port ${process.env.PORT}`))
+  app.listen(process.env.PORT, '0.0.0.0', () => console.log(`Secure server running on port ${process.env.PORT}`))
 }
 
 module.exports = app

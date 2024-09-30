@@ -74,22 +74,14 @@ export function PinContextProvider({ children }) {
     }
   }
 
-  const adjustGridRows = () => {
-    const allPins = document.querySelectorAll('.pin')
+  const adjustGridRows= (e) => {
+    const pin = e.target.parentElement.parentElement.parentElement
+    const pinImg = e.target.height
+    const title = pin.querySelector('.pinTitle')
 
-    allPins.forEach(pin => {
-      const img = pin.querySelector('img')
-      const title = pin.querySelector('.pinTitle')
-      img.addEventListener('load', () => {
-        const pinHeight = img.clientHeight + title.clientHeight + 10
-        const rowHeight = 10
-        const rowSpan = Math.ceil(pinHeight / rowHeight)
-        pin.style.gridRowEnd = `span ${rowSpan}`
-      })
-      if (img.complete) {
-        img.dispatchEvent(new Event('load'));
-      }
-    })
+    const pinHeight = pinImg + title.clientHeight + 10
+    const rowSpan = Math.ceil(pinHeight / 10)
+    pin.style.gridRowEnd = `span ${rowSpan}`
   }  
   
   const handleDeletePin = async (id) => {

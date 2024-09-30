@@ -15,7 +15,7 @@ import { Pin } from '../components/Pin'
 
 export function PinPage() {
   const { id } = useParams()
-  const { pins, fetchPin, pin, handleLikes, fetchPinComments, comments, fetchSimilarPins, similarPins, adjustGridRows, setPinModal, pinModal, setComments } = usePinContext()
+  const { pins, fetchPin, pin, handleLikes, fetchPinComments, comments, fetchSimilarPins, similarPins, setPinModal, pinModal, setComments } = usePinContext()
   const { users, currUser, fetchUsers, fetchCurrUser, noUserImgUrl } = useUserContext()
   const { formData, handleCommentChange, handleCommentSubmit, formFilled, setFormData } = useFormDataContext()
   const { selectedCollection, setSelectedPinId, setShowColModal, handleCollectionAdd, handleCollectionRemove, fetchUserCollections, setSelectedCollection, collections } = useCollectionContext()
@@ -30,7 +30,6 @@ export function PinPage() {
   const [areCollectionsFetched, setAreCollectionsFetched] = useState(false)
   const [isCurrUserFetched, setIsCurrUserFetched] = useState(false)
   const [colLoading, setColLoading] = useState(false)
-  const [imagesLoaded, setImagesLoaded] = useState(0)
   const location = useLocation()
 
   const loadData = async () => {
@@ -58,7 +57,6 @@ export function PinPage() {
 
   useEffect(() => {
     if(location.pathname.startsWith('/pin/')) {
-      setImagesLoaded(0)
       setLoading(true)
       setAreCollectionsFetched(false)
       setIsCurrUserFetched(false)
@@ -67,8 +65,8 @@ export function PinPage() {
   }, [location])
 
   useEffect(() => {
-    loadCollectionData()
-  }, [isCurrUserFetched])
+    if(isCurrUserFetched) loadCollectionData()
+  }, [isCurrUserFetched, currUser])
 
   useEffect(() => {
     if(areCollectionsFetched) {
@@ -80,7 +78,7 @@ export function PinPage() {
   useEffect(() => {
     if (!loading) {
       if(pin) {
-        const foundUser = users.find(user => user.username === pin.user.username)
+        const foundUser = pin.user && users.find(user => user.username === pin.user.username)
         setPinUser(foundUser ? foundUser : { username: 'User Deleted' })
       }
     }
@@ -140,7 +138,7 @@ export function PinPage() {
   }, [showReply])
 
   useEffect(() => {
-    if(selectedCollection && !colLoading) setSaved(selectedCollection.pins.some(p => p._id === id))
+    if(selectedCollection && !colLoading) setSaved(selectedCollection.pins && selectedCollection.pins.some(p => p._id === id))
     }, [selectedCollection])
 
   const handleBtnClick = async () => {
@@ -156,16 +154,6 @@ export function PinPage() {
     await fetchUserCollections(currUser._id)
     setColLoading(false)
   }
-
-  const handleImageLoad = () => {
-    setImagesLoaded(prev => prev + 1)
-  }
-
-  useEffect(() => {
-    if (!loading && imagesLoaded === similarPins.length) {
-      adjustGridRows()
-    }
-  }, [loading, imagesLoaded, similarPins])
 
   if(!pin) return null
 
@@ -187,9 +175,11 @@ export function PinPage() {
             {pinModal && <CollectionsModal />}
             <div className="detailsTop">
               {currUser &&
-              <div className="collectionsBtn" onClick={() => {
+              <div tabIndex={0} className="collectionsBtn" onClick={() => {
                 setSelectedPinId(id)
-                setShowColModal(true)}}>
+                setShowColModal(true)}}
+                onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}
+                >
                 <p>{selectedCollection.name}</p>
                 <ArrowDownIcon color='black' />
               </div>}
@@ -222,9 +212,10 @@ export function PinPage() {
                       <p><Link to={comment.user ? `/${comment.user.username}` : null}>{comment.user ? comment.user.username : 'User Deleted'}</Link>{comment.content}</p>
                       <div className="commentDetails">
                         <div className='date'><FormatDate postDate={comment.createdAt}/></div>
-                        <p className="replyBtn" onClick={() => currUser ? setShowReply(index) : null}>Reply</p>
+                        <p className="replyBtn" onClick={() => currUser ? setShowReply(index) : null} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>Reply</p>
                         <div 
                           onClick={() => currUser ? handleLikeClick(comment._id, comment.likes) : null}
+                          tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}
                           className={`likes ${currUser && comment.likes.includes(currUser._id) ? 'liked' : ''}`}>
                           <LikeIcon />
                           <p>{comment.likes.length}</p>
@@ -248,10 +239,10 @@ export function PinPage() {
                   {comment.replies.map((reply, index) => (
                     <div className="reply" key={index}>
                       <img
-                        src={reply.user.photo ? reply.user.photo : noUserImgUrl}
+                        src={reply.user ? reply.user.photo : noUserImgUrl}
                         onClick={() => navigate(`/${reply.user.username}`)}/>
                       <div className="replyText">
-                        <p><Link to={`/${reply.user.username}`}>{reply.user.username}</Link>{reply.content}</p>
+                        <p><Link to={reply.user && `/${reply.user.username}`}>{reply.user && reply.user.username}</Link>{reply.content}</p>
                         <div className="replyDetails">
                           <div className='date'><FormatDate postDate={reply.createdAt}/></div>
                           <div 
@@ -284,17 +275,16 @@ export function PinPage() {
       </div>
       {similarPins.length > 0 &&
       <div className="similarPins">
-      <h1>More to explore</h1>
-      <div className="pins">
-        {similarPins.map((pin, index) => (
-          <Pin
-            key={pin._id}
-            pin={pin}
-            index={index + 1}
-            onLoad={handleImageLoad}
-          />
-        ))}
-      </div>
+        <h1>More to explore</h1>
+        <div className="pins">
+            {similarPins.map((pin, index) => (
+            <Pin
+                key={pin._id}
+                pin={pin}
+                index={index + 1}
+            />
+            ))}
+        </div>
       </div>
       }
       </>

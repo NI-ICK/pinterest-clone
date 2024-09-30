@@ -3,162 +3,162 @@
 @use './abstracts/' as *;
 
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-
-  &::-webkit-scrollbar {
-    width: 6px;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
     
-  }
+    &::-webkit-scrollbar {
+        width: 6px;
+        
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: white;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: $dark-grey;
+        border-radius: 5px;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+        background: mix($dark-grey, black, 90%);
+    }
+}
 
-  &::-webkit-scrollbar-track {
-    background: white;
-  }
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
 
-  &::-webkit-scrollbar-thumb {
-    background: $dark-grey;
-    border-radius: 5px;
-  }
+input, button, textarea, select {
+    font: inherit;
+}  
 
-  &::-webkit-scrollbar-thumb:hover {
-    background: mix($dark-grey, black, 90%);
-  }
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+}
+
+#root, #__next {
+    isolation: isolate;
 }
 
 .settingsModal {
-  position: absolute;
-  top: 65px;
-  right: 10px;
-  padding: 10px;
-  width: 200px;
-  border-radius: 20px;
-  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
-  background-color: white;
-
-  * {
-    padding: 5px 10px;
-    border-radius: 12px;
-    cursor: pointer;
-  }
-
-  *:hover {
-    background-color: $light-grey;
-  }
+    position: absolute;
+    top: 65px;
+    right: 10px;
+    padding: 10px;
+    width: 200px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    
+    * {
+        padding: 5px 10px;
+        border-radius: 12px;
+        cursor: pointer;
+    }
+    
+    *:hover {
+        background-color: $light-grey;
+    }
 }
 
 .settingsBackground {
-  position: absolute;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
 }
 
 ul {
-  list-style: none;
+    list-style: none;
+}
+
+*:focus-visible {
+    outline: 3px solid $light-blue;
 }
 
 .redBtn {
-  background-color: $light-red;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 24px;
-  margin: 0px 5px;
-  cursor: pointer;
-  outline: none;
-
-  &:hover {
-    background-color: $dark-red;
-  }
-
-  &:focus {
-    outline: 3px solid $light-blue;
-  }
+    background-color: $light-red;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 24px;
+    margin: 0px 5px;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: $dark-red;
+    }
 }
 
 .greyBtn {
-  background-color: $light-grey;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 24px;
-  margin: 0px 5px;
-  cursor: pointer;
-  outline: none;
-
-  &:hover {
-    background-color: $dark-grey;
-  }
-
-  &:focus {
-    outline: 3px solid $light-blue;
-  }
+    background-color: $light-grey;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 24px;
+    margin: 0px 5px;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: $dark-grey;
+    }
 }
 
 .btnOff {
-  background-color: $light-grey;
-  color: mix($light-grey, black, 50%);
-  border: none;
-  padding: 10px 15px;
-  border-radius: 24px;
-  margin: 0px 5px;
-  outline: none;
+    background-color: $light-grey;
+    color: mix($light-grey, black, 50%);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 24px;
+    margin: 0px 5px;
 }
 
 .blackBtn {
-  background-color: black;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 24px;
-  margin: 0px 5px;
-  cursor: pointer;
-  outline: none;
-
-  &:focus {
-    outline: 3px solid $light-blue;
-  }
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 24px;
+    margin: 0px 5px;
+    cursor: pointer;
 }
 
 .fInput {
-  input:not(input[type=file]) {
-    padding: 10px 16px;
-    border: 2px solid $dark-grey;
-    border-radius: 16px;
-    outline: none;
-  
-    &:focus {
-      outline: 3px solid $light-blue;
+    input:not(input[type=file]) {
+        padding: 10px 16px;
+        border: 2px solid $dark-grey;
+        border-radius: 16px;
     }
-  }
 }
 
 .hoverOptions {
-  position: absolute;
-  padding: 0px 10px;
-  width: 100%;
-  top: 15px;
-  left: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  button {
-    margin-right: 15px;
-  }
-
-  div {
-    color: white;
-  }
+    position: absolute;
+    padding: 0px 10px;
+    width: 100%;
+    top: 15px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    button {
+        margin-right: 15px;
+    }
+    
+    div {
+        color: white;
+    }
 }
 
 .error {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }

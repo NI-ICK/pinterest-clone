@@ -7,8 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-server.cert
-server.key
+cert
 node_modules
 build
 dist

@@ -7,23 +7,13 @@ import { useUserContext } from "../context/UserContext"
 import { CreateCollection } from "../components/CreateCollection"
 
 export function SearchedPins() {
-  const { searchedPins, adjustGridRows, fetchSearchedPins } = usePinContext()
-  const [imagesLoaded, setImagesLoaded] = useState(0)
+  const { searchedPins, fetchSearchedPins } = usePinContext()
   const { collections, setSelectedCollection, fetchUserCollections } = useCollectionContext()
   const { currUser, fetchCurrUser } = useUserContext()
   const { query } = useParams()
   const [isUserFetched, setIsUserFetched] = useState(false)
   const [areCollectionsFetched, setAreCollectionsFetched] = useState(false)
 
-  const handleImageLoad = () => {
-    setImagesLoaded(prev => prev + 1)
-  }
-
-  useEffect(() => {
-    if (searchedPins && imagesLoaded === searchedPins.length) {
-      adjustGridRows()
-    }
-  }, [imagesLoaded, searchedPins])
 
   const loadData = async () => {
     if(!currUser) {
@@ -61,7 +51,6 @@ export function SearchedPins() {
           key={pin._id}
           pin={pin}
           index={index + 1}
-          onLoad={handleImageLoad}
         />
       ))}
     </div>

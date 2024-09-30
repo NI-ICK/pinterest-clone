@@ -1,12 +1,14 @@
 import { useFormDataContext } from "../context/FormDataContext"
 import { useRef, useState, useEffect } from "react"
 import { useUserContext } from "../context/UserContext"
+import { useNavigate } from "react-router-dom"
 
 export function EditProfile() {
   const { formData, handleEditUserChange, handleEditUserSubmit } = useFormDataContext()
   const { currUser, fetchCurrUser, noUserImgUrl } = useUserContext()
   const [loading, setLoading] = useState(true)
   const fileInput = useRef()
+  const navigate = useNavigate()
 
   const fetchData = async () => {
     await fetchCurrUser()
@@ -22,6 +24,7 @@ export function EditProfile() {
   }
 
   const formSubmit = (e) => {
+    navigate('/')
     e.preventDefault()
     handleEditUserSubmit()
     const form = e.target

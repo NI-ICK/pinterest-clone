@@ -8,14 +8,14 @@ export function useCollectionContext() {
 }
 
 export function CollectionContextProvider({ children }) {
-  const [collections, setCollections] = useState([])
+  const [collections, setCollections] = useState([{ name: 'Profile' }])
   const [selectedPinId, setSelectedPinId] = useState(null)
   const [selectedCollection, setSelectedCollection] = useState(null)
   const [showColModal, setShowColModal] = useState(null)
   const [showCreateCol, setShowCreateCol] = useState(false)
   const [collection, setCollection] = useState(null)
   const modalRef = useRef()
-  const noColImgUrl = 'https://res.cloudinary.com/dzg5ek6qa/image/upload/v1723557472/noCollectionImg_ujjhcl.webp'
+  const noColImgUrl = 'https://pinterest-clone-bucket.s3.eu-north-1.amazonaws.com/noCollectionImg.webp'
 
   useEffect(() => {
     if(showCreateCol || showColModal) {

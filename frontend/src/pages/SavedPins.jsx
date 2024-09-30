@@ -1,6 +1,4 @@
-import { usePinContext } from "../context/PinContext"
 import { Pin } from '../components/Pin'
-import { useEffect, useState } from "react"
 import { useCollectionContext } from "../context/CollectionContext"
 import { useNavigate } from "react-router-dom"
 import { CreateCollection } from "../components/CreateCollection"
@@ -8,21 +6,9 @@ import { XIcon } from "../assets/XIcon"
 import { useUserContext } from "../context/UserContext"
 
 export function SavedPins() {
-  const { adjustGridRows } = usePinContext()
   const { collections, setShowCreateCol, noColImgUrl, setSelectedPinId } = useCollectionContext()
   const { user, currUser } = useUserContext()
-  const [imagesLoaded, setImagesLoaded] = useState(0)
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if (imagesLoaded === collections[0].pins.length) {
-      adjustGridRows()
-    }
-  }, [imagesLoaded, collections])
-
-  const handleImageLoad = () => {
-    setImagesLoaded(prev => prev + 1)
-  }
   
   return (
     <>
@@ -47,7 +33,6 @@ export function SavedPins() {
         key={pin._id}
         pin={pin}
         index={index + 1}
-        onLoad={handleImageLoad}
       />
     ))}
     </div>

@@ -10,7 +10,7 @@ export function DeletePin({ id, modal, showModal, setShowModal }) {
   return (
     <div className="modal">
       <div className="modalContent delete" ref={modal}>
-        <p>Are you shure?</p>
+        <p>Are you sure?</p>
         <div className="buttons">
           <button className='greyBtn' onClick={() => setShowModal(false)}>Cancel</button>
           <button className='redBtn' onClick={() => {

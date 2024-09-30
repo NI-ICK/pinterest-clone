@@ -61,11 +61,11 @@ export function Navbar() {
         <Link to="/pin-creation-tool" className={createActive ? 'active' : ''}>Create</Link>
         <SearchBar />
         <div className='profileBackground' onClick={() => navigate(`/${currUser.username}`)}>
-          <div className='profile'>
+          <div className='profile' tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }} >
             <img src={currUser.photo ? currUser.photo : noUserImgUrl}/>
           </div>
         </div>
-        <div className='settingsIcon' onClick={() => setShowSettings(!showSettings)}>
+        <div className='settingsIcon' tabIndex={0} onClick={() => setShowSettings(!showSettings)} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>
           <ArrowDownIcon color='black' />
         </div>
         <SettingsWindow show={showSettings} setShow={setShowSettings}/>

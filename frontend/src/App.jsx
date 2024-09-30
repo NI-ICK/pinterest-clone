@@ -16,7 +16,7 @@ import { SearchedPins } from './pages/SearchedPins'
 import axios from 'axios'
 
 export function App() {
-  axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL
 
   return (
     <>

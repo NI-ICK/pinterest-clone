@@ -59,13 +59,13 @@
     color: black;
 
     &.active:after {
-      display: block;
       content: '';
       height: 3px;
       background-color: black;
       position: absolute;
       right: 10px;
       left: 10px;
+      bottom: 0;
     }
    
     &:hover {
