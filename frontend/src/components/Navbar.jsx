@@ -65,7 +65,7 @@ export function Navbar() {
             <img src={currUser.photo ? currUser.photo : noUserImgUrl}/>
           </div>
         </div>
-        <div className='settingsIcon' tabIndex={0} onClick={() => setShowSettings(!showSettings)} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>
+        <div className='settingsIcon' onClick={() => setShowSettings(!showSettings)} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>
           <ArrowDownIcon color='black' />
         </div>
         <SettingsWindow show={showSettings} setShow={setShowSettings}/>

@@ -90,6 +90,8 @@
 .userCollection {
   position: relative;
   cursor: pointer;
+  height: 80%;
+  border-radius: 1.1em;
  
   &:hover {
     filter: brightness(.9)
@@ -97,7 +99,7 @@
 
   p {
     position: absolute;
-    bottom: -100px;
+    bottom: -2em;
     left: 10px;
   }
 
@@ -113,21 +115,21 @@
 
 .colImg1 {
   position: absolute;
-  top: -110px;
+  top: 0;
   left: 0;
   z-index: 3;
 }
 
 .colImg2 {
   position: absolute;
-  top: -110px;
+  top: 0;
   left: 35px;
   z-index: 2;
 }
 
 .colImg3 {
   position: absolute;
-  top: -110px;
+  top: 0;
   left: 70px;
   z-index: 1;
 }

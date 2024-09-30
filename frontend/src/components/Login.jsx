@@ -26,6 +26,7 @@ export function Login({ showModal, modalRef, setShowLoginModal }) {
   return (
     <div className="modal">
       <div className="modalContent" ref={modalRef}>
+        <h1>Login</h1>
         <form onSubmit={formSubmit} className="fInput">
           <div>
             <label htmlFor='email'>E-mail</label>

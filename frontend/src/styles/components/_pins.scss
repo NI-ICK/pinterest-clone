@@ -224,8 +224,13 @@
     gap: 55px;
 }
 
-.replyBtn {
+.commentBtn {
     color: grey;
+    cursor: pointer;    
+
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .commentDetails {
@@ -297,6 +302,19 @@
     justify-content: flex-end;
 }
 
+.optionsIcon {
+    border-radius: 50%;
+    padding: 0.5em;
+    cursor: pointer;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: auto;
+
+    &:hover {
+        background-color: $light-grey;
+    }
+}
+
 .info {
     margin-top: auto;
     margin-bottom: 50px;
@@ -324,6 +342,7 @@
     justify-content: center;
     border-radius: 2em;
     padding: 0.4em;
+    cursor: pointer;
 
     button {
         margin-left: auto;

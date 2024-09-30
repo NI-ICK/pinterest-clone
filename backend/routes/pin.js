@@ -76,6 +76,22 @@ router.post('/createPin', upload.single('image'), async (req, res) => {
     }
 })
 
+router.put('/editPin/:id', async (req, res) => {
+    try {
+        const pin = await Pin.findById(req.params.id)
+        const { description, title } = req.body
+
+        const updateFields = {}
+        if(description) updateFields.description = description
+        if(title) updateFields.title = title
+        
+        await pin.updateOne({ $set: updateFields })
+        res.status(200).json({ message: 'Updated' })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
 router.get('/pins', async (req, res) => {
     try {
         const pins = await Pin.find()
@@ -167,10 +183,9 @@ router.get('/pin/:id/comments', async (req, res) => {
     }
 })
 
-router.delete('/delete/pin/:id', async (req, res) => {
+router.delete('/pin/delete/:id', async (req, res) => {
     try {
-        const { id } = req.params
-        const pin = await Pin.findById(id)
+        const pin = await Pin.findById(req.params.id)
         .populate({
             path: 'comments',
             populate: { path: 'replies' }
@@ -219,6 +234,25 @@ router.post('/comment', async (req, res) => {
             return res.status(200).json(newReply)
         }
         return res.status(404).json({ message: 'Invalid id' })
+    } catch(error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
+router.delete('/comment/delete/:id', async (req, res) => {
+    try {
+        const comment = await Comment.findById(req.params.id).populate('replies')
+        if(comment) {
+            for (const reply of comment.replies) {
+                const rep = await Reply.findById(reply._id)
+                await rep.deleteOne()
+            }
+            await comment.deleteOne()
+        }
+        const reply = await Reply.findById(req.params.id)
+        if(reply) await reply.deleteOne()
+            
+        res.status(200).json({ message: 'Deleted' })
     } catch(error) {
         res.status(500).json({ message: error.message })
     }

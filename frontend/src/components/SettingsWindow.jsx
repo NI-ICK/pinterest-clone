@@ -10,12 +10,12 @@ export function SettingsWindow({ show, setShow }) {
   return (
     <div className="settingsBackground" onClick={() => setShow(false)} >
       <div className="settingsModal">
-        <div onClick={() => navigate('/settings')} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') navigate('/settings')}} >Settings</div>
+        <div onClick={() => navigate('/settings')} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }} >Settings</div>
         <div onClick={() => {
           logoutUser()
           navigate('/')
         }}
-        tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') navigate('/settings')}}
+        tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}
         >Log out</div>
       </div>
     </div>

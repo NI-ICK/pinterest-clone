@@ -19,7 +19,7 @@ export function SavedPins() {
       }}><XIcon color='grey'/></button>}
     <div className="userCollections">
       {collections.slice(1).map((collection, index) => (
-        <div key={index} className="userCollection" onClick={() => navigate(`/collection/${collection._id}`)}>
+        <div key={index} className="userCollection" onClick={() => navigate(`/collection/${collection._id}`)} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>
           <img className='colImg1' src={collection.pins.length > 0 ? collection.pins[collection.pins.length - 1].image : noColImgUrl}/>
           <img className='colImg2' src={collection.pins.length > 1 ? collection.pins[collection.pins.length - 2].image : noColImgUrl}/>
           <img className='colImg3' src={collection.pins.length > 2 ? collection.pins[collection.pins.length - 3].image : noColImgUrl}/>

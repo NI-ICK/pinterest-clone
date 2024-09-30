@@ -52,7 +52,7 @@ export function CreateCollection() {
               <input type="text" id="name" name="name" placeholder="Collection name" value={formData.name} onChange={handleCreateCollectionChange} required/>
             </form>
           </div>
-          <div className="colButtons">
+          <div className="modalBtn">
             <button onClick={() => setShowCreateCol(false)} className="greyBtn">Cancel</button>
             <button form="createColForm" type="submit" className="redBtn">Create</button>
           </div>

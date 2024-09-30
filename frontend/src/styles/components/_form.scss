@@ -14,26 +14,33 @@
   justify-content: center;
 
   form {
-    margin-top: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
     flex-direction: column;
+    margin: 2em 0;
 
-    div {
+    div:not(.editPin div) {
       display: flex;
       flex-direction: column;
       margin-bottom: 16px;
     }
   }
 
+  h1 {
+    margin: 1em;
+    margin-bottom: 0;
+  }
+
   &Content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     background-color: #fefefe;
-    padding: 20px;
     border: 1px solid #888;
-    width: 500px;
-    height: 700px;
+    width: 25em;
     border-radius: 32px;
   }
 }
@@ -252,6 +259,7 @@
     justify-content: space-between;
     width: 100%;
     padding: 25px;
+    margin-bottom: 5em;
   }
 
   form {
@@ -272,12 +280,14 @@
     border-radius: 24px;
     object-fit: cover;
   }
+}
 
-  .colButtons {
+.modalBtn {
     position: absolute;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background-color: white;
     bottom: 0;
     left: 0;
     right: 0;
@@ -285,7 +295,6 @@
     box-shadow: $box-shadow;
     border-bottom-left-radius: 24px;
     border-bottom-right-radius: 24px;
-  }
 }
 
 .tags {
@@ -340,4 +349,32 @@
   &.show {
     bottom: 50px;
   }
+}
+
+.editPin {
+    position: relative;
+    padding: 2em;
+    width: 35em;
+
+    input, textarea {
+        width: 100%;
+    }
+
+    .fInput {
+        margin-top: 0;
+    }
+
+    form {
+        width: 100%;
+        margin-bottom: 5em;
+    }
+
+    div {
+        width: 100%;
+    }
+
+    .tags {
+        max-height: 10em;
+        overflow-y: scroll;
+    }
 }

@@ -54,7 +54,7 @@ export function CreatePin() {
             </div>
             <div>
               <label htmlFor="description">Description</label>
-              <textarea type="text" name="description" id="description" placeholder="Add description" value={formData.description} onChange={handleCreatePinChange} />
+              <textarea type="text" rows={ 5 } name="description" id="description" placeholder="Add description" value={formData.description} onChange={handleCreatePinChange} />
             </div>
             <div>
               <label htmlFor="tags">Tags</label>

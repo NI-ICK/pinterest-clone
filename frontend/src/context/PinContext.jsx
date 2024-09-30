@@ -86,7 +86,7 @@ export function PinContextProvider({ children }) {
   
   const handleDeletePin = async (id) => {
     try {
-      await axios.delete(`/delete/pin/${id}`)
+      await axios.delete(`/pin/delete/${id}`)
       fetchPins()
     } catch(error) {
       console.log('Error deleting pin:', error)
@@ -99,6 +99,15 @@ export function PinContextProvider({ children }) {
     } catch(error) {
       console.log("Error: ", error)
     }
+  }
+
+  const handleDeleteCommentOrReply = async (id, pinId) => {
+    try {
+        await axios.delete(`/comment/delete/${id}`)
+        await fetchPinComments(pinId)
+      } catch(error) {
+        console.log("Error: ", error)
+      }
   }
   
   return (
@@ -122,7 +131,8 @@ export function PinContextProvider({ children }) {
       similarPins,
       fetchSimilarPins,
       setPinModal,
-      pinModal
+      pinModal,
+      handleDeleteCommentOrReply
       }}>
       {children}
     </PinContext.Provider>

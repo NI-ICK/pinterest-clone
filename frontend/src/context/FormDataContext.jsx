@@ -21,6 +21,11 @@ export function FormDataContextProvider({ children }) {
       tags: null,
       user:  null,
     },
+    editPin: {
+        title: null,
+        description: null,
+        tags: null
+    },
     register: {
       username:  null,
       password:  null,
@@ -98,6 +103,27 @@ export function FormDataContextProvider({ children }) {
       })
     } catch (error) {
       console.error('Error creating pin:', error);
+    }
+    fetchPins()
+    resetFormData()
+  }
+
+  // Edit Pin Form
+
+  const handleEditPinChange = (e) => {
+    const { name, value } = e.target
+    if (name === 'tags') {
+      setFormData(prevFormData => ({ ...prevFormData, editPin: { ...prevFormData.editPin, tags: value.split(',').map(tag => tag.trim()).filter(tag => tag)}})) 
+    } else {
+      setFormData(prevFormData => ({ ...prevFormData, editPin: { ...prevFormData.editPin, [name]: value }}))
+    }  
+  }
+
+  const handleEditPinSubmit = async (id) => {
+    try {
+      await axios.put(`/editPin/${id}`, formData.editPin)
+    } catch (error) {
+      console.error('Error editing pin:', error)
     }
     fetchPins()
     resetFormData()
@@ -250,10 +276,13 @@ export function FormDataContextProvider({ children }) {
       handleCommentSubmit,
       handleCreateCollectionChange,
       handleCreateCollectionSubmit,
+      handleEditPinChange,
+      handleEditPinSubmit,
       formFilled,
       showPopup,
       popupText,
-      setPopupText
+      setPopupText,
+      resetFormData
       }} >
       {children}
     </FormDataContext.Provider>

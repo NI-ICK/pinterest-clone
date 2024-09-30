@@ -6,16 +6,18 @@ import { useFormDataContext } from '../context/FormDataContext'
 import { LikeIcon } from '../assets/LikeIcon'
 import { DeletePin } from '../components/DeletePin'
 import { debounce } from 'lodash'
-import { FormatDate } from '../components/FormatDate'
+import { FormatDate } from '../utilities/FormatDate'
 import { useCollectionContext } from '../context/CollectionContext'
 import { CollectionsModal } from '../components/CollectionsModal'
 import { CreateCollection } from '../components/CreateCollection'
 import { ArrowDownIcon } from '../assets/ArrowDownIcon'
 import { Pin } from '../components/Pin'
+import { OptionsIcon } from '../assets/OptionsIcon'
+import { EditPinModal } from '../components/EditPinModal'
 
 export function PinPage() {
   const { id } = useParams()
-  const { pins, fetchPin, pin, handleLikes, fetchPinComments, comments, fetchSimilarPins, similarPins, setPinModal, pinModal, setComments } = usePinContext()
+  const { pins, fetchPin, pin, handleLikes, fetchPinComments, comments, fetchSimilarPins, similarPins, setPinModal, pinModal, setComments, handleDeleteCommentOrReply } = usePinContext()
   const { users, currUser, fetchUsers, fetchCurrUser, noUserImgUrl } = useUserContext()
   const { formData, handleCommentChange, handleCommentSubmit, formFilled, setFormData } = useFormDataContext()
   const { selectedCollection, setSelectedPinId, setShowColModal, handleCollectionAdd, handleCollectionRemove, fetchUserCollections, setSelectedCollection, collections } = useCollectionContext()
@@ -31,6 +33,7 @@ export function PinPage() {
   const [isCurrUserFetched, setIsCurrUserFetched] = useState(false)
   const [colLoading, setColLoading] = useState(false)
   const location = useLocation()
+  const [ showEditPinModal, setShowEditPinModal ] = useState(false)
 
   const loadData = async () => {
     await fetchUsers()
@@ -159,6 +162,7 @@ export function PinPage() {
 
   return (
     <>
+    <EditPinModal showEditPinModal={showEditPinModal} setShowEditPinModal={setShowEditPinModal} id={id}/>
     <CreateCollection />
     <DeletePin showModal={showModal} modal={modal} id={id} setShowModal={setShowModal}/>
     {!loading &&
@@ -174,7 +178,8 @@ export function PinPage() {
           <div className="pinDetails">
             {pinModal && <CollectionsModal />}
             <div className="detailsTop">
-              {currUser &&
+              {currUser && <>
+              <OptionsIcon onClick={() => { setShowEditPinModal(!showEditPinModal) }} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}/>
               <div tabIndex={0} className="collectionsBtn" onClick={() => {
                 setSelectedPinId(id)
                 setShowColModal(true)}}
@@ -182,7 +187,7 @@ export function PinPage() {
                 >
                 <p>{selectedCollection.name}</p>
                 <ArrowDownIcon color='black' />
-              </div>}
+              </div></>}
               {currUser && pinUser._id === currUser._id ? 
               <button className='greyBtn' onClick={() => setShowModal(!showModal)}>Delete</button> : null}
               {currUser &&
@@ -212,7 +217,8 @@ export function PinPage() {
                       <p><Link to={comment.user ? `/${comment.user.username}` : null}>{comment.user ? comment.user.username : 'User Deleted'}</Link>{comment.content}</p>
                       <div className="commentDetails">
                         <div className='date'><FormatDate postDate={comment.createdAt}/></div>
-                        <p className="replyBtn" onClick={() => currUser ? setShowReply(index) : null} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>Reply</p>
+                        <p className="commentBtn" onClick={() => currUser ? setShowReply(index) : null} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>Reply</p>
+                        <p className="commentBtn" onClick={() => currUser ? handleDeleteCommentOrReply(comment._id, pin._id) : null} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>Delete</p>
                         <div 
                           onClick={() => currUser ? handleLikeClick(comment._id, comment.likes) : null}
                           tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}
@@ -239,12 +245,13 @@ export function PinPage() {
                   {comment.replies.map((reply, index) => (
                     <div className="reply" key={index}>
                       <img
-                        src={reply.user ? reply.user.photo : noUserImgUrl}
+                        src={reply.user && reply.user.photo ? reply.user.photo : noUserImgUrl}
                         onClick={() => navigate(`/${reply.user.username}`)}/>
                       <div className="replyText">
                         <p><Link to={reply.user && `/${reply.user.username}`}>{reply.user && reply.user.username}</Link>{reply.content}</p>
                         <div className="replyDetails">
                           <div className='date'><FormatDate postDate={reply.createdAt}/></div>
+                          <p className="commentBtn" onClick={() => currUser ? handleDeleteCommentOrReply(reply._id, pin._id) : null} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>Delete</p>
                           <div 
                               onClick={() => handleLikeClick(reply._id, reply.likes)}
                               className={`likes ${currUser && reply.likes.includes(currUser._id) ? 'liked' : ''}`}>

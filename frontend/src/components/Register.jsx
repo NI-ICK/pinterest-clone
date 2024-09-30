@@ -27,6 +27,7 @@ export function Register({ showModal, modalRef, setShowRegisterModal }) {
     <>
     <div className="modal">
       <div className="modalContent" ref={modalRef}>
+        <h1>Register</h1>
         <form onSubmit={formSubmit} className="fInput">
           <div>
             <label htmlFor='username'>Username</label>

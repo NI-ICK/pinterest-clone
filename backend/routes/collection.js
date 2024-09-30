@@ -55,9 +55,9 @@ router.post('/collections/add', async (req, res) => {
 router.post('/collections/remove', async (req, res) => {
   try {
     const collection = await Collection.findById(req.body.id)
-    collection.pins.pop(req.body.pinId)
-    await collection.save()
-    res.status(200).json(collection)
+    await collection.updateOne({  $pull: { pins: req.body.pinId } })
+    const updatedCollection = await Collection.findById(req.body.id)
+    res.status(200).json(updatedCollection)
   } catch(error) {
     res.status(500).json({ message: error.message })
   }
