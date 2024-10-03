@@ -19,17 +19,17 @@
     justify-content: center;
     flex-wrap: wrap;
     flex-direction: column;
-    margin: 2em 0;
+    margin: 2rem 0;
 
     div:not(.editPin div) {
       display: flex;
       flex-direction: column;
-      margin-bottom: 16px;
+      margin-bottom: 1rem;
     }
   }
 
   h1 {
-    margin: 1em;
+    margin: 1rem;
     margin-bottom: 0;
   }
 
@@ -40,8 +40,10 @@
     flex-direction: column;
     background-color: #fefefe;
     border: 1px solid #888;
-    width: 25em;
-    border-radius: 32px;
+    width: 25rem;
+    border-radius: 2rem;
+
+    @include xs { margin: 1rem; }
   }
 }
 
@@ -51,31 +53,28 @@
 
 .passwordIcon {
   position: absolute;
-  right: 10px;
-  top: 33px
+  right: 0.6rem;
+  top: 2rem;
 }
 
 .formHeader {
   display: flex;
   justify-content: space-between;
-  padding: 50px;
-  padding-bottom: 25px;
+  padding: 3rem;
+  padding-bottom: 1.5rem;
   padding-top: 0;
 
-  h1 {
+  h2 {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  * {
-    min-width: 100px;
+    white-space: nowrap;
   }
 }
 
 .formInputs {
   display: flex;
-  align-items: start;
+  align-items: center;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -89,35 +88,38 @@
   div:not(.name, .photoUpload, .passwordIcon, .tags) {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
-  }
-
-  input {
-    width: $input-size-l;
+    margin-top: 1.2rem;
   }
 
   textarea {
     width: $input-size-l;
-    padding: 10px 16px;
+    padding: 0.6rem 1rem;
     border: 2px solid $dark-grey;
-    border-radius: 16px;
+    border-radius: 1rem;
     resize: none;
+
+    @include xs { width: 17rem; }
   }
 }
 
 .dropzone {
-  max-width: 380px;
-  max-height: 480px;
+  max-width: 23.5rem;
+  max-height: 30rem;
   background-position: 100%;
   background-size: cover;
-  border-radius: 32px;
-  margin-right: 35px;
+  border-radius: 2rem;
+  margin-right: 2.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   background-color: $light-grey;
   border: 3px dotted $dark-grey;
+  position: relative;
+
+  @include xs {
+    margin-inline: 1rem;
+  }
 
   &.hover {
     background-color: $very-light-blue;
@@ -139,36 +141,53 @@
   align-items: start;
   text-wrap: nowrap;
 
+  @include xs { 
+    flex-direction: column; 
+    align-items: center;
+
+    p { margin-top: 1rem; }
+    
+    h1 { display: none; }
+
+    button { margin-top: 2rem; }
+}
+
   p {
-    margin-bottom: 30px;
+    margin-bottom: 1.8rem;
   }
 
   ul {
-    min-width: 280px;
-    padding-left: 25px;
-    padding-right: 200px;
+    min-width: 17.5rem;
+    padding-left: 1.5rem;
+    padding-right: 12.5rem;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+
+    @include xs { flex-direction: row; padding: 0; }
   }
 
   li {
-    padding-bottom: 15px;
+    padding-bottom: 1rem;
   }
 
   a {
     position: relative;
     text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 12px;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.7rem;
     cursor: pointer;
     color: black;
 
     &.active::after {
       content: '';
-      height: 3px;
+      height: 0.2rem;
       background-color: black;
       position: absolute;
-      right: 10px;
+      right: 0.6rem;
       bottom: 0;
-      left: 10px;
+      left: 0.6rem;
     }
    
     &:hover {
@@ -197,7 +216,21 @@
   width: $input-size-l;
   display: flex;
   justify-content: space-between;
-  
+
+  @include xs { flex-direction: column; justify-content: center; align-items: center;}
+
+    & > :last-child {
+        label {
+            margin-left: 1rem;
+            @include xs { margin: 0; }
+        }
+
+        input {
+            align-self: end;
+            @include xs { align-self: self-start; }
+        }
+    }
+
   input {
     width: $input-size-s;
   }
@@ -208,34 +241,51 @@
   align-items: center;
 
   button {
-    margin-left: 25px;
-    margin-top: 28px;
+    margin-left: 1.5rem;
+    margin-top: 1.75rem;
   }
   
   img {
     object-fit: cover;
-    width: 75px;
-    height: 75px;
+    width: 4.7rem;
+    height: 4.7rem;
     border-radius: 50%;
+  }
+
+  .userPhoto {
+    max-width: 4.7rem;
+    max-height: 4.7rem;
+    border-radius: 50%;
+    background-position: center;
+    background-size: cover;
   }
 }
 
 .delete {
-  height: 250px;
-  margin-bottom: 200px;
+  height: 15.5rem;
+  margin-bottom: 12.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 
+  @include xs { margin-bottom: 0; }
+
   .buttons {
-    padding-top: 25px;
+    padding-top: 1.5rem;
   }
 }
 
 .userSettings {
+    @include xs { 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
   .showModal {
-    margin-top: 25px;
+    margin-top: 1.5rem;
   }
 }
 
@@ -246,39 +296,46 @@
 }
 
 .createCol {
-  width: 700px;
+  width: 44rem;
   display: flex;
   align-items: center;  
   justify-content: flex-start;
   flex-direction: column;
   position: relative;
 
+
   .content {
     display: flex;
     align-items: start;
     justify-content: space-between;
     width: 100%;
-    padding: 25px;
-    margin-bottom: 5em;
+    padding: 1.5rem;
+    margin-bottom: 5rem;
+
+    @include xs { flex-direction: column;  align-items: center;}
   }
 
   form {
     margin-top: 0;
-    padding: 15px;
+    padding: 1rem;
     width: 100%;
     display: flex;
     align-items: start;
 
+    @include xs { margin: 0; }
+
     input { 
       width: 100%;
-      margin-top: 5px;
+      margin-top: 0.3rem;
     }
   }
 
   img {
-    max-width: 250px;
-    border-radius: 24px;
+    max-width: 15.5rem;
+    border-radius: 1.5rem;
     object-fit: cover;
+
+    @include xs { width: 10rem; }
   }
 }
 
@@ -291,28 +348,32 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 15px;
+    padding: 1rem;
     box-shadow: $box-shadow;
-    border-bottom-left-radius: 24px;
-    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+
+    @include xs { padding: 0.5rem; }
 }
 
 .tags {
-  margin-top: 20px;
+  margin-top: 1.25rem;
   width: 100%;
   max-width: $input-size-l;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 0.3rem;
+
+  @include xs { max-width: 17rem; }
 
   span {
-    padding: 10px 16px;
+    padding: 0.6rem 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 24px;
+    border-radius: 1.5rem;
     background-color: $light-grey;
 
     &:hover {
@@ -326,7 +387,7 @@
     justify-content: center;
     background: none;
     border: none;
-    margin-left: 6px;
+    margin-left: 0.35rem;
   }
 
   svg {
@@ -336,25 +397,54 @@
 
 .popup {
   position: fixed;
-  bottom: -50px;
+  bottom: -3.1rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
   box-shadow: $box-shadow;
-  padding: 12px 20px;
-  border-radius: 24px;
+  padding: 0.75rem 1.25rem;
+  border-radius: 1.5rem;
   transition: bottom 0.3s ease-out;
   background-color: white;
 
   &.show {
-    bottom: 50px;
+    bottom: 3.1rem;
   }
+}
+
+#accForm {
+    input {
+        width: $input-size-l;
+        
+        @include xs { width: 20rem; }
+    }
+}
+
+#editForm {
+    width: 35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include xs { 
+        width: 20rem; 
+        
+        input { 
+            width: 20rem;
+        }
+    }
+    
+    div { 
+        width: 100%;
+    }
 }
 
 .editPin {
     position: relative;
-    padding: 2em;
-    width: 35em;
+    padding: 2rem;
+    width: 35rem;
+
+    @include xs { padding: 1rem; }
 
     input, textarea {
         width: 100%;
@@ -366,7 +456,7 @@
 
     form {
         width: 100%;
-        margin-bottom: 5em;
+        margin-bottom: 5rem;
     }
 
     div {
@@ -374,7 +464,15 @@
     }
 
     .tags {
-        max-height: 10em;
+        max-height: 10rem;
         overflow-y: scroll;
+    }
+}
+
+#createPinForm {
+    input {
+        width: $input-size-l;
+
+        @include xs { width: 17rem; }
     }
 }

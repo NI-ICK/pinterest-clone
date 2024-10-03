@@ -4,8 +4,8 @@ export function XIcon({ color, rotate, size, ...props }) {
   return (
     <svg
       viewBox="0 0 16 16"
-      height={size ? `${size}em` : "1.3em"}
-      width={size ? `${size}em` : "1.3em"}
+      height={size ? `${size}em` : "1.3rem"}
+      width={size ? `${size}em` : "1.3rem"}
       style={{ transform: rotate ? `rotate(${rotate})` : 'rotate(45deg)' }}
       {...props}
     >

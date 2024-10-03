@@ -46,14 +46,30 @@ export function Dropzone() {
     setHover(isDragActive)
   }, [isDragActive])
 
+    const calcDropzoneSize = () => {
+        const maxWidth = 23.75 * 16
+        const maxHeight = 30 * 16
+
+        if (imageDimensions.width === 0 || imageDimensions.height === 0) return { width: '23.75em', height: '30em' }
+
+        const scale = Math.min(maxWidth / imageDimensions.width, maxHeight / imageDimensions.height)
+
+        return {
+            width: `${imageDimensions.width * scale}px`,
+            height: `${imageDimensions.height * scale}px`,
+        }
+    }
+  
+    const dropzoneSize = calcDropzoneSize()
+
   return (
     <div { ...getRootProps() }
       onClick={handleInputClick} 
-      className={`dropzone ${hover ? 'hover' : ''} ${selectedImage ? 'selected' : ''}`} 
+      className={`dropzone ${hover ? 'hover' : '', selectedImage ? 'selected' : ''}`} 
       style={{ 
         backgroundImage: selectedImage ? `url(${selectedImage})` : null,
-        width: selectedImage ? imageDimensions.width : '380px', 
-        height: selectedImage ? imageDimensions.height : '480px'
+        width: dropzoneSize.width, 
+        height: dropzoneSize.height,
         }}>
       <input { ...getInputProps() } 
       required 

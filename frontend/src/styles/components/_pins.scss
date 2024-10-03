@@ -6,10 +6,14 @@
     transform: translateX(-50%);
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, 236px);
-    grid-auto-rows: 10px;
+    grid-template-columns: repeat(auto-fit, 14.75em);
+    grid-auto-rows: 0.6rem;
     justify-content: center;
     align-items: center;
+
+    @include xs { 
+        grid-template-columns: repeat(auto-fit, 10.75em); 
+    }
 }
 
 .pinPageBackground {
@@ -19,7 +23,7 @@
 }
 
 .pin {
-    margin: 15px 10px;
+    margin: 1rem 0.6rem;
     position: relative;
     display: flex;
     align-items: center;
@@ -39,9 +43,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 24px;
+        border-radius: 1.5rem;
         position: relative;
-        margin-bottom: 10px;
+        margin-bottom: 0.6rem;
 
         &.hover::before {
             position: absolute;
@@ -49,13 +53,13 @@
             z-index: -1;
             width: 100%;
             inset: 0;
-            border-radius: 24px;
+            border-radius: 1.5rem;
             background: rgba(0, 0, 0, 0.5);
         }
     }
 
     .pinImg {
-        border-radius: 24px;
+        border-radius: 1.5rem;
         max-width: 100%;
         object-fit: cover;
 
@@ -67,29 +71,33 @@
 
 .pinContainer {
     display: flex;
-    align-items: stretch;
+    align-items: start;
+    justify-content: center;
     box-shadow: $box-shadow;
-    border-radius: 24px;
-    margin-bottom: 35px;
+    border-radius: 1.5rem;
+    margin-bottom: 2.2rem;
 
     .pinImg {
         display: block;
-        border-top-left-radius: 24px;
-        border-bottom-left-radius: 24px;
-        width: 500px;
-        max-height: 700px;
+        border-top-left-radius: 1.5rem;
+        border-bottom-left-radius: 1.5rem;
+        width: 31.25rem;
         height: 100%;
+        max-height: 43.75rem;
         object-fit: cover;
+
+        @include xs { width: 20rem; }
     }
 
+    @include xs { margin-inline: 1rem; }
 
-    @media screen and (max-width: 950px) {
+    @include lg {
         flex-direction: column;
-        max-height: 1400px;
+        max-height: 87.5rem;
 
         .pinImg {
-            border-top-left-radius: 24px;
-            border-top-right-radius: 24px;
+            border-top-left-radius: 1.5rem;
+            border-top-right-radius: 1.5rem;
             border-bottom-left-radius: 0;
         }
     }
@@ -105,8 +113,18 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    width: 500px;
-    padding: 25px;
+    width: 31.25rem;
+    padding: 1.5rem;
+    align-self: stretch;
+
+    @include xs { 
+        padding: 0.75rem; 
+        width: 20rem; 
+
+        .redBtn {
+            margin-left: auto;
+        }
+    }
 
     h3 {
         border-bottom: 2px solid $light-grey;
@@ -116,8 +134,8 @@
 .pinUser {
     display: flex;
     align-items: center;
-    padding-bottom: 35px;
-    padding-top: 20px;
+    padding-bottom: 2.2rem;
+    padding-top: 1.25rem;
 
     p {
         cursor: pointer;
@@ -125,27 +143,30 @@
 
     img {
         cursor: pointer;
-        height: 48px;
-        width: 48px;
+        height: 3rem;
+        width: 3rem;
         object-fit: cover;
         border-radius: 50%;
-        margin-right: 10px;
+        margin-right: 0.6rem;
     }
 }
 
 .comments {
     overflow: auto;
     flex: 1;
-    max-height: 350px;
-    padding-bottom: 25px;
+    max-height: 22rem;
+    padding-bottom: 1.5rem;
+    width: 100%;
 
     .likes {
         display: flex;
         align-items: center;
         justify-content: center;
 
+        @include xs { margin-right: 0.5rem; }
+
         svg {
-            margin-right: 5px;
+            margin-right: 0.3rem;
         }
     }
 
@@ -157,14 +178,14 @@
 .commentContent {
     display: flex;
     align-items: start;
-    margin-top: 15px;
+    margin-top: 1rem;
     width: 100%;
     overflow-x: hidden;
 
     a {
         display: inline-block;
         text-decoration: none;
-        padding-right: 5px;
+        padding-right: 0.3rem;
     }
 
     p {
@@ -173,26 +194,26 @@
 
     img {
         cursor: pointer;
-        height: 32px;
-        width: 32px;
+        height: 2rem;
+        width: 2rem;
         object-fit: cover;
         border-radius: 50%;
-        margin-right: 10px;
+        margin-right: 0.6rem;
     }
 }
 
 .reply {
     display: flex;
     align-items: start;
-    padding-left: 35px;
-    margin-top: 15px;
+    padding-left: 2.2rem;
+    margin-top: 1rem;
     width: 100%;
     overflow-x: hidden;
 
     a {
         display: inline-block;
         text-decoration: none;
-        padding-right: 5px;
+        padding-right: 0.3rem;
 
         &:hover {
             text-decoration: underline;
@@ -209,19 +230,18 @@
 
     img {
         cursor: pointer;
-        height: 32px;
-        width: 32px;
+        height: 2rem;
+        width: 2rem;
         object-fit: cover;
         border-radius: 50%;
-        margin-right: 10px;
+        margin-right: 0.6rem;
     }
 
 }
 
 .replyDetails {
     display: flex;
-    justify-content: center;
-    gap: 55px;
+    justify-content: space-around;
 }
 
 .commentBtn {
@@ -237,9 +257,8 @@
     width: 100%;
     display: flex;
     align-items: center;
-    padding-top: 8px;
-    justify-content: center;
-    gap: 55px;
+    padding-top: 0.5rem;
+    justify-content: space-around;
 }
 
 .commentText,
@@ -248,7 +267,7 @@
 }
 
 .addReplyContent {
-    padding-top: 10px;
+    padding-top: 0.6rem;
     width: 100%;
     display: flex;
     align-items: center;
@@ -267,14 +286,14 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    padding: 15px;
-    padding-right: 35px;
+    padding: 1rem;
+    padding-right: 2.2rem;
     padding-bottom: 0;
 }
 
 .addComment {
     margin-top: auto;
-    padding-top: 25px;
+    padding-top: 1.5rem;
     border-top: 2px solid $light-grey;
     display: flex;
     align-items: center;
@@ -289,9 +308,9 @@
     }
 
     img {
-        margin-right: 10px;
-        height: 48px;
-        width: 48px;
+        margin-right: 0.6rem;
+        height: 3rem;
+        width: 3rem;
         object-fit: cover;
         border-radius: 50%;
     }
@@ -304,7 +323,7 @@
 
 .optionsIcon {
     border-radius: 50%;
-    padding: 0.5em;
+    padding: 0.5rem;
     cursor: pointer;
     margin-top: auto;
     margin-bottom: auto;
@@ -317,7 +336,7 @@
 
 .info {
     margin-top: auto;
-    margin-bottom: 50px;
+    margin-bottom: 3.1rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -330,7 +349,7 @@
 }
 
 .date {
-    width: 50px;
+    width: 3.1rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -340,8 +359,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 2em;
-    padding: 0.4em;
+    border-radius: 2rem;
+    padding: 0.4rem;
     cursor: pointer;
 
     button {
@@ -349,7 +368,7 @@
     }
 
     svg {
-        margin-left: 5px;
+        margin-left: 0.3rem;
     }
 }
 
@@ -360,13 +379,19 @@
     flex-direction: column;
     position: absolute;
     background-color: white;
-    padding: 1em;
+    padding: 1rem;
     z-index: 1000;
-    width: 320px;
-    height: 400px;
-    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
-    border-radius: 24px;
+    width: 20rem;
+    height: 25rem;
+    box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.3);
+    border-radius: 1.5rem;
     color: black;
+
+    &.mobile {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 }
 
 .colTitle {
@@ -374,14 +399,14 @@
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 15px;
+    top: 1rem;
     left: 0;
     right: 0;
 }
 
 .collections {
-    margin-top: 30px;
-    margin-bottom: 70px;
+    margin-top: 1.9rem;
+    margin-bottom: 4.4rem;
     position: relative;
     display: flex;
     align-items: center;
@@ -389,22 +414,21 @@
     flex-direction: column;
     overflow: auto;
     width: 100%;
-    padding-right: 10px;
+    padding-right: 0.6rem;
 
     .collection {
-        height: 64px;
+        height: 4rem;
         width: 100%;
         display: flex;
         align-items: center;
-        border-radius: 12px;
-        padding-left: 20px;
-        padding-right: 20px;
+        border-radius: 0.75rem;
+        padding: 0 1.25rem;
 
         img {
-            margin: 10px;
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
+            margin: 0.6rem;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.6rem;
             object-fit: cover;
         }
 
@@ -420,15 +444,15 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 80px;
+    height: 5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom-left-radius: 24px;
-    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
 
     svg {
-        margin-right: 20px;
+        margin-right: 1.25rem;
     }
 
     &:hover {
@@ -443,20 +467,21 @@
     flex-direction: column;
 
     h1 {
-        margin-bottom: 25px;
+        margin-bottom: 1.5rem;
     }
 }
 
 .hoverOptions {
-    padding-bottom: 20px;
+    padding-bottom: 1.25rem;
 }
 
 .similarPins {
     height: 100%;
+
     h1 {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 20px;
+        margin-bottom: 1.25rem;
     }
 }

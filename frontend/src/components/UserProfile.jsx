@@ -57,7 +57,7 @@ export function UserProfile() {
         {!loading && 
             <div className="userProfile">
             <div className="userDetails">
-            <img className='photo' src={user.photo ? user.photo : noUserImgUrl} />
+            <img draggable={false} className='photo' src={user.photo ? user.photo : noUserImgUrl} />
             <p className="username">{user.username}</p>
             <p>{user.about}</p>
             {currUser && currUser._id === user._id ? <button className="greyBtn" onClick={() => navigate('/settings')} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>Edit Profile</button> : null}

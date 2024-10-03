@@ -2,9 +2,11 @@ import { useFormDataContext } from "../context/FormDataContext"
 import { useState, useRef, useEffect } from "react"
 import { HidePasswordIcon, ShowPasswordIcon } from "../assets/PasswordIcons"
 import { DeleteUser } from "../components/DeleteUser"
+import { useOutletContext } from "react-router-dom"
 
 export function AccountSettings() {
   const { formData, handleEditUserChange, handleEditUserSubmit } = useFormDataContext()
+  const context = useOutletContext()
   const [showPassword, setShowPassword] = useState(false)
   const [inputType, setInputType] = useState('password')
   const [showModal, setShowModal] = useState(false)
@@ -42,7 +44,7 @@ export function AccountSettings() {
   return (
     <>
     <div className="userSettings">
-      <form onSubmit={formSubmit} id="editForm" className="fInput editForm formInputs textInputs">
+      <form onSubmit={formSubmit} id="accForm" className="fInput editForm formInputs textInputs">
         <h1>Account Menagement</h1>
         <p>Make changes to your personal information</p>
         <div className="passwordContainer">
@@ -58,6 +60,7 @@ export function AccountSettings() {
         </div>
       </form>
       <button className="showModal redBtn" type="button" onClick={() => setShowModal(true)}>Delete User</button>
+      {context.isMobile && <button className='redBtn' type="submit" form="accForm">Save</button>}
       <DeleteUser showModal={showModal} modal={modal} setShowModal={setShowModal}/>
     </div>
     </>

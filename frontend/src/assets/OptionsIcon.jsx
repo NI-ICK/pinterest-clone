@@ -2,7 +2,7 @@ import * as React from "react"
 
 export function OptionsIcon(props) {
   return (
-    <svg viewBox="0 0 32 32" width={ '3em' } height={ '3em' } xmlns="http://www.w3.org/2000/svg" {...props} className="optionsIcon">
+    <svg viewBox="0 0 32 32" width={ '3rem' } height={ '3rem' } xmlns="http://www.w3.org/2000/svg" {...props} className="optionsIcon">
       <g id="SVGRepo_iconCarrier">
         <defs>
           <style>

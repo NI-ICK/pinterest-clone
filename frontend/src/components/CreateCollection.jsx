@@ -46,7 +46,7 @@ export function CreateCollection() {
         <div className="modalContent createCol" ref={modalRef}>
           <h1>Create Collection</h1>
           <div className="content">
-            {selectedPinId && <img src={selPin.image}  />}
+            {selectedPinId && <img draggable={false} src={selPin.image}  />}
             <form onSubmit={formSubmit} id="createColForm" className="fInput">
               <label htmlFor="name">Name</label>
               <input type="text" id="name" name="name" placeholder="Collection name" value={formData.name} onChange={handleCreateCollectionChange} required/>

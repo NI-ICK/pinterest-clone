@@ -172,14 +172,17 @@ export function PinPage() {
       onMouseLeave={() => {
         setPinModal(false)
         setShowColModal(false)
-        }}>
+        }}
+        onTouchStart={() => setPinModal(true)}
+        >
         <div className="pinContainer">
-          <img src={pin.image} className='pinImg'/>
+          <img draggable={false} src={pin.image} className='pinImg'/>
           <div className="pinDetails">
             {pinModal && <CollectionsModal />}
             <div className="detailsTop">
+                {currUser && pinUser._id === currUser._id &&
+                    <OptionsIcon onClick={() => { setShowEditPinModal(!showEditPinModal) }} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}/>}
               {currUser && <>
-              <OptionsIcon onClick={() => { setShowEditPinModal(!showEditPinModal) }} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}/>
               <div tabIndex={0} className="collectionsBtn" onClick={() => {
                 setSelectedPinId(id)
                 setShowColModal(true)}}
@@ -201,6 +204,7 @@ export function PinPage() {
             <p>{pin.description}</p>
             <div className="pinUser"> 
               <img 
+              draggable={false}
                 src={pinUser.photo ? pinUser.photo : noUserImgUrl}
                 onClick={() => pinUser.username !== 'User Deleted' ? navigate(`/${pinUser.username}`) : null}/>
               <Link to={pinUser.username !== 'User Deleted' ? `/${pinUser.username}` : null} >{pinUser.username}</Link>
@@ -211,6 +215,7 @@ export function PinPage() {
                 <div className="comment" key={index} >
                   <div className="commentContent">
                     <img
+                        draggable={false}
                       src={comment.user && comment.user.photo ? comment.user.photo : noUserImgUrl}
                       onClick={() => navigate(comment.user ? `/${comment.user.username}` : null)}/>
                     <div className="commentText">
@@ -218,7 +223,7 @@ export function PinPage() {
                       <div className="commentDetails">
                         <div className='date'><FormatDate postDate={comment.createdAt}/></div>
                         <p className="commentBtn" onClick={() => currUser ? setShowReply(index) : null} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>Reply</p>
-                        <p className="commentBtn" onClick={() => currUser ? handleDeleteCommentOrReply(comment._id, pin._id) : null} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>Delete</p>
+                        {currUser._id === comment.user._id && <p className="commentBtn" onClick={() => currUser ? handleDeleteCommentOrReply(comment._id, pin._id) : null} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>Delete</p>}
                         <div 
                           onClick={() => currUser ? handleLikeClick(comment._id, comment.likes) : null}
                           tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}
@@ -245,13 +250,14 @@ export function PinPage() {
                   {comment.replies.map((reply, index) => (
                     <div className="reply" key={index}>
                       <img
+                      draggable={false}
                         src={reply.user && reply.user.photo ? reply.user.photo : noUserImgUrl}
                         onClick={() => navigate(`/${reply.user.username}`)}/>
                       <div className="replyText">
                         <p><Link to={reply.user && `/${reply.user.username}`}>{reply.user && reply.user.username}</Link>{reply.content}</p>
                         <div className="replyDetails">
                           <div className='date'><FormatDate postDate={reply.createdAt}/></div>
-                          <p className="commentBtn" onClick={() => currUser ? handleDeleteCommentOrReply(reply._id, pin._id) : null} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>Delete</p>
+                          {currUser._id === comment.user._id && <p className="commentBtn" onClick={() => currUser ? handleDeleteCommentOrReply(reply._id, pin._id) : null} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>Delete</p>}
                           <div 
                               onClick={() => handleLikeClick(reply._id, reply.likes)}
                               className={`likes ${currUser && reply.likes.includes(currUser._id) ? 'liked' : ''}`}>
@@ -269,7 +275,7 @@ export function PinPage() {
             </div>
             {currUser ? (
             <div className="addComment">
-              <img src={currUser.photo ? currUser.photo : noUserImgUrl}/>
+              <img draggable={false} src={currUser.photo ? currUser.photo : noUserImgUrl}/>
               <form className='fInput' onSubmit={formSubmit}>
                 <input type="text" name="content" placeholder='Add a comment' value={formData.content} onChange={(e) => handleCommentChange(e, id)} required/>
               </form>

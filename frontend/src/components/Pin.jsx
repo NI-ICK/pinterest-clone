@@ -2,7 +2,7 @@ import { CollectionsModal } from "./CollectionsModal"
 import { ArrowDownIcon } from '../assets/ArrowDownIcon'
 import { useCollectionContext } from "../context/CollectionContext"
 import { useNavigate } from "react-router-dom"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useUserContext } from "../context/UserContext"
 import { usePinContext } from "../context/PinContext"
 
@@ -67,6 +67,7 @@ export function Pin({ pin, index }) {
                             setLoadedImg(true) 
                         }}
                         loading="lazy"
+                        draggable={false}
                     />
                 </div>
                 <p className="pinTitle">{ pin.title }</p>

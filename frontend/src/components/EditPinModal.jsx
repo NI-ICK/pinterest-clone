@@ -6,6 +6,7 @@ export function EditPinModal({ showEditPinModal, setShowEditPinModal, id }) {
     const [tags, setTags] = useState([])
     const [inputValue, setInputValue] = useState('')
     const { formData, handleEditPinChange, handleEditPinSubmit } = useFormDataContext()
+    const [ isMobile, setIsMobile ] = useState(false)
 
     const formSubmit = async (e) => {
         e.preventDefault()
@@ -14,6 +15,10 @@ export function EditPinModal({ showEditPinModal, setShowEditPinModal, id }) {
         const form = e.target
         form.reset()
     }
+
+    useEffect(() => {
+        if(window.innerWidth < 500) setIsMobile(true)
+    }, [])
     
     useEffect(() => {
         handleEditPinChange({ target: { name: 'tags', value: tags.join(', ')}})
@@ -49,7 +54,7 @@ export function EditPinModal({ showEditPinModal, setShowEditPinModal, id }) {
                     </div>
                     <div>
                         <label htmlFor="description">Description</label>
-                        <textarea rows={ 5 } type="text" name="description" id='description' onChange={handleEditPinChange} value={formData.description}/>
+                        <textarea rows={ isMobile ? 3 : 5 } type="text" name="description" id='description' onChange={handleEditPinChange} value={formData.description}/>
                     </div>
                 
                 <div>
@@ -63,7 +68,7 @@ export function EditPinModal({ showEditPinModal, setShowEditPinModal, id }) {
                 </div>
                 </div>
                 <div className="modalBtn">
-                    <button onClick={() => { 
+                    <button type='button' onClick={() => { 
                         setShowEditPinModal(false) 
                         setTags([])
                         }} className="greyBtn">Cancel</button>

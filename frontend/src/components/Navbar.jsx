@@ -19,6 +19,11 @@ export function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
   const path = location.pathname
+  const [ isMobile, setIsMobile ] = useState(false)
+
+  useEffect(() => {
+    if(window.innerWidth < 500) setIsMobile(true)
+  }, [])
 
   useEffect(() => {
     if(showLoginModal || showRegisterModal) {
@@ -56,28 +61,29 @@ export function Navbar() {
     <Popup />
     <nav>
       <Link to="/" className={homeActive ? 'active' : ''}>Home</Link>
-      {currUser ? (
+      {isMobile && <SearchBar />}
+      {currUser && (
       <>
-        <Link to="/pin-creation-tool" className={createActive ? 'active' : ''}>Create</Link>
+        {!isMobile && <> <Link to="/pin-creation-tool" className={createActive ? 'active' : ''}>Create</Link>
         <SearchBar />
         <div className='profileBackground' onClick={() => navigate(`/${currUser.username}`)}>
           <div className='profile' tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }} >
-            <img src={currUser.photo ? currUser.photo : noUserImgUrl}/>
+            <img draggable={false} src={currUser.photo ? currUser.photo : noUserImgUrl}/>
           </div>
         </div>
         <div className='settingsIcon' onClick={() => setShowSettings(!showSettings)} tabIndex={0} onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}>
           <ArrowDownIcon color='black' />
         </div>
-        <SettingsWindow show={showSettings} setShow={setShowSettings}/>
-      </>
-      ) : (
-      <> 
-        <SearchBar />
-        <button className='redBtn' onClick={() => {setShowLoginModal(!showLoginModal), setShowSettings(false)}}>Login</button>
-        <Login showModal={showLoginModal} modalRef={modalRef} setShowLoginModal={setShowLoginModal} />
-        <button className='greyBtn' onClick={() => {setShowRegisterModal(!showRegisterModal), setShowSettings(false)}}>Register</button>
-        <Register showModal={showRegisterModal} modalRef={modalRef} setShowRegisterModal={setShowRegisterModal}/>
-      </>
+        <SettingsWindow show={showSettings} setShow={setShowSettings}/></>}
+      </>)}
+      {!currUser && !isMobile && (
+        <> 
+            <SearchBar />
+            <button className='redBtn' onClick={() => {setShowLoginModal(!showLoginModal), setShowSettings(false)}}>Login</button>
+            <Login showModal={showLoginModal} modalRef={modalRef} setShowLoginModal={setShowLoginModal} />
+            <button className='greyBtn' onClick={() => {setShowRegisterModal(!showRegisterModal), setShowSettings(false)}}>Register</button>
+            <Register showModal={showRegisterModal} modalRef={modalRef} setShowRegisterModal={setShowRegisterModal}/>
+        </>
       )}
     </nav>
     </>

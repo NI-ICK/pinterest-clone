@@ -10,6 +10,7 @@ export function Settings() {
   const { fetchCurrUser } = useUserContext()
   const location = useLocation()
   const path = location.pathname
+  const [ isMobile, setIsMobile ] = useState(false)
 
   const loadData = async () => {
     await fetchCurrUser()
@@ -21,6 +22,7 @@ export function Settings() {
   }, [location])
 
   useEffect(() => {
+    if(window.innerWidth < 500) setIsMobile(true)
     loadData()
   }, [])
  
@@ -30,10 +32,10 @@ export function Settings() {
         <li><Link to='/settings/edit-profile' className={editActive ? 'active' : ''}>Edit Profile</Link></li>
         <li><Link to='/settings/account-settings' className={accActive ? 'active' : ''}>Account Menagement</Link></li>
       </ul>
-      <Outlet />
-      <div className="settingsFooter">
+      <Outlet context={{isMobile}}/>
+      {!isMobile && <div className="settingsFooter">
         <button className={formFilled ? 'redBtn' : 'btnOff'} type={formFilled ? 'submit' : 'button'} form="editForm">Save</button>
-      </div>
+      </div>}
     </div>
   )
 }

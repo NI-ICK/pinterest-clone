@@ -2,26 +2,26 @@
 
 .userProfile {
   .photo {
-    width: 120px;
-    height: 120px;
+    width: 7.5rem;
+    height: 7.5rem;
     object-fit: cover;
     border-radius: 50%;
-    margin-bottom: 10px;
+    margin-bottom: 0.6rem;
   }
 
   .pins {
     border-top: 3px solid $light-grey;
-    padding-top: 20px;
+    padding-top: 1.25rem;
   }
 
   .createColBtn {
     margin-left: auto;
-    margin-right: 25px;
+    margin-right: 1.5rem;
     background-color: $light-grey;
     border: none;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 3.1rem;
+    height: 3.1rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -40,31 +40,31 @@
   flex-direction: column;
 
   .greyBtn {
-    margin-top: 25px;
+    margin-top: 1.5rem;
   }
 
   ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 50px 0;
+    margin: 3.1rem 0;
   }
 
   a {
     position: relative;
     text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 12px;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.75rem;
     cursor: pointer;
     color: black;
 
     &.active:after {
       content: '';
-      height: 3px;
+      height: 0.2rem;
       background-color: black;
       position: absolute;
-      right: 10px;
-      left: 10px;
+      right: 0.6rem;
+      left: 0.6rem;
       bottom: 0;
     }
    
@@ -80,9 +80,9 @@
 
 .userCollections {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 275px);
-  grid-auto-rows: 225px;
-  padding: 25px;
+  grid-template-columns: repeat(auto-fit, 17.2em);
+  grid-auto-rows: 14rem;
+  padding: 1.5rem;
   align-items: center;
   justify-content: center;
 }
@@ -91,7 +91,7 @@
   position: relative;
   cursor: pointer;
   height: 80%;
-  border-radius: 1.1em;
+  border-radius: 1.1rem;
  
   &:hover {
     filter: brightness(.9)
@@ -99,14 +99,14 @@
 
   p {
     position: absolute;
-    bottom: -2em;
-    left: 10px;
+    bottom: -2rem;
+    left: 0.6rem;
   }
 
   img {
-    width: 175px;
-    height: 175px;
-    border-radius: 18px;
+    width: 11rem;
+    height: 11rem;
+    border-radius: 1.1rem;
     object-fit: cover;
     box-shadow: 0 0 0 1.5px white;
     background-color: $light-grey;
@@ -123,17 +123,17 @@
 .colImg2 {
   position: absolute;
   top: 0;
-  left: 35px;
+  left: 2.2rem;
   z-index: 2;
 }
 
 .colImg3 {
   position: absolute;
   top: 0;
-  left: 70px;
+  left: 4.4rem;
   z-index: 1;
 }
 
 .username {
-  margin-bottom: 10px;
+  margin-bottom: 0.6rem;
 }

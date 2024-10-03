@@ -1,6 +1,7 @@
 import './styles/style.scss'
 import { Routes, Route } from 'react-router-dom'
 import { Navbar } from './components/Navbar'
+import { NavbarMobile } from './components/NavbarMobile'
 import { Home } from './pages/Home'
 import { CreatePin } from './pages/CreatePin'
 import { UserProfile } from './components/UserProfile'
@@ -20,6 +21,7 @@ export function App() {
 
   return (
     <>
+      <NavbarMobile />
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />

@@ -1,8 +1,9 @@
 import * as React from "react"
-export const ArrowDownIcon = ({ color, ...props }) => (
+export const ArrowDownIcon = ({ rotate, color, ...props }) => (
   <svg
-    width="1.2em"
-    height="1.2em"
+    width="1.2rem"
+    height="1.2rem"
+    style={{ transform: rotate ? `rotate(${rotate}deg)` : '' }}
     viewBox="0 0 48 48"
     xmlns="http://www.w3.org/2000/svg"
     {...props}

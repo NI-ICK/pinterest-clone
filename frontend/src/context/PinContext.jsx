@@ -1,4 +1,4 @@
-import { useContext, createContext, useState } from "react"
+import { useContext, createContext, useState, useEffect } from "react"
 import axios from "axios"
 import { useUserContext } from "./UserContext"
 
@@ -78,9 +78,8 @@ export function PinContextProvider({ children }) {
     const pin = e.target.parentElement.parentElement.parentElement
     const pinImg = e.target.height
     const title = pin.querySelector('.pinTitle')
-
-    const pinHeight = pinImg + title.clientHeight + 10
-    const rowSpan = Math.ceil(pinHeight / 10)
+    const pinHeight = pinImg + title.clientHeight + 15
+    const rowSpan = Math.ceil(pinHeight / 10) + 1
     pin.style.gridRowEnd = `span ${rowSpan}`
   }  
   
@@ -109,7 +108,7 @@ export function PinContextProvider({ children }) {
         console.log("Error: ", error)
       }
   }
-  
+
   return (
     <PinContext.Provider value={{ 
       fetchPins, 
