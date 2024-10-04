@@ -5,17 +5,9 @@ const multer = require('multer')
 const { User, Collection } = require('../model/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { S3Client, DeleteObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3')
 const sharp = require('sharp')
-
-const removeFromBucket = async (objectKey) => {
-    const command = new DeleteObjectCommand({
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: objectKey,
-    })
-    
-    await s3Client.send(command)
-}
+const cloudinary = require('cloudinary').v2
+const streamifier = require('streamifier')
 
 const fileFilter = (req, file, cb) => {
   if(file.mimetype.startsWith('image/')) {
@@ -25,12 +17,10 @@ const fileFilter = (req, file, cb) => {
   }
 }
 
-const s3Client = new S3Client({
-    region: process.env.AWS_REGION,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    },
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
 const upload = multer({ 
@@ -52,19 +42,28 @@ const optimiseImage = async (buffer) => {
 router.put('/editUser', upload.single('photo'), async (req, res) => {
   try {
     const optimisedBuffer = await optimiseImage(req.file.buffer)
-    const fileKey = `profile/${Date.now().toString()}-${req.file.originalname.split('.').slice(0, -1).join('.')}`
 
-    await s3Client.send(
-        new PutObjectCommand({
-            Bucket: process.env.AWS_BUCKET_NAME,
-            Key: fileKey,
-            Body: optimisedBuffer,
-            ContentType: req.file.mimetype,
-    }))
+        const streamUpload = (buffer) => {
+            return new Promise((resolve, reject) => {
+              const stream = cloudinary.uploader.upload_stream(
+                { folder: 'pins', resource_type: 'image' },
+                (error, result) => {
+                  if (result) {
+                    resolve(result)
+                  } else {
+                    reject(error)
+                  }
+                }
+              )
+              streamifier.createReadStream(buffer).pipe(stream)
+            })
+          }
+      
+          const result = await streamUpload(optimisedBuffer)
 
     const updateFields = {}
-    if(req.file) updateFields.photo = `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${fileKey}`
-    if(req.file) updateFields.imageId = fileKey
+    if(req.file) updateFields.photo = result.secure_url
+    if(req.file) updateFields.imageId = result.public_id
     if(req.body.username) updateFields.username = req.body.username 
     if(req.body.password) updateFields.password = await bcrypt.hash(req.body.password, 10)
     if(req.body.email) updateFields.email = req.body.email
@@ -72,7 +71,7 @@ router.put('/editUser', upload.single('photo'), async (req, res) => {
     if(req.body.lastName) updateFields.lastName = req.body.lastName
     if(req.body.about) updateFields.about = req.body.about
     const user = await User.findById(req.body.user)
-    if(user.imageId) await removeFromBucket(user.imageId)
+    if(user.imageId) await cloudinary.uploader.destroy(user.imageId)
     await user.updateOne({ $set: updateFields })
     res.status(200).json(user)
   } catch(error) {

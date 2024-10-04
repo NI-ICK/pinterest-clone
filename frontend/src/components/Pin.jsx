@@ -47,7 +47,7 @@ export function Pin({ pin, index }) {
     return (
         <>
         <div
-            className={`pin ${loadedImg && 'loaded'}`}
+            className={`pin ${loadedImg ? 'loaded' : ''}`}
             tabIndex={0}
             onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}
             onClick={() => navigate(`/pin/${pin._id}`)}

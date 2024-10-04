@@ -11,7 +11,7 @@ export function UserContextProvider({ children }) {
   const [currUser, setCurrUser] = useState(null)
   const [users, setUsers] = useState([])
   const [user, setUser] = useState(null)
-  const noUserImgUrl = 'https://pinterest-clone-bucket.s3.eu-north-1.amazonaws.com/profile/noPhoto.webp'
+  const noUserImgUrl = 'https://res.cloudinary.com/dzg5ek6qa/image/upload/v1728063977/noPhoto_hwrr7w.webp'
   
   const fetchCurrUser = async () => {
     try {

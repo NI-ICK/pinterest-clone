@@ -38,6 +38,6 @@ This project is a web application that mimics the image pinning and organization
 
 **Database**: MongoDB 
 
-**File Storage**: AWS S3
+**File Storage**: Cloudinary
 
 **Authentication**: JWT

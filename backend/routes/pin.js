@@ -4,16 +4,9 @@ const router = express.Router()
 const { Pin, Comment, Reply } = require('../model/Pin')
 const multer = require('multer')
 const mongoose = require('mongoose')
-const { S3Client, DeleteObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3')
 const sharp = require('sharp')
-
-const removeFromBucket = async (objectKey) => {
-    await s3Client.send(
-        new DeleteObjectCommand({
-            Bucket: process.env.AWS_BUCKET_NAME,
-            Key: objectKey,
-    }))
-}
+const cloudinary = require('cloudinary').v2
+const streamifier = require('streamifier')
 
 const fileFilter = (req, file, cb) => {
     if(file.mimetype.startsWith('image/')) {
@@ -23,12 +16,10 @@ const fileFilter = (req, file, cb) => {
     }
 }
 
-const s3Client = new S3Client({
-    region: process.env.AWS_REGION,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    },
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
 const upload = multer({ 
@@ -50,20 +41,29 @@ const optimiseImage = async (buffer) => {
 router.post('/createPin', upload.single('image'), async (req, res) => {
     try {  
         const optimisedBuffer = await optimiseImage(req.file.buffer)
-        const fileKey = `pins/${Date.now().toString()}-${req.file.originalname.split('.').slice(0, -1).join('.')}`
 
-        await s3Client.send(
-            new PutObjectCommand({
-                Bucket: process.env.AWS_BUCKET_NAME,
-                Key: fileKey,
-                Body: optimisedBuffer,
-                ContentType: req.file.mimetype,
-        }))
+        const streamUpload = (buffer) => {
+            return new Promise((resolve, reject) => {
+              const stream = cloudinary.uploader.upload_stream(
+                { folder: 'pins', resource_type: 'image' },
+                (error, result) => {
+                  if (result) {
+                    resolve(result)
+                  } else {
+                    reject(error)
+                  }
+                }
+              )
+              streamifier.createReadStream(buffer).pipe(stream)
+            })
+          }
+      
+          const result = await streamUpload(optimisedBuffer)
 
         const pin = new Pin({
             title: req.body.title,
-            image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${fileKey}`, 
-            imageId: fileKey,
+            image: result.secure_url,
+            imageId: result.public_id,
             description: req.body.description,
             tags: req.body.tags,
             user: req.body.user,
@@ -190,7 +190,7 @@ router.delete('/pin/delete/:id', async (req, res) => {
             path: 'comments',
             populate: { path: 'replies' }
         })
-        await removeFromBucket(pin.imageId)
+        await cloudinary.uploader.destroy(pin.imageId)
         
         for (const comment of pin.comments) {
             for (const reply of comment.replies) {

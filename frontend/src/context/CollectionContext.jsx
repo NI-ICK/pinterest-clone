@@ -15,7 +15,7 @@ export function CollectionContextProvider({ children }) {
   const [showCreateCol, setShowCreateCol] = useState(false)
   const [collection, setCollection] = useState(null)
   const modalRef = useRef()
-  const noColImgUrl = 'https://pinterest-clone-bucket.s3.eu-north-1.amazonaws.com/noCollectionImg.webp'
+  const noColImgUrl = 'https://res.cloudinary.com/dzg5ek6qa/image/upload/v1728063913/noCollectionImg_v1qild.webp'
 
   useEffect(() => {
     if(showCreateCol || showColModal) {
