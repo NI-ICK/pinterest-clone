@@ -24,8 +24,9 @@
     },
     {
         "src": "/(.*)", 
-        "dest": "/frontend/dist/index.html", 
-        "continue": true
+        "dest": "/frontend/dist/index.html",
+        "methods": ["GET"],
+        "status": 404
       }
   ]
 }
