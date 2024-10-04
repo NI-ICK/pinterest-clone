@@ -34,8 +34,10 @@ const optimiseImage = async (buffer) => {
     const image = sharp(buffer)
     const metadata = await image.metadata()
 
-    if(metadata.hasAlpha) return image.png({ compressionLevel: 9, quality: 80 }).toBuffer()
-    return image.webp({ quality: 80 }).toBuffer()
+    if(metadata.width > 700) image.resize({ width: 700 })
+
+    if(metadata.hasAlpha) return image.png({ quality: 80, lossless: false }).toBuffer()
+    return image.webp({ quality: 80, lossless: false, progressive: true }).toBuffer()
 }
 
 router.post('/createPin', upload.single('image'), async (req, res) => {
