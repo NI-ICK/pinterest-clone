@@ -22,12 +22,10 @@
       "src": "/(.*)", 
       "dest": "/frontend/dist/index.html"
     },
-    { "src": "/[^.]+", "dest": "/", "status": 200 }
-  ],
-  "rewrites": [
     {
-      "source": "/(.*)", 
-      "destination": "/frontend/dist/index.html"
-    }
+        "src": "/(.*)", 
+        "dest": "/frontend/dist/index.html", 
+        "continue": true
+      }
   ]
 }
