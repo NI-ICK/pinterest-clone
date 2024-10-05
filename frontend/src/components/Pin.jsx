@@ -44,6 +44,10 @@ export function Pin({ pin, index }) {
         return selectedCollection.name.length < 8 ? selectedCollection.name : selectedCollection.name.substring(0, 5) + '...'
     }
 
+    const handlePinTitle = (title) => {
+        return title.length < 23 ? title : title.substring(0, 20) + '...'
+    }
+
     return (
         <>
         <div
@@ -70,7 +74,7 @@ export function Pin({ pin, index }) {
                         draggable={false}
                     />
                 </div>
-                <p className="pinTitle">{ pin.title }</p>
+                <p className="pinTitle">{ handlePinTitle(pin.title) }</p>
                 {hoverIndex === index && selectedCollection && currUser &&
                     <div className="hoverOptions" onClick={(e) => e.stopPropagation()}>
                         <div className="collectionsBtn"

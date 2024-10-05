@@ -117,6 +117,10 @@
     padding: 1.5rem;
     align-self: stretch;
 
+    .desc {
+        margin-top: 1rem;
+    }
+
     @include xs { 
         padding: 0.75rem; 
         width: 20rem; 

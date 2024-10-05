@@ -201,7 +201,7 @@ export function PinPage() {
               </button>}
             </div>
             <h2>{pin.title}</h2>
-            <p>{pin.description}</p>
+            <p className='desc'>{pin.description}</p>
             <div className="pinUser"> 
               <img 
               draggable={false}
