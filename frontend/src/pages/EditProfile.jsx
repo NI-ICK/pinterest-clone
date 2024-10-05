@@ -1,12 +1,11 @@
 import { useFormDataContext } from "../context/FormDataContext"
 import { useRef, useState, useEffect } from "react"
 import { useUserContext } from "../context/UserContext"
-import { useNavigate, useOutletContext } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export function EditProfile() {
   const { formData, handleEditUserChange, handleEditUserSubmit } = useFormDataContext()
-  const { currUser, fetchCurrUser, noUserImgUrl } = useUserContext()
-  const context = useOutletContext()
+  const { currUser, fetchCurrUser, noUserImgUrl, isMobile } = useUserContext()
   const [loading, setLoading] = useState(true)
   const [ selectedProfileImg, setSelectedProfileImage ] = useState()
   const [ imageDimensions, setImageDimensions ] = useState({ width: 0, height: 0 })
@@ -99,7 +98,7 @@ export function EditProfile() {
           <label htmlFor="username">Username</label>
           <input type="text" name="username" id="username" placeholder="Username" value={formData.username} onChange={handleEditUserChange} />
         </div>
-        {context.isMobile && <button className='redBtn'>Save</button>}
+        {isMobile && <button className='redBtn'>Save</button>}
       </form>
     }
     </>

@@ -1,5 +1,7 @@
 import { useContext, useState, createContext, useEffect, useRef } from "react"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import { useUserContext } from "./UserContext"
 
 const CollectionContext = createContext()
 
@@ -14,8 +16,10 @@ export function CollectionContextProvider({ children }) {
   const [showColModal, setShowColModal] = useState(null)
   const [showCreateCol, setShowCreateCol] = useState(false)
   const [collection, setCollection] = useState(null)
+  const { currUser } = useUserContext()
   const modalRef = useRef()
   const noColImgUrl = 'https://res.cloudinary.com/dzg5ek6qa/image/upload/v1728063913/noCollectionImg_v1qild.webp'
+  const navigate = useNavigate()
 
   useEffect(() => {
     if(showCreateCol || showColModal) {
@@ -63,7 +67,7 @@ export function CollectionContextProvider({ children }) {
     }
   }
 
-  const handleCollectionRemove = async (id, pinId) => {
+  const handleRemoveFromCollection = async (id, pinId) => {
     try {
       await axios.post(`/collections/remove`, { id, pinId })
       const updatedCollection = await fetchCollectionById(id)
@@ -73,13 +77,23 @@ export function CollectionContextProvider({ children }) {
     }
   }
 
+  const handleDeleteCollection = async (id) => {
+    try {
+        await axios.delete(`collections/delete/${id}`, { params: { userId: currUser._id }})
+        navigate('/')
+    } catch(error) {
+        console.log("Error removing collection: ", error)
+    }
+  }
+
   return (
     <CollectionContext.Provider value={{
       collections,
       selectedPinId,
       setSelectedPinId,
       handleCollectionAdd,
-      handleCollectionRemove,
+      handleRemoveFromCollection,
+      handleDeleteCollection,
       selectedCollection,
       setSelectedCollection,
       showColModal,

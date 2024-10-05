@@ -71,20 +71,22 @@
 
 .pinContainer {
     display: flex;
-    align-items: start;
+    align-items: stretch;
     justify-content: center;
     box-shadow: $box-shadow;
     border-radius: 1.5rem;
     margin-bottom: 2.2rem;
+    max-width: 71.5rem;
 
     .pinImg {
         display: block;
         border-top-left-radius: 1.5rem;
         border-bottom-left-radius: 1.5rem;
-        width: 40.25rem;
+        max-width: 40.25rem;
         height: 100%;
         max-height: 43.75rem;
         object-fit: cover;
+        flex: 0;
 
         @include xs { width: 20rem; }
     }
@@ -94,12 +96,17 @@
     @include lg {
         flex-direction: column;
         max-height: 87.5rem;
+        max-width: 40.25rem;
 
         .pinImg {
             border-top-left-radius: 1.5rem;
             border-top-right-radius: 1.5rem;
             border-bottom-left-radius: 0;
         }
+    }
+
+    @include md {
+        max-width: 25.25rem;
     }
 
     a:link,
@@ -113,11 +120,11 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    width: 31.25rem;
     padding: 1.5rem;
     align-self: stretch;
+    flex: 1;
 
-    .desc {
+    .desc, h2 {
         margin-top: 1rem;
     }
 
@@ -470,8 +477,29 @@
     justify-content: center;
     flex-direction: column;
 
-    h1 {
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        gap: 5rem;
         margin-bottom: 1.5rem;
+        width: 100%;
+
+        @include xs { margin-bottom: 5rem;}
+
+        button {
+            position: absolute;
+            right: 1rem;
+
+            @include xs {
+                left: 50%;
+                right: auto;
+                top: 4rem;
+                transform: translateX(-50%)
+            }
+        }
+    
     }
 }
 

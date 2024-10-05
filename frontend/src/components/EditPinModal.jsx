@@ -1,36 +1,37 @@
 import { useFormDataContext } from "../context/FormDataContext"
 import { useState, useEffect } from 'react'
 import { XIcon } from "../assets/XIcon"
+import { useUserContext } from "../context/UserContext"
 
-export function EditPinModal({ showEditPinModal, setShowEditPinModal, id }) {
-    const [tags, setTags] = useState([])
+export function EditPinModal({ showEditPinModal, setShowEditPinModal, pin }) {
+    const [tags, setTags] = useState([...pin.tags])
     const [inputValue, setInputValue] = useState('')
     const { formData, handleEditPinChange, handleEditPinSubmit } = useFormDataContext()
-    const [ isMobile, setIsMobile ] = useState(false)
+    const { isMobile } = useUserContext()
 
     const formSubmit = async (e) => {
         e.preventDefault()
-        await handleEditPinSubmit(id)
+        await handleEditPinSubmit(pin._id)
         setShowEditPinModal(false)
         const form = e.target
         form.reset()
     }
 
     useEffect(() => {
-        if(window.innerWidth < 500) setIsMobile(true)
-    }, [])
+        setTags([...pin.tags])
+    }, [pin])
     
     useEffect(() => {
-        handleEditPinChange({ target: { name: 'tags', value: tags.join(', ')}})
+        handleEditPinChange({ target: { name: 'tags', value: tags }})
     }, [tags])
     
     const handleTagInputChange = (e) => {
         setInputValue(e.target.value)
     }
-    
+
     const handleTagKeyPress = (e) => {
-        if (e.key === 'Enter' && inputValue.trim()) {
-            setTags([...tags, inputValue.trim()])
+        if (e.key === 'Enter' && inputValue) {
+            setTags([...tags, ...inputValue.split(',').map(tag => tag.trim()).filter(tag => tag)])
             setInputValue('')
             e.preventDefault()
         }
@@ -50,11 +51,11 @@ export function EditPinModal({ showEditPinModal, setShowEditPinModal, id }) {
                 <div className="textInputs">
                     <div>
                         <label htmlFor="title">Title</label>
-                        <input type="text" name="title" id='title' onChange={handleEditPinChange} value={formData.title}/>
+                        <input type="text" name="title" id='title' placeholder="Change title" onChange={handleEditPinChange} value={formData.title}/>
                     </div>
                     <div>
                         <label htmlFor="description">Description</label>
-                        <textarea rows={ isMobile ? 3 : 5 } type="text" name="description" id='description' onChange={handleEditPinChange} value={formData.description}/>
+                        <textarea rows={ isMobile ? 3 : 5 } type="text" name="description" placeholder='Change description' id='description' onChange={handleEditPinChange} value={formData.description}/>
                     </div>
                 
                 <div>
@@ -70,7 +71,7 @@ export function EditPinModal({ showEditPinModal, setShowEditPinModal, id }) {
                 <div className="modalBtn">
                     <button type='button' onClick={() => { 
                         setShowEditPinModal(false) 
-                        setTags([])
+                        setTags([...pin.tags])
                         }} className="greyBtn">Cancel</button>
                     <button type="submit" className="redBtn">Update</button>
                 </div>

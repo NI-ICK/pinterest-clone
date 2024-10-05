@@ -63,4 +63,17 @@ router.post('/collections/remove', async (req, res) => {
   }
 })
 
+router.delete('/collections/delete/:id', async (req, res) => {
+    try {
+        const collection = await Collection.findById(req.params.id)
+        const user = await User.findById(req.query.userId)
+        await user.collections.pull(req.params.id)
+        await user.save()
+        await collection.deleteOne()
+        res.status(200).json({ message: 'Collection Deleted' })
+    } catch(error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
 module.exports = router

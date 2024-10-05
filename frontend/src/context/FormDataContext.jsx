@@ -88,8 +88,6 @@ export function FormDataContextProvider({ children }) {
     const { name, value, files } = e.target
     if(name === 'image') {
       setFormData(prevFormData => ({ ...prevFormData, createPin: { ...prevFormData.createPin, image: files[0] }}))
-    } else if (name === 'tags') {
-      setFormData(prevFormData => ({ ...prevFormData, createPin: { ...prevFormData.createPin, tags: value.split(',').map(tag => tag.trim()).filter(tag => tag)}})) 
     } else {
       setFormData(prevFormData => ({ ...prevFormData, createPin: { ...prevFormData.createPin, [name]: value }}))
     }  
@@ -112,11 +110,8 @@ export function FormDataContextProvider({ children }) {
 
   const handleEditPinChange = (e) => {
     const { name, value } = e.target
-    if (name === 'tags') {
-      setFormData(prevFormData => ({ ...prevFormData, editPin: { ...prevFormData.editPin, tags: value.split(',').map(tag => tag.trim()).filter(tag => tag)}})) 
-    } else {
       setFormData(prevFormData => ({ ...prevFormData, editPin: { ...prevFormData.editPin, [name]: value }}))
-    }  
+ 
   }
 
   const handleEditPinSubmit = async (id) => {

@@ -2,12 +2,13 @@ import { useCollectionContext } from "../context/CollectionContext"
 import { useEffect, useState } from "react"
 import { XIcon } from "../assets/XIcon"
 import { usePinContext } from "../context/PinContext"
+import { useUserContext } from "../context/UserContext"
 
 export function CollectionsModal() {
   const { collections, setSelectedCollection, showColModal, setShowCreateCol, modalRef, noColImgUrl, setShowColModal, selectedCollection } = useCollectionContext()
   const { pinModal } = usePinContext()
+  const { isMobile } = useUserContext()
   const [style, setStyle] = useState()
-  const [ isMobile, setIsMobile ] = useState(false)
   const styleBase = { 
     top: '3.75rem',
     left: '50%',
@@ -17,10 +18,6 @@ export function CollectionsModal() {
     right: '-3.1rem',
     top: '4.4rem',
   }
-
-  useEffect(() => {
-    if(window.innerWidth < 500) setIsMobile(true)
-  }, [])
   
   useEffect(() => {
     if(!pinModal) setStyle(styleBase)

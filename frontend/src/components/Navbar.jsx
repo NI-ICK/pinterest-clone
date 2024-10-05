@@ -15,15 +15,10 @@ export function Navbar() {
   const [homeActive, setHomeActive] = useState(false)
   const [createActive, setCreateActive] = useState(false)
   const modalRef = useRef()
-  const { currUser, noUserImgUrl } = useUserContext()
+  const { currUser, noUserImgUrl, isMobile } = useUserContext()
   const navigate = useNavigate()
   const location = useLocation()
   const path = location.pathname
-  const [ isMobile, setIsMobile ] = useState(false)
-
-  useEffect(() => {
-    if(window.innerWidth < 500) setIsMobile(true)
-  }, [])
 
   useEffect(() => {
     if(showLoginModal || showRegisterModal) {

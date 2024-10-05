@@ -19,7 +19,7 @@ export function CreatePin() {
   }
 
   useEffect(() => {
-    handleCreatePinChange({ target: { name: 'tags', value: tags.join(', ')}})
+    handleCreatePinChange({ target: { name: 'tags', value: tags }})
   }, [tags])
 
   const handleTagInputChange = (e) => {
@@ -27,12 +27,12 @@ export function CreatePin() {
   }
 
   const handleTagKeyPress = (e) => {
-    if (e.key === 'Enter' && inputValue.trim()) {
-      setTags([...tags, inputValue.trim()])
-      setInputValue('')
-      e.preventDefault()
+    if (e.key === 'Enter' && inputValue) {
+        setTags([...tags, ...inputValue.split(',').map(tag => tag.trim()).filter(tag => tag)])
+        setInputValue('')
+        e.preventDefault()
     }
-  }
+}
 
   const removeTag = (index) => {
     setTags(tags.filter((_, i) => i !== index))

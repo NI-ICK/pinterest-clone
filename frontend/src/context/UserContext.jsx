@@ -1,4 +1,4 @@
-import { useContext, createContext, useState } from "react"
+import { useContext, createContext, useState, useEffect } from "react"
 import axios from 'axios'
 
 const UserContext = createContext()
@@ -12,6 +12,7 @@ export function UserContextProvider({ children }) {
   const [users, setUsers] = useState([])
   const [user, setUser] = useState(null)
   const noUserImgUrl = 'https://res.cloudinary.com/dzg5ek6qa/image/upload/v1728063977/noPhoto_hwrr7w.webp'
+  const [ isMobile, setIsMobile ] = useState(false)
   
   const fetchCurrUser = async () => {
     try {
@@ -66,6 +67,18 @@ export function UserContextProvider({ children }) {
     } 
   }
 
+  const handleResize = () => {
+    if(window.innerWidth < 500) return setIsMobile(true)
+    return setIsMobile(false)
+  }
+
+  useEffect(() => {
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   return(
     <UserContext.Provider value={{ 
       users, 
@@ -77,7 +90,8 @@ export function UserContextProvider({ children }) {
       handleDeleteUser,
       fetchUser,
       user,
-      noUserImgUrl
+      noUserImgUrl,
+      isMobile
       }}>
       {children}
     </UserContext.Provider>

@@ -16,10 +16,11 @@ export function UserProfile() {
     const [areCollectionsFetched, setAreCollectionsFetched] = useState(false)
     const location = useLocation()
     const path = location.pathname
+    const decodedPath = decodeURIComponent(path).replace(/^\/|\/$/g, '')
     
     useEffect(() => {
-        setSavedActive(path === `/${username}/saved` || path === `/${username}`)
-        setCreatedActive(path === `/${username}/created`)
+        setSavedActive(path.endsWith('/saved') || decodedPath === username)
+        setCreatedActive(path.endsWith('/created'))
     }, [location])
     
     const loadUserData = async () => {
@@ -27,7 +28,7 @@ export function UserProfile() {
         await fetchCurrUser() 
         const foundUser = await fetchUser(username)
         if(!foundUser) return navigate('/404')
-        }
+    }
     
     const loadPinData = async () => {
         if(user) {

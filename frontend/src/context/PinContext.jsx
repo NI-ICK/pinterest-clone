@@ -100,9 +100,9 @@ export function PinContextProvider({ children }) {
     }
   }
 
-  const handleDeleteCommentOrReply = async (id, pinId) => {
+  const handleDeleteCommentOrReply = async (id, pinId, commId) => {
     try {
-        await axios.delete(`/comment/delete/${id}`)
+        await axios.delete(`/comment/delete/${id}`, { params: { pinId, commId }})
         await fetchPinComments(pinId)
       } catch(error) {
         console.log("Error: ", error)

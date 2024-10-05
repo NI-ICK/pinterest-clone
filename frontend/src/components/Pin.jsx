@@ -2,12 +2,12 @@ import { CollectionsModal } from "./CollectionsModal"
 import { ArrowDownIcon } from '../assets/ArrowDownIcon'
 import { useCollectionContext } from "../context/CollectionContext"
 import { useNavigate } from "react-router-dom"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { useUserContext } from "../context/UserContext"
 import { usePinContext } from "../context/PinContext"
 
 export function Pin({ pin, index }) {
-    const { setSelectedPinId, setShowColModal, handleCollectionAdd, fetchUserCollections, handleCollectionRemove, selectedCollection } = useCollectionContext()
+    const { setSelectedPinId, setShowColModal, handleCollectionAdd, fetchUserCollections, handleRemoveFromCollection, selectedCollection } = useCollectionContext()
     const { currUser } = useUserContext()
     const { adjustGridRows } = usePinContext()
     const [ btnClass, setBtnClass ] = useState('redBtn')
@@ -22,7 +22,7 @@ export function Pin({ pin, index }) {
         if (selectedCollection.pins.some(p => p._id === pin._id)) {
             setBtnClass('redBtn')
             setBtnText('Save')
-            await handleCollectionRemove(selectedCollection._id, pin._id)
+            await handleRemoveFromCollection(selectedCollection._id, pin._id)
         }
         if (!selectedCollection.pins.some(p => p._id === pin._id)) {
             setBtnClass('blackBtn')
@@ -45,6 +45,7 @@ export function Pin({ pin, index }) {
     }
 
     const handlePinTitle = (title) => {
+        if(!title) return 
         return title.length < 23 ? title : title.substring(0, 20) + '...'
     }
 

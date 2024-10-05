@@ -464,6 +464,9 @@
     }
 
     .tags {
+        border-bottom: 2px solid $dark-grey;
+        border-top: 2px solid $dark-grey;
+        padding: 0.5rem 0;
         max-height: 10rem;
         overflow-y: scroll;
     }

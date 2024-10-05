@@ -110,3 +110,9 @@ h2 {
         font-size: 1.5rem;
     }
 }
+
+.pinDetails {
+    h2 {
+        @include xs { font-size: 1.1rem; }
+    }
+}

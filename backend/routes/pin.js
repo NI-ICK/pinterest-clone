@@ -81,11 +81,12 @@ router.post('/createPin', upload.single('image'), async (req, res) => {
 router.put('/editPin/:id', async (req, res) => {
     try {
         const pin = await Pin.findById(req.params.id)
-        const { description, title } = req.body
+        const { description, title, tags } = req.body
 
         const updateFields = {}
         if(description) updateFields.description = description
         if(title) updateFields.title = title
+        updateFields.tags = tags
         
         await pin.updateOne({ $set: updateFields })
         res.status(200).json({ message: 'Updated' })
@@ -249,11 +250,20 @@ router.delete('/comment/delete/:id', async (req, res) => {
                 const rep = await Reply.findById(reply._id)
                 await rep.deleteOne()
             }
+
+            const pin = await Pin.findById(req.query.pinId)
+            await pin.comments.pull(req.params.id)
+            await pin.save()
             await comment.deleteOne()
+            res.status(200).json({ message: 'Deleted' })
+            return 
         }
+        
+        const parentComm = await Comment.findById(req.query.commId)
+        await parentComm.replies.pull(req.params.id)
+        await parentComm.save()
         const reply = await Reply.findById(req.params.id)
         if(reply) await reply.deleteOne()
-            
         res.status(200).json({ message: 'Deleted' })
     } catch(error) {
         res.status(500).json({ message: error.message })

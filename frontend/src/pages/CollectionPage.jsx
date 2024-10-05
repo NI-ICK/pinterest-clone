@@ -6,7 +6,7 @@ import { useUserContext } from "../context/UserContext"
 
 export function CollectionPage() {
   const { id } = useParams()
-  const { fetchCollectionById, collection } = useCollectionContext()
+  const { fetchCollectionById, collection, handleDeleteCollection } = useCollectionContext()
   const { currUser, fetchCurrUser } = useUserContext()
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
@@ -26,7 +26,10 @@ export function CollectionPage() {
     <>
       {!loading && 
       <div className="currCollection">
-        <h1>{collection.name}</h1>
+        <div className="container">
+            <h1>{collection.name}</h1>
+            <button className="redBtn" onClick={() => handleDeleteCollection(id)}>Delete</button>
+        </div>
         <div className="pins">
         {collection.pins && collection.pins.map((pin, index) => (
           <Pin 
