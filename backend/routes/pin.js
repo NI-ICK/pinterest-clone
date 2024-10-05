@@ -124,15 +124,12 @@ router.get('/pins/similar', async (req, res) => {
     try {
         const pin = await Pin.findById(req.query.id)
         const { title, tags } = pin
-        
-        const similarPins = await Pin.find({
-            $or: [
-                { tags: { $in: tags } },
-                { title: new RegExp(title, 'i')},
-            ],
-            _id: { $ne: req.query.id } 
-        }).populate('user', '-password -email')
-        
+        const query = { _id: { $ne: req.query.id }, $or: [] }
+
+        if(title) query.$or.push({ title: new RegExp(title, 'i')})
+        if(tags.length) query.$or.push({ tags: { $in: tags }}) 
+
+        const similarPins = await Pin.find(query).populate('user', '-password -email')
         res.status(200).json(similarPins)
     } catch(error) {
         res.status(500).json({ message: error.message })
