@@ -111,7 +111,6 @@ router.get('/pins/search', async (req, res) => {
         const pins = await Pin.find({ 
             $or: [
                 { title: new RegExp(query, 'i')},
-                { description: new RegExp(query, 'i')},
                 { tags: { $in: [new RegExp(query, 'i')]}}
             ]
         }).populate('user', '-password -email')
@@ -124,13 +123,12 @@ router.get('/pins/search', async (req, res) => {
 router.get('/pins/similar', async (req, res) => {
     try {
         const pin = await Pin.findById(req.query.id)
-        const { title, description, tags } = pin
+        const { title, tags } = pin
         
         const similarPins = await Pin.find({
             $or: [
                 { tags: { $in: tags } },
                 { title: new RegExp(title, 'i')},
-                { description: new RegExp(description, 'i')},
             ],
             _id: { $ne: req.query.id } 
         }).populate('user', '-password -email')
