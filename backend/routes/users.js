@@ -50,11 +50,8 @@ router.put('/editUser', upload.single('photo'), async (req, res) => {
               const stream = cloudinary.uploader.upload_stream(
                 { folder: 'pins', resource_type: 'image' },
                 (error, result) => {
-                  if (result) {
-                    resolve(result)
-                  } else {
-                    reject(error)
-                  }
+                  if (result) { resolve(result) } 
+                  else { reject(error) }
                 }
               )
               streamifier.createReadStream(buffer).pipe(stream)

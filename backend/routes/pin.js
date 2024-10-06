@@ -49,11 +49,8 @@ router.post('/createPin', upload.single('image'), async (req, res) => {
               const stream = cloudinary.uploader.upload_stream(
                 { folder: 'pins', resource_type: 'image' },
                 (error, result) => {
-                  if (result) {
-                    resolve(result)
-                  } else {
-                    reject(error)
-                  }
+                  if (result) { resolve(result) } 
+                  else { reject(error) }
                 }
               )
               streamifier.createReadStream(buffer).pipe(stream)
@@ -66,6 +63,8 @@ router.post('/createPin', upload.single('image'), async (req, res) => {
             title: req.body.title,
             image: result.secure_url,
             imageId: result.public_id,
+            imgWidth: result.width,
+            imgHeight: result.height,
             description: req.body.description,
             tags: req.body.tags,
             user: req.body.user,

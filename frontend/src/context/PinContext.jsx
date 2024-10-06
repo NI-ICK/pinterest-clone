@@ -11,7 +11,7 @@ export function usePinContext() {
 export function PinContextProvider({ children }) {
   const [pins, setPins] = useState([])
   const [pin, setPin] = useState(null)
-  const { currUser } = useUserContext()
+  const { currUser, isMobile } = useUserContext()
   const [createdPins, setCreatedPins] = useState([])
   const [searchedPins, setSearchedPins] = useState([])
   const [comments, setComments] = useState([])
@@ -74,12 +74,16 @@ export function PinContextProvider({ children }) {
     }
   }
 
-  const adjustGridRows= (e) => {
-    const pin = e.target.parentElement.parentElement.parentElement
-    const pinImg = e.target.height
+  const adjustGridRows = (pin, width, height) => {
+    const calcHeight = pin.offsetWidth * (height / width)
+
     const title = pin.querySelector('.pinTitle')
-    const pinHeight = pinImg + title.clientHeight + 15
+    const placeholder = pin.querySelector('.imgPlaceholder')
+
+    const pinHeight = calcHeight + title.clientHeight + 15
     const rowSpan = Math.ceil(pinHeight / 10) + 1
+    placeholder.style.height = `${calcHeight}px`
+    pin.style.height = `${pinHeight}px`
     pin.style.gridRowEnd = `span ${rowSpan}`
   }  
   

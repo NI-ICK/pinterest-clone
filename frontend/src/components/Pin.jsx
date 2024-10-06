@@ -2,13 +2,13 @@ import { CollectionsModal } from "./CollectionsModal"
 import { ArrowDownIcon } from '../assets/ArrowDownIcon'
 import { useCollectionContext } from "../context/CollectionContext"
 import { useNavigate } from "react-router-dom"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useUserContext } from "../context/UserContext"
 import { usePinContext } from "../context/PinContext"
 
 export function Pin({ pin, index }) {
     const { setSelectedPinId, setShowColModal, handleCollectionAdd, fetchUserCollections, handleRemoveFromCollection, selectedCollection } = useCollectionContext()
-    const { currUser } = useUserContext()
+    const { currUser, isMobile } = useUserContext()
     const { adjustGridRows } = usePinContext()
     const [ btnClass, setBtnClass ] = useState('redBtn')
     const [ btnText, setBtnText ] = useState("Save")
@@ -16,6 +16,7 @@ export function Pin({ pin, index }) {
     const [ hoverIndex, setHoverIndex]  = useState(null)
     const [ loading, setLoading ] = useState(false)
     const [ loadedImg, setLoadedImg ] = useState(false)
+    const pinRef = useRef()
 
     const handleBtnClick = async () => {
         setLoading(true)
@@ -46,36 +47,45 @@ export function Pin({ pin, index }) {
 
     const handlePinTitle = (title) => {
         if(!title) return 
+        if(isMobile) return title.length < 18 ? title : title.substring(0, 15) + '...'
         return title.length < 23 ? title : title.substring(0, 20) + '...'
     }
+
+    const resizeObserver = new ResizeObserver(() => {
+        adjustGridRows(pinRef.current, pin.imgWidth, pin.imgHeight)
+    })
+
+    useEffect(() => {
+        adjustGridRows(pinRef.current, pin.imgWidth, pin.imgHeight)
+        resizeObserver.observe(pinRef.current)
+    }, [])
 
     return (
         <>
         <div
-            className={`pin ${loadedImg ? 'loaded' : ''}`}
+            className='pin'
+            ref={ pinRef }
             tabIndex={0}
             onKeyDown={(e) => { if(e.key === 'Enter') e.target.click() }}
             onClick={() => navigate(`/pin/${pin._id}`)}
-            onMouseEnter={() => setHoverIndex(index)}
+            onMouseEnter={() => loadedImg && setHoverIndex(index)}
             onMouseLeave={() => {
                 setShowColModal(null)
                 setHoverIndex(null)
             }}>
+            <div className={`imgPlaceholder ${loadedImg ? 'loaded' : ''}`}></div>
             {hoverIndex === index && selectedCollection && <CollectionsModal /> }
             <div className="pinContent">
                 <div className={`pinBackground ${hoverIndex === index ? 'hover' : ''}`}>
                     <img
-                        className={`pinImg ${hoverIndex === index ? 'hover' : ''}`}
+                        className={`pinImg ${hoverIndex === index ? 'hover' : ''} ${loadedImg ? 'loaded' : ''}`}
                         src={ pin.image }
-                        onLoad={(e) => { 
-                            adjustGridRows(e)
-                            setLoadedImg(true) 
-                        }}
+                        onLoad={() => { setLoadedImg(true) }}
                         loading="lazy"
                         draggable={false}
                     />
                 </div>
-                <p className="pinTitle">{ handlePinTitle(pin.title) }</p>
+                <p className={`pinTitle ${loadedImg ? 'loaded' : ''}`}>{ handlePinTitle(pin.title) }</p>
                 {hoverIndex === index && selectedCollection && currUser &&
                     <div className="hoverOptions" onClick={(e) => e.stopPropagation()}>
                         <div className="collectionsBtn"
