@@ -116,3 +116,9 @@ h2 {
         @include xs { font-size: 1.1rem; }
     }
 }
+
+.noMatches {
+    font-weight: bold;
+    font-size: 2rem;
+    text-wrap: nowrap;
+}

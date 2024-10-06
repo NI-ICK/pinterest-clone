@@ -13,7 +13,7 @@ export function SearchedPins() {
   const { query } = useParams()
   const [isUserFetched, setIsUserFetched] = useState(false)
   const [areCollectionsFetched, setAreCollectionsFetched] = useState(false)
-
+  const [ loading, setLoading ] = useState(true)
 
   const loadData = async () => {
     if(!currUser) {
@@ -21,6 +21,7 @@ export function SearchedPins() {
       setIsUserFetched(true)
     }
     await fetchSearchedPins(query)
+    setLoading(false)
   }
 
   const loadColData = async () => {
@@ -45,15 +46,18 @@ export function SearchedPins() {
   return (
     <>
     <CreateCollection />
+    {!loading && 
     <div className="pins">
-      {searchedPins && searchedPins.map((pin, index) => (
+      {searchedPins.length ? searchedPins.map((pin, index) => (
         <Pin 
           key={pin._id}
           pin={pin}
           index={index + 1}
         />
-      ))}
-    </div>
+      )) : 
+      <p className="noMatches">No matches</p>
+      }
+    </div>}
     </>
   )
 }

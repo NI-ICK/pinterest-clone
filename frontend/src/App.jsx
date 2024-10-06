@@ -25,7 +25,7 @@ export function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/pins/:query' element={<SearchedPins />}/>
+        <Route path='/search/:query' element={<SearchedPins />}/>
         <Route path='/pin-creation-tool' element={<CreatePin />} />
         <Route path='/pin/:id' element={<PinPage />}/>
         <Route path='/:username' element={<UserProfile />}>

@@ -52,7 +52,7 @@ export function Pin({ pin, index }) {
     }
 
     const resizeObserver = new ResizeObserver(() => {
-        adjustGridRows(pinRef.current, pin.imgWidth, pin.imgHeight)
+        if(pinRef.current) adjustGridRows(pinRef.current, pin.imgWidth, pin.imgHeight)
     })
 
     useEffect(() => {

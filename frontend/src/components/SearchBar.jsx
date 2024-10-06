@@ -4,7 +4,7 @@ import { usePinContext } from '../context/PinContext'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 export function SearchBar() {
-  const { fetchSearchedPins, setSearchedPins } = usePinContext()
+  const { setSearchedPins } = usePinContext()
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
   const location = useLocation()
@@ -13,7 +13,7 @@ export function SearchBar() {
     if(e.key === 'Enter') {
       if(query === '') return navigate('/')
       setSearchedPins(null)
-      navigate(`/pins/${query}`)
+      navigate(`/search/${query}`)
     }
   }
 
