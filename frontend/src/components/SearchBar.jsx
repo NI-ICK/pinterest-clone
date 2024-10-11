@@ -12,7 +12,7 @@ export function SearchBar() {
   const handleKeyPress = async (e) => {
     if(e.key === 'Enter') {
       if(query === '') return navigate('/')
-      setSearchedPins(null)
+      setSearchedPins({})
       navigate(`/search/${query}`)
     }
   }

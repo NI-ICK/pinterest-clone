@@ -20,7 +20,6 @@ export function SearchedPins() {
       await fetchCurrUser()
       setIsUserFetched(true)
     }
-    await fetchSearchedPins(query)
     setLoading(false)
   }
 
@@ -32,7 +31,12 @@ export function SearchedPins() {
   }
 
   useEffect(() => {
+    fetchSearchedPins(query)
+  }, [query])
+
+  useEffect(() => {
     loadData()
+    fetchSearchedPins(query)
   }, [])
 
   useEffect(() => {
