@@ -30,9 +30,9 @@ if(process.env.NODE_ENV === 'development') {
     cert: fs.readFileSync(process.env.SSL_CRT_FILE)
   }
 
-  https.createServer(options, app).listen(process.env.PORT, '0.0.0.0', () => console.log(`Server running on port ${process.env.PORT}`))
+  https.createServer(options, app).listen(process.env.PORT, '0.0.0.0', () => console.log(`Dev server running on port ${process.env.PORT}`))
 } else {
-  app.listen(process.env.PORT, '0.0.0.0', () => console.log(`Secure server running on port ${process.env.PORT}`))
+  app.listen(process.env.PORT, '0.0.0.0', () => console.log(`Server running on port ${process.env.PORT}`))
 }
 
 module.exports = app
