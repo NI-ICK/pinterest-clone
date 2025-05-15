@@ -1,7 +1,2 @@
 node_modules
-.env
-
-cert
-.vercel
-
 backend-secret.yaml

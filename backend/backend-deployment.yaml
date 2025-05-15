@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: backend-deployment
+spec: 
+  replicas: 3
+  selector: 
+    matchLabels: 
+      app: backend
+  template: 
+    metadata: 
+      labels: 
+        app: backend
+    spec: 
+      containers: 
+        - name: backend
+          image: inicki/pinterest-backend
+          ports: 
+            - containerPort: 5000
+          env: 
+            - name: SITE_URL
+              value: http://frontend-service:3000
+            - name: PORT
+              value: "5000"
+            - name: CLOUDINARY_API_NAME
+              value: dzg5ek6qa
+          envFrom: 
+            - secretRef: 
+                name: secrets 

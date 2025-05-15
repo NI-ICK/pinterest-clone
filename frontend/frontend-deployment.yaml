@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: inicki/pinterest-frontend:latest
+          ports:
+            - containerPort: 3000 
+          env:
+            - name: VITE_API_URL
+              value: http://backend-service:5000/api/
